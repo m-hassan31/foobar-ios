@@ -1,11 +1,3 @@
-//
-//  ImageDownloader.h
-//  fontli
-//
-//  Created by Ved Surtani on 22/09/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 #import <CommonCrypto/CommonDigest.h>
 #import "ImageCacher.h"

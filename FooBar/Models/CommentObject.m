@@ -1,11 +1,3 @@
-//
-//  CommentObject.m
-//  Fontli
-//
-//  Created by Pramati technologies on 12/27/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import "CommentObject.h"
 
 @implementation CommentObject

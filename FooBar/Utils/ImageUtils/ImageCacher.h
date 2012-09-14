@@ -1,11 +1,3 @@
-//
-//  ImageCache.h
-//  PVA
-//
-//  Created by Ved Surtani on 14/04/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 #define MEMORY_CACHE_SIZE 0
 #define IMAGE_CACHE_FOLDER_NAME @"Fontli"

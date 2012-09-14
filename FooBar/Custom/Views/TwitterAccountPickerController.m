@@ -1,13 +1,4 @@
-//
-//  TwitterAccountPickerController.m
-//  fontli
-//
-//  Created by Pramati technologies on 9/28/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import "TwitterAccountPickerController.h"
-//#import "TwitterUtil.h"
 #import "FooBarUtils.h"
 
 @implementation TwitterAccountPickerController

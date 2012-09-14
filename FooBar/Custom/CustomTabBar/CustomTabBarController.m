@@ -140,27 +140,27 @@
 
 -(void)addCustomElements
 {
-    tabBarBG = [[UIImageView alloc] initWithFrame:CGRectMake(0, 430, 320, 50)];
+    tabBarBG = [[UIImageView alloc] initWithFrame:CGRectMake(0, 431, 320, 49)];
     tabBarBG.image = [UIImage imageNamed:@"BottomBar.png"];
     [self.view addSubview:tabBarBG];
     [tabBarBG release];
     
     profileTabButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	profileTabButton.frame = CGRectMake(9, 437, 28, 37);
+	profileTabButton.frame = CGRectMake(0, 436, 45, 38);
 	[profileTabButton setImage:[UIImage imageNamed:@"Profile.png"] forState:UIControlStateNormal];
 	[profileTabButton setImage:[UIImage imageNamed:@"Profile.png"] forState:UIControlStateSelected];
 	[profileTabButton setTag:PROFILE_TAB];
 	[profileTabButton setSelected:true];
     
     captureTabButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	captureTabButton.frame = CGRectMake(141, 441, 39, 28);
+	captureTabButton.frame = CGRectMake(138, 436, 45, 38);
 	[captureTabButton setImage:[UIImage imageNamed:@"Camera.png"] forState:UIControlStateNormal];
 	[captureTabButton setImage:[UIImage imageNamed:@"Camera.png"] forState:UIControlStateSelected];
 	[captureTabButton setTag:CAPTURE_TAB];
 	[captureTabButton setSelected:true];
     
     streamTabButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	streamTabButton.frame = CGRectMake(266, 441, 45, 28);
+	streamTabButton.frame = CGRectMake(275, 436, 45, 38);
 	[streamTabButton setImage:[UIImage imageNamed:@"Gallery.png"] forState:UIControlStateNormal];
 	[streamTabButton setImage:[UIImage imageNamed:@"Gallery.png"] forState:UIControlStateSelected];
 	[streamTabButton setTag:STREAM_TAB];

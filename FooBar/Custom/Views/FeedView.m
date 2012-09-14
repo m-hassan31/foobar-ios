@@ -1,11 +1,3 @@
-//
-//  FeedView.m
-//  FooBar
-//
-//  Created by Pramati technologies on 9/3/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
-
 #import "FeedView.h"
 #import "FooBarUtils.h"
 

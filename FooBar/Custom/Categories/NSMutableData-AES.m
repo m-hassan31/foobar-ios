@@ -1,11 +1,3 @@
-//
-//  NSMutableData-AES.m
-//  Spynergy
-//
-//  Created by tapjoy on 3/12/12.
-//  Copyright (c) 2012 Futur. All rights reserved.
-//
-
 #import "NSMutableData-AES.h"
 
 @implementation NSMutableData(AES)

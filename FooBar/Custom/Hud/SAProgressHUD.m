@@ -1,4 +1,3 @@
-
 #import "SAProgressHUD.h"
 
 @interface SAProgressHUD ()

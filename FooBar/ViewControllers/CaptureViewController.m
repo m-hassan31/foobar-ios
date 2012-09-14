@@ -1,11 +1,3 @@
-//
-//  CaptureViewController.m
-//  FooBar
-//
-//  Created by Pramati technologies on 9/1/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
-
 #import "CaptureViewController.h"
 #import "EditImageViewController.h"
 #import "CustomTabBarController.h"
@@ -56,8 +48,8 @@
     [[[self captureManager] previewLayer] setPosition:CGPointMake(CGRectGetMidX(layerRect),CGRectGetMidY(layerRect))];
 	[[[self view] layer] addSublayer:[[self captureManager] previewLayer]];
     
-    UIImageView *overlayImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Scope.png"]];
-    [overlayImageView setFrame:CGRectMake(96, 141, 128, 128)];
+    UIImageView *overlayImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Focus.png"]];
+    [overlayImageView setFrame:CGRectMake(92.5, 137.5, 135, 135)];
     [[self view] addSubview:overlayImageView];
     [overlayImageView release];
     

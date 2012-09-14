@@ -1,11 +1,3 @@
-//
-//  CommentsViewCell.h
-//  Fontli
-//
-//  Created by Pramati technologies on 12/23/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 #import "AsyncImageView.h"
 #import "TTTAttributedLabel.h"

@@ -1,11 +1,3 @@
-//
-//  AsyncImageView.m
-//  Fontli
-//
-//  Created by Ved Surtani on 26/09/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import "AsyncImageView.h"
 #import <QuartzCore/QuartzCore.h>
 

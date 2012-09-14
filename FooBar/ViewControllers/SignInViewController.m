@@ -1,11 +1,3 @@
-//
-//  SignInViewController.m
-//  FooBar
-//
-//  Created by Pramati technologies on 8/30/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
-
 #import "SignInViewController.h"
 #import "StreamViewController.h"
 #import "AppDelegate.h"
@@ -28,7 +20,7 @@
 
 @synthesize facebookButton;
 @synthesize twitterButton;
-@synthesize orLabel;
+@synthesize orImage;
 @synthesize emailTextField;
 @synthesize passwordTextField;
 @synthesize signInButton;
@@ -195,11 +187,11 @@
                      animations:^{
                          facebookButton.alpha = 0;
                          twitterButton.alpha = 0;
-                         orLabel.alpha = 0;
+                         orImage.alpha = 0;
                          
                          facebookButton.transform = CGAffineTransformMakeScale(0.8, 0.8);
                          twitterButton.transform = CGAffineTransformMakeScale(0.8, 0.8);
-                         orLabel.transform = CGAffineTransformMakeScale(0.8, 0.8);                   
+                         orImage.transform = CGAffineTransformMakeScale(0.8, 0.8);                   
                      }];
     
     
@@ -306,11 +298,11 @@
                      animations:^{
                          facebookButton.alpha = 1.0f;
                          twitterButton.alpha = 1.0f;
-                         orLabel.alpha = 1.0f;
+                         orImage.alpha = 1.0f;
                          
                          facebookButton.transform = CGAffineTransformMakeScale(1.0, 1.0);
                          twitterButton.transform = CGAffineTransformMakeScale(1.0, 1.0);
-                         orLabel.transform = CGAffineTransformMakeScale(1.0, 1.0);                   
+                         orImage.transform = CGAffineTransformMakeScale(1.0, 1.0);                   
                      } completion:^(BOOL finished) {
                      }];
 }
@@ -394,7 +386,7 @@
     
     [self setFacebookButton:nil];
     [self setTwitterButton:nil];
-    [self setOrLabel:nil];
+    [self setOrImage:nil];
     [self setEmailTextField:nil];
     [self setPasswordTextField:nil];
     [self setSignInButton:nil];
@@ -413,7 +405,7 @@
     [manager release];
     [facebookButton release];
     [twitterButton release];
-    [orLabel release];
+    [orImage release];
     [emailTextField release];
     [passwordTextField release];
     [signInButton release];

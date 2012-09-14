@@ -1,11 +1,3 @@
-//
-//  TwitterAccountPickerController.h
-//  fontli
-//
-//  Created by Pramati technologies on 9/28/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
 #ifdef __IPHONE_5_0

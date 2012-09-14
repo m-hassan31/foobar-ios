@@ -1,20 +1,11 @@
-//
-//  ImageDownloader.m
-//  fontli
-//
-//  Created by Ved Surtani on 22/09/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
-//
-
+#import "ImageDownloader.h"
 
 static int downloadTag = 999;
-#import "ImageDownloader.h"
+
 @interface ImageDownloader (Private)
 -(NSString*)hashFromString:(NSString*)aString;
 -(void)notifyDelegateFromCache:(NSNumber *) cache;
 @end
-
-
 
 @implementation ImageDownloader
 @synthesize delegate;

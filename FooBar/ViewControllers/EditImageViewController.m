@@ -1,17 +1,9 @@
-//
-//  EditImageViewController.m
-//  foobar1
-//
-//  Created by Pramati technologies on 8/27/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
-
 #import "EditImageViewController.h"
 #import "FooBarUtils.h"
 #import <QuartzCore/QuartzCore.h>
 
-#define FOOBAR_IMAGE_WIDTH  353
-#define FOOBAR_IMAGE_HEIGHT 179
+#define FOOBAR_IMAGE_WIDTH  243
+#define FOOBAR_IMAGE_HEIGHT 128
 
 @implementation EditImageViewController
 
@@ -53,7 +45,7 @@
     
     imageView.image = image;
     
-    UIImage *foobarImage = [UIImage imageNamed:@"FooBar.png"];
+    UIImage *foobarImage = [UIImage imageNamed:@"Logo.png"];
     
     maxX = imageView.frame.size.width - FOOBAR_IMAGE_WIDTH/4;
     maxY = imageView.frame.size.height - FOOBAR_IMAGE_WIDTH/4;

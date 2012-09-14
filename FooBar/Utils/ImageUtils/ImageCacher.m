@@ -1,16 +1,6 @@
-//
-//  ImageCache.m
-//  PVA
-//
-//  Created by Ved Surtani on 14/04/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import "ImageCacher.h"
 
 static ImageCacher *sharedInstance = nil;
-
-
 
 @interface ImageCacher (Private)
 
