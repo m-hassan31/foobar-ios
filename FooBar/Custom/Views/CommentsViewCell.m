@@ -157,7 +157,7 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
     if (imageUrl != nil)
         [cellImageView setImageUrl:imageUrl];
     else
-        [cellImageView setImage:[UIImage imageNamed:@"defaultprofile.png"]];//defaultContactImage
+        [cellImageView setImage:[UIImage imageNamed:@"DefaultUser.png"]];//defaultContactImage
     
     timeLabel.text = commentObj.created_dt;
 }

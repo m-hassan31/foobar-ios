@@ -29,7 +29,7 @@
 +(UIButton*)backButton
 {
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame = CGRectMake(20, 6.5, 43, 31);
+    backButton.frame = CGRectMake(20, 7, 44, 30);
     [backButton setImage:[UIImage imageNamed:@"Back.png"] forState:UIControlStateNormal];
     return backButton;
 }

@@ -171,7 +171,7 @@
     
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
-    CommentObject *commentObject = [[CommentObject alloc] initWithCommentId:@"123" userName:@"Knight" userId:@"12345" userPicURL:@"http://cdn1.iconfinder.com/data/icons/iDroid_icons/People.png" commentText:@"@DarkKnight - FooBar is rolling down the mountain. #FooBar" created_dt:@"3 Hrs ago"];
+    CommentObject *commentObject = [[CommentObject alloc] initWithCommentId:@"123" userName:@"Knight" userId:@"12345" userPicURL:nil commentText:@"@DarkKnight - FooBar is rolling down the mountain. #FooBar" created_dt:@"3 Hrs ago"];
     
     [cell setRowWithCommentObject:commentObject withTextHeight:[CommentsViewCell heightForCellWithText:@"@DarkKnight - FooBar is rolling down the mountain. #FooBar"] delegate:self];
     [commentObject release];
