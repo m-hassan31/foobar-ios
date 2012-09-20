@@ -1,11 +1,3 @@
-//
-//  FooBarBackground.m
-//  FooBar
-//
-//  Created by Manigandan Parthasarathi on 14/09/12.
-//
-//
-
 #import "FooBarBackground.h"
 
 @implementation FooBarBackground
