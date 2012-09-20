@@ -76,6 +76,9 @@
 		8459885C15F22C5E00A5486C /* EditImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8459885A15F22C5E00A5486C /* EditImageViewController.xib */; };
 		8459885D15F22C5E00A5486C /* EditImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8459885B15F22C5E00A5486C /* EditImageViewController.m */; };
 		8459886F15F26DDA00A5486C /* CustomTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8459886E15F26DDA00A5486C /* CustomTabBarController.m */; };
+		846B5910160AF82B00AB3721 /* UIImage+RemoteSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 846B590F160AF82B00AB3721 /* UIImage+RemoteSize.m */; };
+		846B591B160B244F00AB3721 /* CustomCellBGView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846B5918160B244F00AB3721 /* CustomCellBGView.m */; };
+		846B591C160B244F00AB3721 /* RoundRect.m in Sources */ = {isa = PBXBuildFile; fileRef = 846B591A160B244F00AB3721 /* RoundRect.m */; };
 		84850FC015F2120D00324031 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84850FBF15F2120D00324031 /* AVFoundation.framework */; };
 		84850FC415F2121500324031 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84850FC215F2121500324031 /* CoreMedia.framework */; };
 		84850FC515F2121500324031 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84850FC315F2121500324031 /* CoreVideo.framework */; };
@@ -143,8 +146,6 @@
 		8C4005831603A3BE00F11091 /* DefaultUser@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C4005791603A3BE00F11091 /* DefaultUser@2x.png */; };
 		8C4005851603A3BE00F11091 /* Heart.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C40057B1603A3BE00F11091 /* Heart.png */; };
 		8C4005861603A3BE00F11091 /* Heart@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C40057C1603A3BE00F11091 /* Heart@2x.png */; };
-		8C40058A1603A3BE00F11091 /* User.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C4005801603A3BE00F11091 /* User.png */; };
-		8C40058B1603A3BE00F11091 /* User@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C4005811603A3BE00F11091 /* User@2x.png */; };
 		8C4005901603A9BF00F11091 /* Focus.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C40058C1603A9BF00F11091 /* Focus.png */; };
 		8C4005911603A9BF00F11091 /* Focus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C40058D1603A9BF00F11091 /* Focus@2x.png */; };
 		8C4005921603A9BF00F11091 /* Or.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C40058E1603A9BF00F11091 /* Or.png */; };
@@ -255,6 +256,12 @@
 		8459885B15F22C5E00A5486C /* EditImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditImageViewController.m; sourceTree = "<group>"; };
 		8459886D15F26DDA00A5486C /* CustomTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTabBarController.h; sourceTree = "<group>"; };
 		8459886E15F26DDA00A5486C /* CustomTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTabBarController.m; sourceTree = "<group>"; };
+		846B590E160AF82B00AB3721 /* UIImage+RemoteSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RemoteSize.h"; sourceTree = "<group>"; };
+		846B590F160AF82B00AB3721 /* UIImage+RemoteSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RemoteSize.m"; sourceTree = "<group>"; };
+		846B5917160B244F00AB3721 /* CustomCellBGView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellBGView.h; sourceTree = "<group>"; };
+		846B5918160B244F00AB3721 /* CustomCellBGView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCellBGView.m; sourceTree = "<group>"; };
+		846B5919160B244F00AB3721 /* RoundRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoundRect.h; sourceTree = "<group>"; };
+		846B591A160B244F00AB3721 /* RoundRect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoundRect.m; sourceTree = "<group>"; };
 		84850FBF15F2120D00324031 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		84850FC215F2121500324031 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		84850FC315F2121500324031 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -345,8 +352,6 @@
 		8C4005791603A3BE00F11091 /* DefaultUser@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DefaultUser@2x.png"; sourceTree = "<group>"; };
 		8C40057B1603A3BE00F11091 /* Heart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Heart.png; sourceTree = "<group>"; };
 		8C40057C1603A3BE00F11091 /* Heart@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Heart@2x.png"; sourceTree = "<group>"; };
-		8C4005801603A3BE00F11091 /* User.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = User.png; sourceTree = "<group>"; };
-		8C4005811603A3BE00F11091 /* User@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "User@2x.png"; sourceTree = "<group>"; };
 		8C40058C1603A9BF00F11091 /* Focus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Focus.png; sourceTree = "<group>"; };
 		8C40058D1603A9BF00F11091 /* Focus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Focus@2x.png"; sourceTree = "<group>"; };
 		8C40058E1603A9BF00F11091 /* Or.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Or.png; sourceTree = "<group>"; };
@@ -481,6 +486,8 @@
 			children = (
 				8401DA9815F0CF1D00659482 /* NSMutableData-AES.h */,
 				8401DA9915F0CF1D00659482 /* NSMutableData-AES.m */,
+				846B590E160AF82B00AB3721 /* UIImage+RemoteSize.h */,
+				846B590F160AF82B00AB3721 /* UIImage+RemoteSize.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -501,6 +508,17 @@
 				8459886E15F26DDA00A5486C /* CustomTabBarController.m */,
 			);
 			path = CustomTabBar;
+			sourceTree = "<group>";
+		};
+		846B5916160B244F00AB3721 /* TableViewCellBG */ = {
+			isa = PBXGroup;
+			children = (
+				846B5917160B244F00AB3721 /* CustomCellBGView.h */,
+				846B5918160B244F00AB3721 /* CustomCellBGView.m */,
+				846B5919160B244F00AB3721 /* RoundRect.h */,
+				846B591A160B244F00AB3721 /* RoundRect.m */,
+			);
+			path = TableViewCellBG;
 			sourceTree = "<group>";
 		};
 		849762F115F4A9B800391813 /* Views */ = {
@@ -678,6 +696,7 @@
 		84D613A815EFDB57000B0CE5 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				846B5916160B244F00AB3721 /* TableViewCellBG */,
 				84A36C0115F510EA0040A9EE /* TTTAttributedLabel */,
 				8459882115F21A3D00A5486C /* CaptureSessionManager */,
 				8401DA9715F0CF1D00659482 /* Categories */,
@@ -808,8 +827,6 @@
 				8C4005791603A3BE00F11091 /* DefaultUser@2x.png */,
 				8C40057B1603A3BE00F11091 /* Heart.png */,
 				8C40057C1603A3BE00F11091 /* Heart@2x.png */,
-				8C4005801603A3BE00F11091 /* User.png */,
-				8C4005811603A3BE00F11091 /* User@2x.png */,
 				8C40058C1603A9BF00F11091 /* Focus.png */,
 				8C40058D1603A9BF00F11091 /* Focus@2x.png */,
 				8C40058E1603A9BF00F11091 /* Or.png */,
@@ -944,8 +961,6 @@
 				8C4005831603A3BE00F11091 /* DefaultUser@2x.png in Resources */,
 				8C4005851603A3BE00F11091 /* Heart.png in Resources */,
 				8C4005861603A3BE00F11091 /* Heart@2x.png in Resources */,
-				8C40058A1603A3BE00F11091 /* User.png in Resources */,
-				8C40058B1603A3BE00F11091 /* User@2x.png in Resources */,
 				8C4005901603A9BF00F11091 /* Focus.png in Resources */,
 				8C4005911603A9BF00F11091 /* Focus@2x.png in Resources */,
 				8C4005921603A9BF00F11091 /* Or.png in Resources */,
@@ -1007,6 +1022,9 @@
 				84A36C0415F510EA0040A9EE /* TTTAttributedLabel.m in Sources */,
 				84EA282915F5C8FD009A107E /* TwitterAccountPickerController.m in Sources */,
 				8C40056216039E2800F11091 /* FooBarBackground.m in Sources */,
+				846B5910160AF82B00AB3721 /* UIImage+RemoteSize.m in Sources */,
+				846B591B160B244F00AB3721 /* CustomCellBGView.m in Sources */,
+				846B591C160B244F00AB3721 /* RoundRect.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -4,6 +4,7 @@
 #import "FooBarUtils.h"
 #import "PhotoDetailsViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIImage+RemoteSize.h"
 
 const NSInteger kNumberOfCells = 30;
 
@@ -52,6 +53,15 @@ const NSInteger kNumberOfCells = 30;
     [quiltView reloadData];
     
     [quiltView release];    
+    
+    /*for(int i=0; i<2000; i++)
+    {
+        [UIImage requestSizeFor:[NSURL URLWithString:@"http://epguides.com/SwatKats/logo.jpg"] 
+                     completion:^(NSURL *imgURL, CGSize size) {
+                         NSLog(@"sizeof image = %f x %f", size.width, size.height);
+                     }];
+    }*/
+    
 }
 
 #pragma mark - QuiltViewControllerDataSource
