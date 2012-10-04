@@ -1,5 +1,6 @@
 #import "ConnectionManager.h"
 #import "ASIHTTPRequest.h"
+#import "EndPoints.h"
 
 @interface ConnectionManager()
 {
@@ -30,21 +31,49 @@
 	return self;
 }
 
-- (void)loginWithUsername:(NSString*)name withPassword:(NSString*)pass
+-(void)signinWithUsername:(NSString*)_username
+                 password:(NSString*)_password
+              accountType:(enum Account_Type)acc_type
+                firstname:(NSString*)firstName
+                 photoUrl:(NSString*)photoUrl
 {
     [self showHUDwithText:@"Signing in"];
     
     // Instantiate an HTTP request.
-    NSURL *url = [NSURL URLWithString:@"https://asms.cloudfoundry.com/login"];
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    request.delegate = self;
-    [request setAuthenticationScheme:(NSString *)kCFHTTPAuthenticationSchemeBasic];
-    // Set username and password.
-    request.username = name;
-    request.password = pass;
-    [request setRequestMethod:@"POST"];
-    [request setShouldPresentCredentialsBeforeChallenge:NO];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",UsersUrl]];
     
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    [request setRequestMethod:@"POST"];
+	[request addRequestHeader:@"Content-Type" value:@"application/json"];
+    [request addRequestHeader:@"X-foobar-username" value:_username];
+    [request addRequestHeader:@"X-foobar-access-token" value:_password];
+    
+    NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:
+                            (acc_type==FacebookAccount)?@"facebook":@"twitter", @"account_type",
+                            firstName, @"first_name",
+                            photoUrl, @"photo_url", nil];
+    [request appendPostData:[FooBarUtils jsonFromDictionary:params]];
+    [params release];
+    
+    request.delegate = self;
+    // Send the request.
+    [request startAsynchronous];
+}
+
+-(void)getFeedsAtPage:(NSUInteger)_pageNum count:(NSUInteger)_count
+{
+    [self showHUDwithText:@"Signing in"];
+    
+    // Instantiate an HTTP request.
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",UsersUrl]];
+    
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    [request setRequestMethod:@"POST"];
+	[request addRequestHeader:@"Content-Type" value:@"application/json"];
+    //[request addRequestHeader:@"X-foobar-username" value:_username];
+    //[request addRequestHeader:@"X-foobar-access-token" value:_password];
+    
+    request.delegate = self;
     // Send the request.
     [request startAsynchronous];
 }

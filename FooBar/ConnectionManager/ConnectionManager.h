@@ -3,6 +3,7 @@
 #import <MapKit/MapKit.h>
 #import <CoreData/CoreData.h>
 #import "SAProgressHUD.h"
+#import "FooBarUtils.h"
 
 @protocol ConnectionManagerDelegate;
 
@@ -15,8 +16,14 @@
 
 @property (nonatomic, assign) id<ConnectionManagerDelegate> delegate;
 
-- (void)loginWithUsername:(NSString*)name withPassword:(NSString*)pass;
+-(void)signinWithUsername:(NSString*)_username
+                 password:(NSString*)_password
+              accountType:(enum Account_Type)acc_type
+                firstname:(NSString*)firstName
+                 photoUrl:(NSString*)photoUrl;
 - (void)signOut;
+
+-(void)getFeedsAtPage:(NSUInteger)_pageNum count:(NSUInteger)_count;
 
 @end
 

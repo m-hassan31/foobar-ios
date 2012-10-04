@@ -2,6 +2,7 @@
 #import "StreamViewController.h"
 #import "AppDelegate.h"
 #import "FooBarUtils.h"
+#import "EndPoints.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SignInViewController()
@@ -105,7 +106,11 @@
 {    
     if(status==YES) 
     {   
-        [manager loginWithUsername:@"108306655859825" withPassword:facebookUtil.facebook.accessToken];
+        [manager signinWithUsername:@"108306655859825"
+                           password:facebookUtil.facebook.accessToken
+                        accountType:FacebookAccount
+                          firstname:@"Manigandan"
+                           photoUrl:@"http://topnews.in/sports/files/wayne-rooney_10.jpg"];
     }
     else
     {
@@ -145,7 +150,6 @@
      NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
      [twitterUtil getTwitterInfo:[defaults objectForKey:kTwitterUsername]];
      }*/
-    [manager loginWithUsername:@"108306655859825" withPassword:facebookUtil.facebook.accessToken];    
 }
 
 -(IBAction)signInButtonPressed:(id)sender

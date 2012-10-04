@@ -1,6 +1,7 @@
 #import "FooBarUtils.h"
 #import "FooBarConstants.h"
 #import "Reachability.h"
+#import "SBJsonWriter.h"
 
 @implementation FooBarUtils
 
@@ -65,6 +66,15 @@
 	}
 	
 	return YES;
+}
+
++(NSData*)jsonFromDictionary:(NSDictionary*)dict
+{
+    SBJsonWriter *jsonWriter = [[SBJsonWriter alloc] init];
+    NSString *postString = [jsonWriter stringWithObject:dict];
+    NSData *body = [postString dataUsingEncoding:NSUTF8StringEncoding];
+    [jsonWriter release];
+    return body;
 }
 
 @end

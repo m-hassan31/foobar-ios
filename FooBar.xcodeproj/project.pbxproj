@@ -338,6 +338,7 @@
 		84EA282615F5C8FD009A107E /* TwitterAccountPickerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwitterAccountPickerController.xib; sourceTree = "<group>"; };
 		84EA282715F5C8FD009A107E /* TwitterAccountPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAccountPickerController.m; sourceTree = "<group>"; };
 		84EA282A15F5CB6A009A107E /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		8C3A5277161E038A000F45EA /* EndPoints.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EndPoints.h; sourceTree = "<group>"; };
 		8C40056016039E2800F11091 /* FooBarBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooBarBackground.h; sourceTree = "<group>"; };
 		8C40056116039E2800F11091 /* FooBarBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooBarBackground.m; sourceTree = "<group>"; };
 		8C4005631603A3AC00F11091 /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background.png; sourceTree = "<group>"; };
@@ -733,6 +734,7 @@
 			isa = PBXGroup;
 			children = (
 				84A36BF415F510B80040A9EE /* ImageUtils */,
+				8C3A5277161E038A000F45EA /* EndPoints.h */,
 				84D613C615EFDD42000B0CE5 /* FooBarConstants.h */,
 				84D613B415EFDB57000B0CE5 /* FooBarUtils.h */,
 				84D613B515EFDB57000B0CE5 /* FooBarUtils.m */,
