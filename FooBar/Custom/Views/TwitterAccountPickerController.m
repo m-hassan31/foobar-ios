@@ -1,4 +1,5 @@
 #import "TwitterAccountPickerController.h"
+#import "TwitterUtil.h"
 #import "FooBarUtils.h"
 
 @implementation TwitterAccountPickerController
@@ -129,12 +130,10 @@
 	{
 		if ([delegate respondsToSelector:@selector(twitterAccountSelected)]) 
         {
-			/*NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-			[defaults setBool:YES forKey:kIsTwitterConfigured];   
 			TwitterUtil* twUtil = (TwitterUtil*)[[TwitterUtil alloc] initWithDelegate:nil];
 			[twUtil setTwitterEnabled:YES];
             [twUtil setTwitterUsername:pickedAccount.username];
-			[twUtil release];*/
+			[twUtil release];
 			[delegate twitterAccountSelected];
 		}
 	}
@@ -200,12 +199,10 @@
         {
             if([delegate respondsToSelector:@selector(twitterAccountSelected)])
             {
-                /*NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                [defaults setBool:YES forKey:kIsTwitterConfigured];   
                 TwitterUtil* twUtil = (TwitterUtil*)[[TwitterUtil alloc] initWithDelegate:nil];
                 [twUtil setTwitterEnabled:YES];
                 [twUtil setTwitterUsername:phoneTwitterAccount.username];
-                [twUtil release];*/
+                [twUtil release];
                 [delegate twitterAccountSelected];
             }
         }

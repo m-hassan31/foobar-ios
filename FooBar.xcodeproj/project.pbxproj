@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8401DA4915F0C76900659482 /* SAProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 8401DA4815F0C76900659482 /* SAProgressHUD.m */; };
-		8401DA6715F0C77300659482 /* FacebookUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 8401DA4D15F0C77300659482 /* FacebookUtil.m */; };
 		8401DA6815F0C77300659482 /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8401DA5015F0C77300659482 /* Facebook.m */; };
 		8401DA6915F0C77300659482 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8401DA5215F0C77300659482 /* FBDialog.bundle */; };
 		8401DA6A15F0C77300659482 /* FBDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8401DA5415F0C77300659482 /* FBDialog.m */; };
@@ -133,6 +132,10 @@
 		84EA282815F5C8FD009A107E /* TwitterAccountPickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84EA282615F5C8FD009A107E /* TwitterAccountPickerController.xib */; };
 		84EA282915F5C8FD009A107E /* TwitterAccountPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EA282715F5C8FD009A107E /* TwitterAccountPickerController.m */; };
 		84EA282B15F5CB6A009A107E /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84EA282A15F5CB6A009A107E /* Accounts.framework */; };
+		8C1EC634161F3E2500D145BA /* SocialUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1EC633161F3E2500D145BA /* SocialUser.m */; };
+		8C1EC638161F3E3300D145BA /* NSMutableData-AES.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1EC637161F3E3300D145BA /* NSMutableData-AES.m */; };
+		8C1EC63F161F58ED00D145BA /* TwitterUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1EC63E161F58ED00D145BA /* TwitterUtil.m */; };
+		8C1EC642161F591B00D145BA /* FacebookUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1EC641161F591B00D145BA /* FacebookUtil.m */; };
 		8C40056216039E2800F11091 /* FooBarBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C40056116039E2800F11091 /* FooBarBackground.m */; };
 		8C40056D1603A3AC00F11091 /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C4005631603A3AC00F11091 /* Background.png */; };
 		8C40056E1603A3AC00F11091 /* Background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C4005641603A3AC00F11091 /* Background@2x.png */; };
@@ -157,8 +160,6 @@
 /* Begin PBXFileReference section */
 		8401DA4715F0C76900659482 /* SAProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAProgressHUD.h; sourceTree = "<group>"; };
 		8401DA4815F0C76900659482 /* SAProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAProgressHUD.m; sourceTree = "<group>"; };
-		8401DA4C15F0C77300659482 /* FacebookUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookUtil.h; sourceTree = "<group>"; };
-		8401DA4D15F0C77300659482 /* FacebookUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookUtil.m; sourceTree = "<group>"; };
 		8401DA4F15F0C77300659482 /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facebook.h; sourceTree = "<group>"; };
 		8401DA5015F0C77300659482 /* Facebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Facebook.m; sourceTree = "<group>"; };
 		8401DA5115F0C77300659482 /* FBConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBConnect.h; sourceTree = "<group>"; };
@@ -338,6 +339,14 @@
 		84EA282615F5C8FD009A107E /* TwitterAccountPickerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwitterAccountPickerController.xib; sourceTree = "<group>"; };
 		84EA282715F5C8FD009A107E /* TwitterAccountPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterAccountPickerController.m; sourceTree = "<group>"; };
 		84EA282A15F5CB6A009A107E /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		8C1EC632161F3E2500D145BA /* SocialUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialUser.h; sourceTree = "<group>"; };
+		8C1EC633161F3E2500D145BA /* SocialUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialUser.m; sourceTree = "<group>"; };
+		8C1EC636161F3E3300D145BA /* NSMutableData-AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableData-AES.h"; sourceTree = "<group>"; };
+		8C1EC637161F3E3300D145BA /* NSMutableData-AES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableData-AES.m"; sourceTree = "<group>"; };
+		8C1EC63D161F58ED00D145BA /* TwitterUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterUtil.h; sourceTree = "<group>"; };
+		8C1EC63E161F58ED00D145BA /* TwitterUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterUtil.m; sourceTree = "<group>"; };
+		8C1EC640161F591B00D145BA /* FacebookUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookUtil.h; sourceTree = "<group>"; };
+		8C1EC641161F591B00D145BA /* FacebookUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookUtil.m; sourceTree = "<group>"; };
 		8C3A5277161E038A000F45EA /* EndPoints.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EndPoints.h; sourceTree = "<group>"; };
 		8C40056016039E2800F11091 /* FooBarBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooBarBackground.h; sourceTree = "<group>"; };
 		8C40056116039E2800F11091 /* FooBarBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooBarBackground.m; sourceTree = "<group>"; };
@@ -399,8 +408,6 @@
 		8401DA4B15F0C77300659482 /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
-				8401DA4C15F0C77300659482 /* FacebookUtil.h */,
-				8401DA4D15F0C77300659482 /* FacebookUtil.m */,
 				8401DA4E15F0C77300659482 /* FBConnect */,
 			);
 			path = Facebook;
@@ -541,6 +548,8 @@
 		84A36BED15F510270040A9EE /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8C1EC632161F3E2500D145BA /* SocialUser.h */,
+				8C1EC633161F3E2500D145BA /* SocialUser.m */,
 				84A36BEE15F510270040A9EE /* CommentObject.h */,
 				84A36BEF15F510270040A9EE /* CommentObject.m */,
 			);
@@ -733,11 +742,17 @@
 		84D613B215EFDB57000B0CE5 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				8C1EC640161F591B00D145BA /* FacebookUtil.h */,
+				8C1EC641161F591B00D145BA /* FacebookUtil.m */,
+				8C1EC63D161F58ED00D145BA /* TwitterUtil.h */,
+				8C1EC63E161F58ED00D145BA /* TwitterUtil.m */,
 				84A36BF415F510B80040A9EE /* ImageUtils */,
 				8C3A5277161E038A000F45EA /* EndPoints.h */,
 				84D613C615EFDD42000B0CE5 /* FooBarConstants.h */,
 				84D613B415EFDB57000B0CE5 /* FooBarUtils.h */,
 				84D613B515EFDB57000B0CE5 /* FooBarUtils.m */,
+				8C1EC636161F3E3300D145BA /* NSMutableData-AES.h */,
+				8C1EC637161F3E3300D145BA /* NSMutableData-AES.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -987,7 +1002,6 @@
 				84D6140515EFF84B000B0CE5 /* TMQuiltView.m in Sources */,
 				84D6140615EFF84B000B0CE5 /* TMQuiltViewCell.m in Sources */,
 				8401DA4915F0C76900659482 /* SAProgressHUD.m in Sources */,
-				8401DA6715F0C77300659482 /* FacebookUtil.m in Sources */,
 				8401DA6815F0C77300659482 /* Facebook.m in Sources */,
 				8401DA6A15F0C77300659482 /* FBDialog.m in Sources */,
 				8401DA6B15F0C77300659482 /* FBLoginDialog.m in Sources */,
@@ -1027,6 +1041,10 @@
 				846B5910160AF82B00AB3721 /* UIImage+RemoteSize.m in Sources */,
 				846B591B160B244F00AB3721 /* CustomCellBGView.m in Sources */,
 				846B591C160B244F00AB3721 /* RoundRect.m in Sources */,
+				8C1EC634161F3E2500D145BA /* SocialUser.m in Sources */,
+				8C1EC638161F3E3300D145BA /* NSMutableData-AES.m in Sources */,
+				8C1EC63F161F58ED00D145BA /* TwitterUtil.m in Sources */,
+				8C1EC642161F591B00D145BA /* FacebookUtil.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -2,6 +2,8 @@
 #import "FooBarConstants.h"
 #import "Reachability.h"
 #import "SBJsonWriter.h"
+#import "FooBarConstants.h"
+#import "NSMutableData-AES.h"
 
 @implementation FooBarUtils
 
@@ -75,6 +77,26 @@
     NSData *body = [postString dataUsingEncoding:NSUTF8StringEncoding];
     [jsonWriter release];
     return body;
+}
+
++(NSData*)encryptVal:(NSString*)val
+{    
+    NSMutableData *valData = [[val dataUsingEncoding:NSUTF8StringEncoding] mutableCopy];
+    NSData *encryptedValData = [valData EncryptAES:kEncryptionKey];
+    [valData release];
+    return encryptedValData;
+}
+
++(NSString*)decryptValForKey:(NSString*)key
+{    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSData *decryptData = [userDefaults objectForKey:key];
+    NSMutableData *retVal = [decryptData mutableCopy];
+    NSData *decrypted = [retVal DecryptAES:kEncryptionKey];
+    NSString *retValString = [[[NSString alloc] initWithData:decrypted
+                                                    encoding:NSUTF8StringEncoding] autorelease];
+    [retVal release];
+    return retValString;
 }
 
 @end

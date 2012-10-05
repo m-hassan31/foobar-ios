@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "SocialUser.h"
 
 enum Account_Type
 {
@@ -15,7 +16,8 @@ enum Account_Type
 +(UIImage*)scaleImage:(UIImage*)image ToSize: (CGSize)size;
 +(BOOL)isEmailFormatValid:(NSString *)email;
 
-
 +(NSData*)jsonFromDictionary:(NSDictionary*)dict;
++(NSData*)encryptVal:(NSString*)val;
++(NSString*)decryptValForKey:(NSString*)key;
 
 @end

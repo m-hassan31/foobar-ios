@@ -2,18 +2,15 @@
 #import "StreamViewController.h"
 #import "AppDelegate.h"
 #import "FooBarUtils.h"
+#import "FooBarConstants.h"
 #import "EndPoints.h"
+#import "SAProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SignInViewController()
 
--(IBAction)facebookButtonPressed:(id)sender;
--(IBAction)twitterButtonPressed:(id)sender;
--(IBAction)signInButtonPressed:(id)sender;
--(IBAction)forgotPasswordButtonPressed:(id)sender;
-
--(void)moveControlsUp;
--(void)moveControlsDown;
+-(void)showHUDwithText:(NSString*)text;
+-(void)hideHud;
 
 @end
 
@@ -21,11 +18,6 @@
 
 @synthesize facebookButton;
 @synthesize twitterButton;
-@synthesize orImage;
-@synthesize emailTextField;
-@synthesize passwordTextField;
-@synthesize signInButton;
-@synthesize forgotPasswordButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -55,44 +47,13 @@
     manager.delegate = self;
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-}
-
--(void)keyboardWillShow
-{
-    [self moveControlsUp];
-}
-
--(void)keyboardWillHide
-{
-    [self moveControlsDown];
-}
-
--(void) viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#pragma mark - Button Actions
+#pragma mark - Facebook Actions
 
 -(IBAction)facebookButtonPressed:(id)sende
 {
@@ -103,27 +64,44 @@
 #pragma mark FacebookUtil delegate functions
 
 - (void)onFacebookAuthorized:(BOOL)status
-{    
-    if(status==YES) 
-    {   
-        [manager signinWithUsername:@"108306655859825"
-                           password:facebookUtil.facebook.accessToken
-                        accountType:FacebookAccount
-                          firstname:@"Manigandan"
-                           photoUrl:@"http://topnews.in/sports/files/wayne-rooney_10.jpg"];
+{
+    if(status==YES)
+    {
+        [self showHUDwithText:@"Getting Facebook Info"];
+		[facebookUtil getMyFacebookProfile:self];
     }
     else
-    {
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Facebook"
-                              message: @"Sorry Login failed. Please retry."
-                              delegate: nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
-        [alert release];
-    }
+        [FooBarUtils showAlertMessage:@"Could not connect to Facebook. Try again."];
 }
+
+- (void)onFacebookProfileRecieved:(NSDictionary *)userInfo
+{
+    if(!userInfo)
+    {
+        [self hideHud];
+        [FooBarUtils showAlertMessage:@"Could not connect to Facebook. Try again."];
+    }
+    
+    if(!currentLoggedinUser)
+        currentLoggedinUser = [[SocialUser alloc] init];
+    
+    currentLoggedinUser.accessToken = facebookUtil.facebook.accessToken;
+    currentLoggedinUser.socialAccountType = FacebookAccount;
+    currentLoggedinUser.socialId = (NSString*)[userInfo objectForKey:kFBUserIdField];
+	currentLoggedinUser.username = (NSString*)[userInfo objectForKey:kFBUsernameField];
+	currentLoggedinUser.firstname = (NSString*)[userInfo objectForKey:kFBFirstNameField];
+    
+    currentLoggedinUser.photoUrl = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", currentLoggedinUser.socialId];
+    
+    if(currentLoggedinUser.username == nil)
+        currentLoggedinUser.username = currentLoggedinUser.firstname;
+    
+    [SocialUser saveCurrentUser:currentLoggedinUser];
+    [self hideHud];
+    [manager signin];
+}
+
+#pragma mark - Twitter Actions
 
 -(IBAction)twitterButtonPressed:(id)sender
 {
@@ -141,223 +119,111 @@
 #pragma mark - TwitterAccountPickerDelegate delegate functions
 
 - (void)twitterAccountSelected
-{	
+{
     NSLog(@"SignupViewController: twitterAccountSelected");
     
-    /*if(twitterUtil) 
-     {
-     [self showHUDwithText:@""];
-     NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
-     [twitterUtil getTwitterInfo:[defaults objectForKey:kTwitterUsername]];
-     }*/
+    if(!twitterUtil)
+        twitterUtil= (TwitterUtil*)[[TwitterUtil alloc] initWithDelegate:self];
+    
+    if(twitterUtil)
+    {
+        [self showHUDwithText:@"Getting Twitter Info"];
+        NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
+        [twitterUtil getTwitterInfo:[defaults objectForKey:kTwitterUsername]];
+    }
 }
 
--(IBAction)signInButtonPressed:(id)sender
+#pragma mark -
+#pragma mark TwitterUtil Delegates
+
+- (void)twitterProfileInfo:(NSDictionary *)userInfo status:(BOOL)status
 {
-    if(emailTextField.text.length == 0)
+    [userInfo retain];
+    if(!status)
     {
-        [FooBarUtils showAlertMessage:@"Check you Email!"];
-        return;
-    }
-    else if(![FooBarUtils isEmailFormatValid:emailTextField.text])
-    {
-        [FooBarUtils showAlertMessage:@"Email not valid!"];
-        return;
-    }
-    else if(passwordTextField.text.length == 0)
-    {
-        [FooBarUtils showAlertMessage:@"Check you Password!"];
-        return;
-    }
-    else
-    {
-        // continue with login
+        [self hideHud];
+        [FooBarUtils showAlertMessage:@"Could not connect to Twitter. Try again."];
     }
     
-    [self.view endEditing:YES];
-    [manager loginWithUsername:emailTextField.text withPassword:passwordTextField.text];
-    [emailTextField setText:@""];
-    [passwordTextField setText:@""];
+    if(!currentLoggedinUser)
+        currentLoggedinUser = [[SocialUser alloc] init];
+    
+    currentLoggedinUser.accessToken = facebookUtil.facebook.accessToken;
+    currentLoggedinUser.socialAccountType = TwitterAccount;
+    
+    id _socialId = [userInfo objectForKey:kNSignupSocialIdGETValue];
+    if(![_socialId isKindOfClass:[NSNull class]])
+        currentLoggedinUser.socialId = [userInfo objectForKey:kNSignupSocialIdGETValue];
+    
+    NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
+    currentLoggedinUser.username = [defaults objectForKey:kTwitterUsername];
+    
+    id _firstname = [userInfo objectForKey:kNSignupUserNameGETValue];
+    if(![_firstname isKindOfClass:[NSNull class]])
+        currentLoggedinUser.firstname = [userInfo objectForKey:kNSignupUserNameGETValue];
+    
+    id _photoUrl = [userInfo objectForKey:kNSignupProfilePicGETValue];
+    if(![_photoUrl isKindOfClass:[NSNull class]])
+    {
+        NSString *profilePicUrl = [userInfo objectForKey:kNSignupProfilePicGETValue];
+        currentLoggedinUser.photoUrl = [profilePicUrl stringByReplacingOccurrencesOfString:@"_normal." withString:@"_bigger."];;
+    }
+    
+    if(currentLoggedinUser.username == nil)
+        currentLoggedinUser.username = currentLoggedinUser.firstname;
+    
+    [SocialUser saveCurrentUser:currentLoggedinUser];
+    [userInfo release];
+    [self hideHud];
+    [manager signin];
 }
 
--(IBAction)forgotPasswordButtonPressed:(id)sender
+
+#pragma mark -
+#pragma mark SAProgressHUD functions
+
+- (void)hideHud
 {
-    
-}
-
--(void)moveControlsUp
-{
-    [UIView animateWithDuration:0.25 
-                     animations:^{
-                         facebookButton.alpha = 0;
-                         twitterButton.alpha = 0;
-                         orImage.alpha = 0;
-                         
-                         facebookButton.transform = CGAffineTransformMakeScale(0.8, 0.8);
-                         twitterButton.transform = CGAffineTransformMakeScale(0.8, 0.8);
-                         orImage.transform = CGAffineTransformMakeScale(0.8, 0.8);                   
-                     }];
-    
-    
-    [UIView animateWithDuration:0.25
-                          delay:0.06
-                        options:UIViewAnimationOptionAllowAnimatedContent
-                     animations:^{
-                         emailTextField.frame = CGRectOffset(emailTextField.frame, 0, -155);
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.15 
-                                          animations:^{
-                                              emailTextField.frame = CGRectOffset(emailTextField.frame, 0, 5);
-                                          }];
-                     }];
-    
-    [UIView animateWithDuration:0.25
-                          delay:0.12
-                        options:UIViewAnimationOptionAllowAnimatedContent
-                     animations:^{
-                         passwordTextField.frame = CGRectOffset(passwordTextField.frame, 0, -155);
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.15 
-                                          animations:^{
-                                              passwordTextField.frame = CGRectOffset(passwordTextField.frame, 0, 5);
-                                          }];
-                     }];
-    
-    [UIView animateWithDuration:0.25
-                          delay:0.18
-                        options:UIViewAnimationOptionAllowAnimatedContent
-                     animations:^{
-                         signInButton.frame = CGRectOffset(signInButton.frame, 0, -155);
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.15 
-                                          animations:^{
-                                              signInButton.frame = CGRectOffset(signInButton.frame, 0, 5);
-                                          }];
-                     }];
-    
-    [UIView animateWithDuration:0.25
-                          delay:0.24
-                        options:UIViewAnimationOptionAllowAnimatedContent
-                     animations:^{
-                         forgotPasswordButton.frame = CGRectOffset(forgotPasswordButton.frame, 0, -155);
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.15 
-                                          animations:^{
-                                              forgotPasswordButton.frame = CGRectOffset(forgotPasswordButton.frame, 0, 5);
-                                          }];
-                     }];
-}
-
--(void)moveControlsDown
-{
-    [UIView animateWithDuration:0.25
-                     animations:^{
-                         forgotPasswordButton.frame = CGRectOffset(forgotPasswordButton.frame, 0, 155);
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.15 
-                                          animations:^{
-                                              forgotPasswordButton.frame = CGRectOffset(forgotPasswordButton.frame, 0, -5);
-                                          }];
-                     }];
-    
-    [UIView animateWithDuration:0.25
-                          delay:0.06
-                        options:UIViewAnimationOptionAllowAnimatedContent
-                     animations:^{
-                         signInButton.frame = CGRectOffset(signInButton.frame, 0, 155);
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.15 
-                                          animations:^{
-                                              signInButton.frame = CGRectOffset(signInButton.frame, 0, -5);
-                                          }];
-                     }];
-    
-    [UIView animateWithDuration:0.25
-                          delay:0.12
-                        options:UIViewAnimationOptionAllowAnimatedContent
-                     animations:^{
-                         passwordTextField.frame = CGRectOffset(passwordTextField.frame, 0, 155);
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.15 
-                                          animations:^{
-                                              passwordTextField.frame = CGRectOffset(passwordTextField.frame, 0, -5);
-                                          }];
-                     }];
-    
-    [UIView animateWithDuration:0.25
-                          delay:0.18
-                        options:UIViewAnimationOptionAllowAnimatedContent
-                     animations:^{
-                         emailTextField.frame = CGRectOffset(emailTextField.frame, 0, 155);
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.15 
-                                          animations:^{
-                                              emailTextField.frame = CGRectOffset(emailTextField.frame, 0, -5);
-                                          }];
-                     }];
-    
-    [UIView animateWithDuration:0.25
-                          delay:0.18
-                        options:UIViewAnimationOptionAllowAnimatedContent
-                     animations:^{
-                         facebookButton.alpha = 1.0f;
-                         twitterButton.alpha = 1.0f;
-                         orImage.alpha = 1.0f;
-                         
-                         facebookButton.transform = CGAffineTransformMakeScale(1.0, 1.0);
-                         twitterButton.transform = CGAffineTransformMakeScale(1.0, 1.0);
-                         orImage.transform = CGAffineTransformMakeScale(1.0, 1.0);                   
-                     } completion:^(BOOL finished) {
-                     }];
-}
-
-#pragma mark - TextField delegates
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{	
-    [textField resignFirstResponder];
-	return YES;
-}
-
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    if(textField.text.length > 0)
+	// Remove HUD from screen when the HUD was hidded
+    if(hud)
     {
-        textField.font = [UIFont systemFontOfSize:14.0f];
+        hud.delegate = nil;
+		[hud removeFromSuperview];
+		[hud release];
+		hud = nil;
     }
-    else
-    {
-        textField.font = [UIFont italicSystemFontOfSize:14.0f];
-    }
-    return YES;
 }
 
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+-(void)showHUDwithText:(NSString *)text
 {
-    if(textField.text.length > 0)
+	if(!hud)
     {
-        textField.font = [UIFont systemFontOfSize:14.0f];
+		UIWindow *window = [UIApplication sharedApplication].keyWindow;
+		hud = [[SAProgressHUD alloc] initWithWindow:window];
+		// Add HUD to screen
+		[window addSubview:hud];
+		
+		// Regisete for HUD callbacks so we can remove it from the window at the right time
+        hud.delegate = nil; /* Setting hud delegate to nil to handle this manually*/
+		
+		// Show the HUD while the provided method executes in a new thread
+		[hud show:YES];
+		hud.labelText = text;
     }
-    else
-    {
-        textField.font = [UIFont italicSystemFontOfSize:14.0f];
-    }
-    
-    return YES;
 }
 
 #pragma mark - ConnectionManager delegate functions
 
 -(void)httpRequestFailed:(ASIHTTPRequest *)request
-{        
+{
 	NSError *error= [request error];
 	NSLog(@"%@",[error localizedDescription]);
 }
 
 -(void)httpRequestFinished:(ASIHTTPRequest *)request
-{    
+{
 	NSString *responseJSON = [[request responseString] retain];
-	//NSString *urlString= [[request url] absoluteString];
+	NSString *urlString= [[request url] absoluteString];
     int statusCode = [request responseStatusCode];
     NSString *statusMessage = [request responseStatusMessage];
     
@@ -365,11 +231,21 @@
     
     [responseJSON release];
     
-    if(statusCode == 200)
+    if([urlString hasPrefix:UsersUrl])
     {
-        [self.view endEditing:YES];        
-        AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-        [appDelegate addTabBarController];
+        if(statusCode == 200)
+        {
+            // user created
+            AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+            [appDelegate addTabBarController];
+        }
+        else if(statusCode == 403)
+        {
+            // user already existing
+            AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+            [appDelegate addTabBarController];
+            
+        }
     }
 }
 
@@ -390,15 +266,12 @@
     
     [self setFacebookButton:nil];
     [self setTwitterButton:nil];
-    [self setOrImage:nil];
-    [self setEmailTextField:nil];
-    [self setPasswordTextField:nil];
-    [self setSignInButton:nil];
-    [self setForgotPasswordButton:nil];
 }
 
-- (void)dealloc 
+- (void)dealloc
 {
+    [currentLoggedinUser release];
+    
     if(twitterAccountPicker)
     {
         [twitterAccountPicker release];
@@ -409,11 +282,6 @@
     [manager release];
     [facebookButton release];
     [twitterButton release];
-    [orImage release];
-    [emailTextField release];
-    [passwordTextField release];
-    [signInButton release];
-    [forgotPasswordButton release];
     
     [super dealloc];
 }

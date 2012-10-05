@@ -1,6 +1,7 @@
 #import "ConnectionManager.h"
 #import "ASIHTTPRequest.h"
 #import "EndPoints.h"
+#import "SocialUser.h"
 
 @interface ConnectionManager()
 {
@@ -31,13 +32,11 @@
 	return self;
 }
 
--(void)signinWithUsername:(NSString*)_username
-                 password:(NSString*)_password
-              accountType:(enum Account_Type)acc_type
-                firstname:(NSString*)firstName
-                 photoUrl:(NSString*)photoUrl
+- (void)signin
 {
     [self showHUDwithText:@"Signing in"];
+    
+    SocialUser *socialUser = [SocialUser currentUser];
     
     // Instantiate an HTTP request.
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",UsersUrl]];
@@ -45,13 +44,13 @@
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     [request setRequestMethod:@"POST"];
 	[request addRequestHeader:@"Content-Type" value:@"application/json"];
-    [request addRequestHeader:@"X-foobar-username" value:_username];
-    [request addRequestHeader:@"X-foobar-access-token" value:_password];
+    [request addRequestHeader:@"X-foobar-username" value:socialUser.socialId];
+    [request addRequestHeader:@"X-foobar-access-token" value:socialUser.accessToken];
     
     NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:
-                            (acc_type==FacebookAccount)?@"facebook":@"twitter", @"account_type",
-                            firstName, @"first_name",
-                            photoUrl, @"photo_url", nil];
+                            (socialUser.socialAccountType==FacebookAccount)?@"facebook":@"twitter", @"account_type",
+                            socialUser.firstname, @"first_name",
+                            socialUser.photoUrl, @"photo_url", nil];
     [request appendPostData:[FooBarUtils jsonFromDictionary:params]];
     [params release];
     
