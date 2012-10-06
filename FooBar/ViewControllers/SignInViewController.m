@@ -120,10 +120,9 @@
 
 - (void)twitterAccountSelected
 {
-    NSLog(@"SignupViewController: twitterAccountSelected");
     
     if(!twitterUtil)
-        twitterUtil= (TwitterUtil*)[[TwitterUtil alloc] initWithDelegate:self];
+        twitterUtil= [[TwitterUtil alloc] initWithDelegate:self];
     
     if(twitterUtil)
     {
@@ -175,7 +174,9 @@
     [SocialUser saveCurrentUser:currentLoggedinUser];
     [userInfo release];
     [self hideHud];
-    [manager signin];
+    
+    [twitterUtil getAccessToken];
+//    [manager signin];
 }
 
 

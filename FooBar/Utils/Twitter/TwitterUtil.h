@@ -39,6 +39,9 @@ typedef enum TWITTER_REQUEST_TYPE
 -(BOOL) isTwitterEnabled;
 -(void) setTwitterUsername:(NSString*)username;
 -(NSString*) getTwitterUsername;
+
+-(void) getAccessToken;
+
 -(void) sendDirectMessage:(NSString*)message to:(NSString*)userId;
 -(void) sendUpdate:(NSString*)status;
 -(UIViewController*)getTwitterViewController;

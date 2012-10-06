@@ -273,7 +273,7 @@ const static NSString* kFacebookAppId = @"157363651053951";
 - (NSDictionary *)parseFacebookProfile:(FBRequest *) request result:(id)result
 {
 	NSString *jsonStringParams = (NSString *)[request.params JSONRepresentation];
-	NSDictionary *userDict = (NSDictionary *)[jsonStringParams JSONValue];
+	//NSDictionary *userDict = (NSDictionary *)[jsonStringParams JSONValue];
 	//NSString *accessToken = ((NSString*)[userDict objectForKey:kFBAccessTokenField]);
 	NSDictionary *userInfo=result;
 	NSMutableDictionary *facebookProfileDict=[[[NSMutableDictionary alloc] init] autorelease];

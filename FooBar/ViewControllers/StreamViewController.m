@@ -5,6 +5,7 @@
 #import "PhotoDetailsViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIImage+RemoteSize.h"
+#import "EndPoints.h"
 
 const NSInteger kNumberOfCells = 30;
 
@@ -62,6 +63,9 @@ const NSInteger kNumberOfCells = 30;
                      }];
     }*/
     
+    manager = [[ConnectionManager alloc] init];
+    manager.delegate = self;
+    [manager getFeedsAtPage:1 count:10];
 }
 
 #pragma mark - QuiltViewControllerDataSource
@@ -144,10 +148,42 @@ const NSInteger kNumberOfCells = 30;
     return height+40.0f; // include height of user name bar
 }
 
+#pragma mark - ConnectionManager delegate functions
+
+-(void)httpRequestFailed:(ASIHTTPRequest *)request
+{
+	NSError *error= [request error];
+	NSLog(@"%@",[error localizedDescription]);
+}
+
+-(void)httpRequestFinished:(ASIHTTPRequest *)request
+{
+	NSString *responseJSON = [[request responseString] retain];
+	NSString *urlString= [[request url] absoluteString];
+    int statusCode = [request responseStatusCode];
+    NSString *statusMessage = [request responseStatusMessage];
+    
+    NSLog(@"Status Code - %d\nStatus Message - %@\nResponse:\n%@", statusCode, statusMessage, responseJSON);
+    
+    [responseJSON release];
+    
+    if([urlString hasPrefix:FeedsUrl])
+    {
+        if(statusCode == 200)
+        {
+        }
+        else if(statusCode == 403)
+        {   
+        }
+    }
+}
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
+
+    manager.delegate = nil;
+    [manager release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -158,6 +194,8 @@ const NSInteger kNumberOfCells = 30;
 
 - (void)dealloc 
 {
+    manager.delegate = nil;
+    [manager release];
     [_images release], _images = nil;
     [super dealloc];
 }

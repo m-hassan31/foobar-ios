@@ -3,6 +3,8 @@
 #import "FooBarConstants.h"
 #import "FooBarUtils.h"
 #import "EndPoints.h"
+#import "TWAPIManager.h"
+#import "TWSignedRequest.h"
 
 @implementation TwitterUtil
 @synthesize _delegate;
@@ -177,7 +179,83 @@
     return parsedData;
 }
 
-- (void)getTwitterInfo:(NSString *)userId
+-(void) getAccessToken
+{
+    /*TWAPIManager *apiManager = [[TWAPIManager alloc] init];
+
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *previousUserName = [defaults objectForKey:kTwitterUsername];
+    
+    if([TWTweetComposeViewController canSendTweet])
+    {
+        ACAccountStore *store = [[ACAccountStore alloc] init];
+        ACAccountType *twitterType = [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+        
+        [store requestAccessToAccountsWithType:twitterType withCompletionHandler:^(BOOL granted, NSError *error){
+            if(granted)
+            {
+                NSArray *arrayOfAccounts =  [store accountsWithAccountType:twitterType];
+                ACAccount *account = nil;
+                if (arrayOfAccounts != nil && [arrayOfAccounts count]>0) {
+                    if (previousUserName) {
+                        for(ACAccount *anAccount in arrayOfAccounts)
+                        {
+                            if ([anAccount.username isEqualToString:previousUserName] ) {
+                                account = anAccount;
+                                break;
+                            }
+                        }
+                    }
+                    //previous account was deleted if a userName match was not found
+                    //show the picker or just pick the first account.
+                    //TODO: provide a picker from here as well.
+                    
+                    if (account == nil) {
+                        account = [arrayOfAccounts objectAtIndex:0];
+                    }
+                    
+                    //save the account info in defaults
+                    [self setTwitterUsername:account.username];
+                    //now that account has been created, call the request
+                    
+                    
+                    [apiManager
+                     performReverseAuthForAccount:account
+                     withHandler:^(NSData *responseData, NSError *error) {
+                         if (responseData) {
+                             NSString *responseStr = [[NSString alloc]
+                                                      initWithData:responseData
+                                                      encoding:NSUTF8StringEncoding];
+                             
+                             NSArray *parts = [responseStr
+                                               componentsSeparatedByString:@"&"];
+                             
+                             NSString *lined = [parts componentsJoinedByString:@"\n"];
+                             
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                                 UIAlertView *alert = [[UIAlertView alloc]
+                                                       initWithTitle:@"Success!"
+                                                       message:lined
+                                                       delegate:nil
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:nil];
+                                 [alert show];
+                             });
+                         }
+                         else 
+                         {
+                             NSLog(@"Error!\n%@", [error localizedDescription]);
+                         }
+                     }];
+
+                }
+            }
+        }];
+    }*/
+}
+
+- (void)getTwitteInfo:(NSString *)userId
 {
 	requestType=TW_PROFILE_INFO;
     

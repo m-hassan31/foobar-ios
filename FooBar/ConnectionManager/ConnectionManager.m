@@ -61,16 +61,17 @@
 
 -(void)getFeedsAtPage:(NSUInteger)_pageNum count:(NSUInteger)_count
 {
-    [self showHUDwithText:@"Signing in"];
+    [self showHUDwithText:@"Getting Feeds"];
+    
+    SocialUser *socialUser = [SocialUser currentUser];
     
     // Instantiate an HTTP request.
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",UsersUrl]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?pageNumber=%d&numberOfItems=%d",FeedsUrl, _pageNum, _count]];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    [request setRequestMethod:@"POST"];
-	[request addRequestHeader:@"Content-Type" value:@"application/json"];
-    //[request addRequestHeader:@"X-foobar-username" value:_username];
-    //[request addRequestHeader:@"X-foobar-access-token" value:_password];
+    [request setRequestMethod:@"GET"];
+    [request addRequestHeader:@"X-foobar-username" value:socialUser.socialId];
+    [request addRequestHeader:@"X-foobar-access-token" value:socialUser.accessToken];
     
     request.delegate = self;
     // Send the request.
