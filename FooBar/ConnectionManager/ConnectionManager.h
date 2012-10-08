@@ -16,10 +16,12 @@
 
 @property (nonatomic, assign) id<ConnectionManagerDelegate> delegate;
 
-- (void)signin;
-- (void)signOut;
+-(ASIHTTPRequest*)getRequestWithAuthHeader:(NSURL*)url;
 
+- (void)signin;
 -(void)getFeedsAtPage:(NSUInteger)_pageNum count:(NSUInteger)_count;
+-(void)getFooBarProducts;
+-(void)uploadPhoto:(UIImage*)image withProductId:(NSString*)productId;
 
 @end
 

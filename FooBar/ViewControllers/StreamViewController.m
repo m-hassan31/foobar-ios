@@ -6,15 +6,14 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIImage+RemoteSize.h"
 #import "EndPoints.h"
-
-const NSInteger kNumberOfCells = 30;
+#import "Parser.h"
+#import "FeedObject.h"
 
 @interface StreamViewController ()
-@property (nonatomic, retain) NSArray *images;
 @end
 
 @implementation StreamViewController
-@synthesize images = _images;
+@synthesize feedsArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -50,47 +49,20 @@ const NSInteger kNumberOfCells = 30;
     quiltView.delegate = self;
     quiltView.dataSource = self;
     quiltView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    [self.view addSubview:quiltView];
-    [quiltView reloadData];
-    
+    [self.view addSubview:quiltView];    
     [quiltView release];    
-    
-    /*for(int i=0; i<2000; i++)
-    {
-        [UIImage requestSizeFor:[NSURL URLWithString:@"http://epguides.com/SwatKats/logo.jpg"] 
-                     completion:^(NSURL *imgURL, CGSize size) {
-                         NSLog(@"sizeof image = %f x %f", size.width, size.height);
-                     }];
-    }*/
     
     manager = [[ConnectionManager alloc] init];
     manager.delegate = self;
-    [manager getFeedsAtPage:1 count:10];
+    [manager getFeedsAtPage:1 count:1];
 }
 
 #pragma mark - QuiltViewControllerDataSource
 
-- (NSArray *)images 
-{
-    if (!_images) {
-        NSLog(@"getting source");
-        NSMutableArray *imageNames = [NSMutableArray array];
-        for(int i = 0; i < kNumberOfCells; i++) {
-            [imageNames addObject:[NSString stringWithFormat:@"%d.jpg", i % 35 + 1]];
-        }
-        _images = [imageNames retain];
-    }
-    return _images;
-}
-
-- (UIImage *)imageAtIndexPath:(NSIndexPath *)indexPath 
-{
-    return [UIImage imageNamed:[self.images objectAtIndex:indexPath.row]];
-}
-
 - (NSInteger)quiltViewNumberOfCells:(TMQuiltView *)_quiltView 
 {
-    return [self.images count];
+    //return [self.images count];
+    return feedsArray.count;
 }
 
 - (TMQuiltViewCell *)quiltView:(TMQuiltView *)_quiltView cellAtIndexPath:(NSIndexPath *)indexPath 
@@ -100,9 +72,10 @@ const NSInteger kNumberOfCells = 30;
         aFeed = [[[FeedView alloc] initWithReuseIdentifier:@"FeedElement"] autorelease];
     }
     
-    aFeed.photoView.image = [self imageAtIndexPath:indexPath];
+    FeedObject *feedObject = [feedsArray objectAtIndex:indexPath.row];
+    aFeed.photoView.imageUrl = feedObject.foobarPhoto.url;
     aFeed.likesCountLabel.text = [NSString stringWithFormat:@"      25"];
-    aFeed.profilePicView.image = [UIImage imageNamed:@"DefaultUser.png"];
+    aFeed.profilePicView.imageUrl = feedObject.foobarUser.photoUrl;
     aFeed.usernameLabel.text = @"Dark Knight";
     return aFeed;
 }
@@ -112,33 +85,23 @@ const NSInteger kNumberOfCells = 30;
 - (void)quiltView:(TMQuiltView *)_quiltView didSelectCellAtIndexPath:(NSIndexPath *)indexPath
 {
     PhotoDetailsViewController *photoDetailsVC = [[PhotoDetailsViewController alloc] initWithNibName:@"PhotoDetailsViewController" bundle:nil];
-    photoDetailsVC.image = [self imageAtIndexPath:indexPath];
-    [self.navigationController pushViewController:photoDetailsVC animated:YES];
+    //[self.navigationController pushViewController:photoDetailsVC animated:YES];
     [photoDetailsVC release];  
 }
 
 - (NSInteger)quiltViewNumberOfColumns:(TMQuiltView *)_quiltView 
 {    
-    if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft 
-        || [[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight) 
-    {
-        return 3;
-    } 
-    else 
-    {
-        return 2;
-    }
+    return 2;
 }
 
 - (CGFloat)quiltView:(TMQuiltView *)_quiltView heightForCellAtIndexPath:(NSIndexPath *)indexPath 
-{
-    /*return ([self imageAtIndexPath:indexPath].size.height / [self quiltViewNumberOfColumns:_quiltView])+40.0f;*/
+{    
+    FeedObject *feedObject = [feedsArray objectAtIndex:indexPath.row];
     
-    UIImage *image = [self imageAtIndexPath:indexPath];
-    CGFloat imageWidth = image.size.width;
-    CGFloat imageHeight = image.size.height;
+    CGFloat imageWidth = feedObject.foobarPhoto.width;
+    CGFloat imageHeight = feedObject.foobarPhoto.height;
     
-    CGFloat height = image.size.height;
+    CGFloat height = imageHeight;
     
     if(imageWidth>145)
     {
@@ -171,9 +134,12 @@ const NSInteger kNumberOfCells = 30;
     {
         if(statusCode == 200)
         {
+            self.feedsArray = [[Parser parseFeedsResponse:responseJSON] mutableCopy];
+            [quiltView reloadData];
         }
         else if(statusCode == 403)
         {   
+            
         }
     }
 }
@@ -196,7 +162,7 @@ const NSInteger kNumberOfCells = 30;
 {
     manager.delegate = nil;
     [manager release];
-    [_images release], _images = nil;
+    [feedsArray release];
     [super dealloc];
 }
 @end

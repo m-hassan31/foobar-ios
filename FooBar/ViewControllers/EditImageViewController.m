@@ -1,5 +1,6 @@
 #import "EditImageViewController.h"
 #import "FooBarUtils.h"
+#import "EndPoints.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define FOOBAR_IMAGE_WIDTH  243
@@ -16,6 +17,11 @@
         
     }
     return self;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -42,6 +48,15 @@
     UIBarButtonItem * customLeftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = customLeftBarButtonItem;
     [customLeftBarButtonItem release];
+    
+    UIButton *uploadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    uploadButton.frame = CGRectMake(250, 7, 44, 30);
+    [uploadButton setTitle:@"Upload" forState:UIControlStateNormal];
+    [uploadButton addTarget:self action:@selector(uploadButtonPressed:) forControlEvents:UIControlEventTouchUpInside ];
+    
+    UIBarButtonItem * customRightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:uploadButton];
+    self.navigationItem.rightBarButtonItem = customRightBarButtonItem;
+    [customRightBarButtonItem release];
     
     imageView.image = image;
     
@@ -77,10 +92,24 @@
 	
 	[imageView addSubview:holderView];
     [holderView release];
+    
+    manager = [[ConnectionManager alloc] init];
+    manager.delegate = self;
+    
+    [manager getFooBarProducts];
 }
 
 -(void)backButtonPressed:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)uploadButtonPressed:(id)sender {
+    UIGraphicsBeginImageContext(self.view.bounds.size);
+    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *imageToSave = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [manager uploadPhoto:imageToSave withProductId:[NSString stringWithFormat:@"%d",(arc4random()%5)+1]];
 }
 
 -(void)saveImageAction:(id)sender {
@@ -219,20 +248,51 @@
 	return ![gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+#pragma mark - ConnectionManager delegate functions
+
+-(void)httpRequestFailed:(ASIHTTPRequest *)request
+{
+	NSError *error= [request error];
+	NSLog(@"%@",[error localizedDescription]);
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+-(void)httpRequestFinished:(ASIHTTPRequest *)request
+{
+	NSString *responseJSON = [[request responseString] retain];
+	NSString *urlString= [[request url] absoluteString];
+    int statusCode = [request responseStatusCode];
+    NSString *statusMessage = [request responseStatusMessage];
+    
+    NSLog(@"Status Code - %d\nStatus Message - %@\nResponse:\n%@", statusCode, statusMessage, responseJSON);
+    
+    [responseJSON release];
+    
+    if([urlString hasPrefix:PhotosUrl])
+    {
+        if(statusCode == 200)
+        {
+        }
+        else if(statusCode == 403)
+        {   
+        }
+    }
+}
+
+#pragma mark - Memory Management
+
+- (void)viewDidUnload {
+    [super viewDidUnload];
+
+    manager.delegate = nil;
+    [manager release];
 }
 
 -(void)dealloc {
     imageView.image = nil;
     [image release];
+    manager.delegate = nil;
+    [manager release];
+
     [super dealloc];
 }
 

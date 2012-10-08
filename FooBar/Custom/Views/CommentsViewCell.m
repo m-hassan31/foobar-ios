@@ -122,7 +122,7 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
     if(delegate)
     {  
         if([delegate respondsToSelector:@selector(longPressAction:)])
-            [delegate longPressAction:commentObject.username];
+            [delegate longPressAction:commentObject.foobarUser.username];
     }
 }
 
@@ -143,7 +143,7 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
     self.commentObject = commentObj;
     self.delegate = _delegate;
     
-    [userNameButton setTitle:commentObject.username forState:UIControlStateNormal];
+    [userNameButton setTitle:commentObject.foobarUser.username forState:UIControlStateNormal];
     self.summaryText = [commentObject formattedCommentText];
     self.summaryLabel.delegate = _delegate;
     height -= kAttributedLabelVerticalOffset + kCellBottomPadding;
@@ -152,7 +152,7 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
     frame.size.height = height;
     self.summaryLabel.frame = frame;
     
-    NSString* imageUrl = commentObject.userPicURL;
+    NSString* imageUrl = commentObject.foobarUser.photoUrl;
     
     if (imageUrl != nil)
         [cellImageView setImageUrl:imageUrl];

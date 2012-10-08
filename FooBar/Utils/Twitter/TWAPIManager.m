@@ -1,5 +1,4 @@
 #import <Accounts/Accounts.h>
-#import <Social/Social.h>
 #import <Twitter/Twitter.h>
 #import "OAuth+Additions.h"
 #import "TWAPIManager.h"

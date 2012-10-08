@@ -4,7 +4,7 @@
 //  protocol to hush any compiler warnings
 @protocol GenericTwitterRequest
 
-- (void)performRequestWithHandler:(SLRequestHandler)handler;
+- (void)performRequestWithHandler:(TWRequestHandler)handler;
 - (void)setAccount:(ACAccount *)account;
 
 @end

@@ -29,9 +29,9 @@ const CGFloat kFeedViewMargin = 0;
     return self;
 }
 
-- (UIImageView *)photoView {
+- (AsyncImageView *)photoView {
     if (!_photoView) {
-        _photoView = [[UIImageView alloc] init];
+        _photoView = [[AsyncImageView alloc] init];
         _photoView.contentMode = UIViewContentModeScaleAspectFit;
         _photoView.clipsToBounds = YES;
         [self addSubview:_photoView];
@@ -62,9 +62,9 @@ const CGFloat kFeedViewMargin = 0;
     return _likesCountLabel;
 }
 
-- (UIImageView *)profilePicView {
+- (AsyncImageView *)profilePicView {
     if (!_profilePicView) {
-        _profilePicView = [[UIImageView alloc] init];
+        _profilePicView = [[AsyncImageView alloc] init];
         _profilePicView.contentMode = UIViewContentModeScaleAspectFill;
         _profilePicView.clipsToBounds = YES;
         [self addSubview:_profilePicView];
@@ -90,8 +90,6 @@ const CGFloat kFeedViewMargin = 0;
     
     CGRect imageFrame = CGRectInset(photoFrame, kFeedViewMargin, kFeedViewMargin);
     self.photoView.frame = CGRectInset(imageFrame, kFeedViewMargin, kFeedViewMargin);
-    /*UIImage *image = [FooBarUtils scaleImage:self.photoView.image ToSize:imageFrame.size];
-    self.photoView.image = image;*/
     
     self.likesCountLabel.frame = CGRectMake(kFeedViewMargin, photoFrame.size.height - 20 - kFeedViewMargin,
                                             photoFrame.size.width - 2 * kFeedViewMargin, 20);

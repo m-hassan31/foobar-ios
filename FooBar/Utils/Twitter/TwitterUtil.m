@@ -181,9 +181,6 @@
 
 -(void) getAccessToken
 {
-    /*TWAPIManager *apiManager = [[TWAPIManager alloc] init];
-
-    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *previousUserName = [defaults objectForKey:kTwitterUsername];
     
@@ -219,7 +216,7 @@
                     [self setTwitterUsername:account.username];
                     //now that account has been created, call the request
                     
-                    
+                    TWAPIManager *apiManager = [[TWAPIManager alloc] init];
                     [apiManager
                      performReverseAuthForAccount:account
                      withHandler:^(NSData *responseData, NSError *error) {
@@ -252,13 +249,12 @@
                 }
             }
         }];
-    }*/
+    }
 }
 
-- (void)getTwitteInfo:(NSString *)userId
+- (void)getTwitterInfo:(NSString *)userId
 {
 	requestType=TW_PROFILE_INFO;
-    
     
     NSURL *profileURL = [NSURL URLWithString:@"https://api.twitter.com/1/users/show.json"];
     

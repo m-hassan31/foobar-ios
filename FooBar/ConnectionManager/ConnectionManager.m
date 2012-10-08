@@ -32,21 +32,25 @@
 	return self;
 }
 
+-(ASIHTTPRequest*)getRequestWithAuthHeader:(NSURL*)url
+{
+    SocialUser *socialUser = [SocialUser currentUser];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    [request addRequestHeader:@"X-foobar-username" value:socialUser.socialId];
+    [request addRequestHeader:@"X-foobar-access-token" value:socialUser.accessToken];
+    return request;
+}
+
 - (void)signin
 {
     [self showHUDwithText:@"Signing in"];
-    
-    SocialUser *socialUser = [SocialUser currentUser];
-    
     // Instantiate an HTTP request.
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",UsersUrl]];
-    
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];
     [request setRequestMethod:@"POST"];
 	[request addRequestHeader:@"Content-Type" value:@"application/json"];
-    [request addRequestHeader:@"X-foobar-username" value:socialUser.socialId];
-    [request addRequestHeader:@"X-foobar-access-token" value:socialUser.accessToken];
-    
+
+    SocialUser *socialUser = [SocialUser currentUser];
     NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:
                             (socialUser.socialAccountType==FacebookAccount)?@"facebook":@"twitter", @"account_type",
                             socialUser.firstname, @"first_name",
@@ -62,34 +66,44 @@
 -(void)getFeedsAtPage:(NSUInteger)_pageNum count:(NSUInteger)_count
 {
     [self showHUDwithText:@"Getting Feeds"];
-    
-    SocialUser *socialUser = [SocialUser currentUser];
-    
     // Instantiate an HTTP request.
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?pageNumber=%d&numberOfItems=%d",FeedsUrl, _pageNum, _count]];
-    
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    [request setRequestMethod:@"GET"];
-    [request addRequestHeader:@"X-foobar-username" value:socialUser.socialId];
-    [request addRequestHeader:@"X-foobar-access-token" value:socialUser.accessToken];
-    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%d/%d",FeedsUrl, _pageNum, _count]];
+    ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];    
     request.delegate = self;
     // Send the request.
     [request startAsynchronous];
 }
 
-- (void)signOut
-{	
-    [self showHUDwithText:@"Signing out"];
+-(void)getFooBarProducts
+{
+    [self showHUDwithText:@"Getting Products"];
+    // Instantiate an HTTP request.
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",ProductsUrl]];
+    ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];        
+    request.delegate = self;
+    // Send the request.
+    [request startAsynchronous];
+}
+
+-(void)uploadPhoto:(UIImage*)image withProductId:(NSString*)productId
+{
+    [self showHUDwithText:@"Uploading.."];
+    
+    SocialUser *socialUser = [SocialUser currentUser];
     
     // Instantiate an HTTP request.
-    NSURL *url = [NSURL URLWithString:@"https://asms.cloudfoundry.com/logout"];
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    request.delegate = self;
-    [request setAuthenticationScheme:(NSString *)kCFHTTPAuthenticationSchemeBasic];
-    [request setRequestMethod:@"POST"];
-    [request setShouldPresentCredentialsBeforeChallenge:NO];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?enctype=multipart/form-data",PhotosUrl]];
     
+    ASIFormDataRequest *request= [ASIFormDataRequest requestWithURL:url];
+    [request setRequestMethod:@"POST"];
+    [request addRequestHeader:@"X-foobar-username" value:socialUser.socialId];
+    [request addRequestHeader:@"X-foobar-access-token" value:socialUser.accessToken];
+    [request addRequestHeader:@"X-foobar-product-id" value:productId];
+    
+    //NSString* filename = [NSString stringWithFormat:@"%d_%@.jpg", arc4random()%57, @"FooBar"]; 
+    [request setData:UIImageJPEGRepresentation(image, 1.0) forKey:@"pic"];
+    
+    request.delegate = self;
     // Send the request.
     [request startAsynchronous];
 }

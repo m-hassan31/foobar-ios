@@ -7,6 +7,10 @@
 {
     TMQuiltView *quiltView;
     ConnectionManager *manager;
+    
+    NSMutableArray *feedsArray;
 }
+
+@property(nonatomic, retain) NSMutableArray *feedsArray;
 
 @end

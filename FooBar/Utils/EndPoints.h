@@ -10,6 +10,7 @@
 #define PhotosUrl           Server @"photoposts/"
 #define CommentsUrl         Server @"comments/"
 #define LikesUrl            Server @"likes/"
+#define ProductsUrl         Server @"products/"
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

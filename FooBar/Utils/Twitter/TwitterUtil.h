@@ -44,7 +44,6 @@ typedef enum TWITTER_REQUEST_TYPE
 
 -(void) sendDirectMessage:(NSString*)message to:(NSString*)userId;
 -(void) sendUpdate:(NSString*)status;
--(UIViewController*)getTwitterViewController;
 -(void) getTwitterInfo:(NSString*)userId;
 -(void) getTwitterProfilePicForId:(NSString*)userId;
 -(void) getTwitterFollowers;

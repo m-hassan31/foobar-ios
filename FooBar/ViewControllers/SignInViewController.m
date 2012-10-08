@@ -175,8 +175,8 @@
     [userInfo release];
     [self hideHud];
     
-    [twitterUtil getAccessToken];
-//    [manager signin];
+    //[twitterUtil getAccessToken];
+    //[manager signin];
 }
 
 

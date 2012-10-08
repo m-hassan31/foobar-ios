@@ -6,7 +6,7 @@
 #import "SAProgressHUD.h"
 
 @interface SignInViewController : UIViewController
-<FacebookUtilDelegate, ConnectionManagerDelegate, TwitterAccountPickerDelegate>
+<FacebookUtilDelegate, ConnectionManagerDelegate, TwitterAccountPickerDelegate, TwitterDelegate>
 {
     FacebookUtil *facebookUtil;
     TwitterUtil *twitterUtil;
