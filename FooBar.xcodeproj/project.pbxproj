@@ -34,6 +34,8 @@
 		8401DA9F15F0CF5E00659482 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8401DA9C15F0CF5D00659482 /* MobileCoreServices.framework */; };
 		8401DAA015F0CF5E00659482 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8401DA9D15F0CF5D00659482 /* SystemConfiguration.framework */; };
 		8401DAA215F0CF7500659482 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8401DAA115F0CF7500659482 /* libz.dylib */; };
+		840D4EB5162448C30010B987 /* Front.png in Resources */ = {isa = PBXBuildFile; fileRef = 840D4EB3162448C30010B987 /* Front.png */; };
+		840D4EB6162448C30010B987 /* Front@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 840D4EB4162448C30010B987 /* Front@2x.png */; };
 		8459882415F21A3D00A5486C /* CaptureSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8459882315F21A3D00A5486C /* CaptureSessionManager.m */; };
 		8459882715F21BEB00A5486C /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8459882615F21BEB00A5486C /* ImageIO.framework */; };
 		8459885C15F22C5E00A5486C /* EditImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8459885A15F22C5E00A5486C /* EditImageViewController.xib */; };
@@ -185,6 +187,8 @@
 		8401DA9C15F0CF5D00659482 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8401DA9D15F0CF5D00659482 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8401DAA115F0CF7500659482 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		840D4EB3162448C30010B987 /* Front.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Front.png; sourceTree = "<group>"; };
+		840D4EB4162448C30010B987 /* Front@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Front@2x.png"; sourceTree = "<group>"; };
 		8459882215F21A3D00A5486C /* CaptureSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaptureSessionManager.h; sourceTree = "<group>"; };
 		8459882315F21A3D00A5486C /* CaptureSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaptureSessionManager.m; sourceTree = "<group>"; };
 		8459882615F21BEB00A5486C /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -644,6 +648,8 @@
 				84D613D415EFE712000B0CE5 /* Signin@2x.png */,
 				84BBD71A15F1F7BF007D1F9D /* Back.png */,
 				84BBD71B15F1F7BF007D1F9D /* Back@2x.png */,
+				840D4EB3162448C30010B987 /* Front.png */,
+				840D4EB4162448C30010B987 /* Front@2x.png */,
 				84BBD71C15F1F7BF007D1F9D /* Camera.png */,
 				84BBD71D15F1F7BF007D1F9D /* Camera@2x.png */,
 				84BBD71E15F1F7BF007D1F9D /* CancelCapture.png */,
@@ -898,6 +904,8 @@
 				8C4005931603A9BF00F11091 /* Or@2x.png in Resources */,
 				8C4005961603AFF500F11091 /* Logo.png in Resources */,
 				8C4005971603AFF500F11091 /* Logo@2x.png in Resources */,
+				840D4EB5162448C30010B987 /* Front.png in Resources */,
+				840D4EB6162448C30010B987 /* Front@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

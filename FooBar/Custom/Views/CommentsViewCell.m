@@ -111,10 +111,7 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
     self.delegate = _delegate;
     
     // set username
-    if(commentObject.foobarUser.username && ![commentObject.foobarUser.username isEqualToString:@""])
-        [userNameButton setTitle:commentObject.foobarUser.username forState:UIControlStateNormal];
-    else
-        [userNameButton setTitle:@"First Last" forState:UIControlStateNormal];    
+    [userNameButton setTitle:@"username"/*commentObject.foobarUser.username*/ forState:UIControlStateNormal];
     
     //set comment text
     self.commentText = [commentObject formattedCommentText];

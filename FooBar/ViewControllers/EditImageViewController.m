@@ -49,21 +49,34 @@
     self.navigationItem.leftBarButtonItem = customLeftBarButtonItem;
     [customLeftBarButtonItem release];
     
-    UIButton *uploadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    uploadButton.frame = CGRectMake(250, 7, 44, 30);
-    [uploadButton setTitle:@"Upload" forState:UIControlStateNormal];
-    [uploadButton addTarget:self action:@selector(uploadButtonPressed:) forControlEvents:UIControlEventTouchUpInside ];
+    UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    nextButton.frame = CGRectMake(250, 7, 44, 30);
+    [nextButton setImage:[UIImage imageNamed:@"Front.png"] forState:UIControlStateNormal];
+    [nextButton addTarget:self action:@selector(uploadButtonPressed:) forControlEvents:UIControlEventTouchUpInside ];
     
-    UIBarButtonItem * customRightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:uploadButton];
+    UIBarButtonItem * customRightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:nextButton];
     self.navigationItem.rightBarButtonItem = customRightBarButtonItem;
     [customRightBarButtonItem release];
     
     imageView.image = image;
     
+    CGFloat imageWidth = image.size.width;
+    CGFloat imageHeight = image.size.height;
+    
+    if(imageWidth>320)
+    {
+        CGFloat height = (imageHeight*320)/imageWidth ;
+        imageView.frame = CGRectMake(0, (436-height)/2, 320, height);
+    }
+    else
+    {
+        imageView.frame = CGRectMake((320-imageWidth)/2, (436-imageHeight)/2, imageWidth, imageHeight);        
+    }
+    
     UIImage *foobarImage = [UIImage imageNamed:@"Logo.png"];
     
     maxX = imageView.frame.size.width - FOOBAR_IMAGE_WIDTH/4;
-    maxY = imageView.frame.size.height - FOOBAR_IMAGE_WIDTH/4;
+    maxY = imageView.frame.size.height - FOOBAR_IMAGE_HEIGHT/4;
     
     UIView *holderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, foobarImage.size.width/2, foobarImage.size.height/2)];
 	UIImageView *foobarImageview = [[UIImageView alloc] initWithFrame:[holderView frame]];
@@ -104,8 +117,8 @@
 }
 
 -(void)uploadButtonPressed:(id)sender {
-    UIGraphicsBeginImageContext(self.view.bounds.size);
-    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIGraphicsBeginImageContext(imageView.bounds.size);
+    [imageView.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *imageToSave = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
@@ -113,8 +126,8 @@
 }
 
 -(void)saveImageAction:(id)sender {
-    UIGraphicsBeginImageContext(self.view.bounds.size);
-    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIGraphicsBeginImageContext(imageView.bounds.size);
+    [imageView.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *imageToSave = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
@@ -185,48 +198,42 @@
 		
 		if(UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
 			
-			if(finalX < FOOBAR_IMAGE_WIDTH/4) {
-				
+			if(finalX < FOOBAR_IMAGE_WIDTH/4) 
+            {				
 				finalX = FOOBAR_IMAGE_WIDTH/4;
-			}
-			
-			else if(finalX > maxX) {
-				
+			}			
+			else if(finalX > maxX) 
+            {				
 				finalX = maxX;
 			}
 			
-			if(finalY < FOOBAR_IMAGE_HEIGHT/4) {
-				
+			if(finalY < FOOBAR_IMAGE_HEIGHT/4) 
+            {				
 				finalY = FOOBAR_IMAGE_HEIGHT/4;
-			}
-			
-			else if(finalY > maxY) {
-				
+			}			
+			else if(finalY > maxY) 
+            {
 				finalY = maxY;
 			}
-		}
-		
-		else {
-			
-			if(finalX < FOOBAR_IMAGE_WIDTH/4) {
-				
+		}		
+		else 
+        {
+			if(finalX < FOOBAR_IMAGE_WIDTH/4) 
+            {	
 				finalX = FOOBAR_IMAGE_WIDTH/4;
-			}
-			
-			else if(finalX > maxY) {
-				
+			}			
+			else if(finalX > maxY) 
+            {	
 				finalX = maxX;
 			}
 			
-			if(finalY < FOOBAR_IMAGE_HEIGHT/4) {
-				
+			if(finalY < FOOBAR_IMAGE_HEIGHT/4) 
+            {	
 				finalY = FOOBAR_IMAGE_HEIGHT/4;
-			}
-			
-			else if(finalY > maxX) {
-				
-				finalY = maxY
-                ;
+			}			
+			else if(finalY > maxX) 
+            {	
+				finalY = maxY;
 			}
 		}
 		
