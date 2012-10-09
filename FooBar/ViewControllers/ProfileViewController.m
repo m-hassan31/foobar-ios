@@ -51,9 +51,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(section == 0)
-        return 4;
+        return 3;
     else if(section == 1)
-        return 5;
+        return 4;
     else
         return 0;
 }
@@ -117,10 +117,6 @@
                     cell.textLabel.text = @"Change Profile Pic";
                     break;
                     
-                case 3:
-                    cell.textLabel.text = @"Change Password";
-                    break;
-                    
                 default:
                     break;
             }
@@ -140,12 +136,8 @@
                 case 2:
                     cell.textLabel.text = @"Search HashTags";
                     break;
-                    
+
                 case 3:
-                    cell.textLabel.text = @"About";
-                    break;
-                    
-                case 4:
                     cell.textLabel.text = @"Sign Out";
                     break;
                     
@@ -176,7 +168,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if(indexPath.section == 1 && indexPath.row == 4)
+    if(indexPath.section == 1 && indexPath.row == 3)
     {
         UIActionSheet *signOutActionSheet = [[UIActionSheet alloc]
                                              initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Sign Out", nil];
