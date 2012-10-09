@@ -22,7 +22,10 @@
 @synthesize commentField;
 @synthesize scrollView;
 @synthesize likeHolderView;
-@synthesize imageView, image;
+@synthesize imageView;
+@synthesize commentsArray;
+@synthesize foobarPhoto;
+@synthesize profilePicUrl;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -37,6 +40,12 @@
 {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark - View lifecycle
@@ -114,8 +123,8 @@
     
     scrollView.frame = CGRectMake(0, -47, 320, 367);
     
-    CGFloat imageWidth = image.size.width;
-    CGFloat imageHeight = image.size.height;
+    CGFloat imageWidth = foobarPhoto.width;
+    CGFloat imageHeight = foobarPhoto.height;
     
     if(imageWidth>320)
     {
@@ -126,17 +135,21 @@
     {
         imageView.frame = CGRectMake((320-imageWidth)/2, 0, imageWidth, imageHeight);        
     }
-    imageView.image = image;
     
+    imageView.imageUrl = foobarPhoto.url;
+    profilePicView.imageUrl = profilePicUrl;
+    commentProfilePicView.imageUrl = profilePicUrl;
+      
     likeHolderView.frame = CGRectMake(0, imageView.frame.size.height-likeHolderView.frame.size.height, 320.0f, 40.0f);
     
     userInfoHolderView.frame = CGRectMake(0, imageView.frame.size.height, 320.0f, 48.0f);
     userInfoHolderView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     userInfoHolderView.layer.borderWidth = 1.0;
     
+    commentsCountLabel.text = [NSString stringWithFormat:@"    %d Comments", commentsArray.count];
     commentsCountLabel.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height, 320.0f, 30.0f);
     
-    commentsTableView.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height, 320.0f, 10*[CommentsViewCell heightForCellWithText:@"@DarkKnight - FooBar is rolling down the mountain. #FooBar"]);
+    commentsTableView.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height, 320.0f, commentsArray.count*[CommentsViewCell heightForCellWithText:@"@DarkKnight - FooBar is rolling down the mountain. #FooBar"]);
     
     commentFieldHolder.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height+commentsTableView.frame.size.height, 320.0f, 44.0f);
     
@@ -144,7 +157,7 @@
 }
 
 -(void)backButtonPressed:(id)senser
-{
+{ 
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -158,7 +171,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {	
-    return 10;
+    return commentsArray.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{    
+    return [CommentsViewCell heightForCellWithText:@"@DarkKnight - FooBar is rolling down the mountain. #FooBar"];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -171,9 +189,8 @@
     
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
-    CommentObject *commentObject = [[CommentObject alloc] init];    
-    [cell setRowWithCommentObject:commentObject withTextHeight:[CommentsViewCell heightForCellWithText:@"@DarkKnight - FooBar is rolling down the mountain. #FooBar"] delegate:self];
-    [commentObject release];
+    CommentObject *commentObject = (CommentObject*)[commentsArray objectAtIndex:indexPath.row];
+    [cell setRowWithCommentObject:commentObject delegate:self];
     return cell;
 }
 
@@ -181,12 +198,6 @@
 {
     
 }
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{    
-    return [CommentsViewCell heightForCellWithText:@"@DarkKnight - FooBar is rolling down the mountain. #FooBar"];
-}
-
 
 #pragma mark - TextField delegates
 
@@ -243,15 +254,12 @@
     [self setCommentsTableView:nil];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (void)dealloc 
 {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-- (void)dealloc {
+    [commentsArray release];
+    [foobarPhoto release];
+    [profilePicUrl release];
     [imageView release];
-    [image release];
     [likeHolderView release];
     [userInfoHolderView release];
     [profilePicView release];

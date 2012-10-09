@@ -18,9 +18,9 @@
     UIImageView *profilePicBorder;
     UIButton *userNameButton;
     UILabel *timeLabel;
-    TTTAttributedLabel *_summaryLabel;
+    TTTAttributedLabel *_commentLabel;
     
-    NSString *_summaryText;
+    NSString *_commentText;
     CommentObject* commentObject;
     id<CommentsViewCellDelegate> delegate;
 }
@@ -30,11 +30,11 @@
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 
 @property (nonatomic, retain) CommentObject* commentObject;
-@property (nonatomic, retain) NSString *summaryText;
-@property (nonatomic, retain) TTTAttributedLabel *summaryLabel;
+@property (nonatomic, retain) NSString *commentText;
+@property (nonatomic, retain) TTTAttributedLabel *commentLabel;
 
 +(CGFloat)heightForCellWithText:(NSString *)text;
 -(void)cleanUpCellBeforeNextWrite;
--(void)setRowWithCommentObject:(CommentObject*)commentObj withTextHeight:(CGFloat)height delegate:(id)_delegate;
+-(void)setRowWithCommentObject:(CommentObject*)commentObj delegate:(id)_delegate;
 
 @end

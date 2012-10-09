@@ -54,7 +54,7 @@
     
     manager = [[ConnectionManager alloc] init];
     manager.delegate = self;
-    [manager getFeedsAtPage:1 count:1];
+    [manager getFeedsAtPage:1 count:10];
 }
 
 #pragma mark - QuiltViewControllerDataSource
@@ -84,8 +84,12 @@
 
 - (void)quiltView:(TMQuiltView *)_quiltView didSelectCellAtIndexPath:(NSIndexPath *)indexPath
 {
+    FeedObject *feedObject = [feedsArray objectAtIndex:indexPath.row];
     PhotoDetailsViewController *photoDetailsVC = [[PhotoDetailsViewController alloc] initWithNibName:@"PhotoDetailsViewController" bundle:nil];
-    //[self.navigationController pushViewController:photoDetailsVC animated:YES];
+    photoDetailsVC.foobarPhoto = feedObject.foobarPhoto;
+    photoDetailsVC.profilePicUrl = feedObject.foobarUser.photoUrl;
+    photoDetailsVC.commentsArray = [feedObject.commentsArray mutableCopy];
+    [self.navigationController pushViewController:photoDetailsVC animated:YES];
     [photoDetailsVC release];  
 }
 
@@ -165,4 +169,5 @@
     [feedsArray release];
     [super dealloc];
 }
+
 @end

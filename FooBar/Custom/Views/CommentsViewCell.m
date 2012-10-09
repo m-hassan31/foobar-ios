@@ -4,7 +4,7 @@
 
 #define PROFILE_PIC_BORDER_FRAME   CGRectMake(0,0,40,40)
 
-static CGFloat const kSummaryTextFontSize = 14;
+static CGFloat const kCommentTextFontSize = 14;
 static CGFloat const kAttributedLabelVerticalOffset = 30.0f;
 static CGFloat const kCellBottomPadding = 5.0;
 
@@ -28,8 +28,8 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
 
 @implementation CommentsViewCell
 
-@synthesize summaryText = _summaryText;
-@synthesize summaryLabel = _summaryLabel;
+@synthesize commentText = _commentText;
+@synthesize commentLabel = _commentLabel;
 @synthesize commentObject, delegate;
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -45,7 +45,7 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
     userNameButton.frame = CGRectMake(53, 11, 200, 15);
     [userNameButton setTitleColor:[UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [userNameButton setTitleColor:[UIColor colorWithRed:48.0/255.0 green:78.0/255.0 blue:107.0/255.0 alpha:0.5] forState:UIControlStateHighlighted];
-    userNameButton.titleLabel.font = [UIFont boldSystemFontOfSize:kSummaryTextFontSize];
+    userNameButton.titleLabel.font = [UIFont boldSystemFontOfSize:kCommentTextFontSize];
     userNameButton.titleLabel.textAlignment = UITextAlignmentLeft;
     [userNameButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     [userNameButton addTarget:self action:@selector(goToProfile) forControlEvents:UIControlEventTouchUpInside];
@@ -88,17 +88,17 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
     [timeLabel release];*/
     
     frame = CGRectMake(53, 28, 270, 20);
-    self.summaryLabel = [[[TTTAttributedLabel alloc] initWithFrame:frame] autorelease];
-    self.summaryLabel.font = [UIFont systemFontOfSize:kSummaryTextFontSize];
-    self.summaryLabel.textColor = [UIColor darkGrayColor];
-    self.summaryLabel.lineBreakMode = UILineBreakModeWordWrap;
-    self.summaryLabel.numberOfLines = 0;
-    self.summaryLabel.backgroundColor = [UIColor clearColor];
-    self.summaryLabel.linkAttributes = [NSDictionary dictionaryWithObject:(id)[[UIColor colorWithRed:48.0/255.0 green:78.0/255.0 blue:107.0/255.0 alpha:1.0] CGColor] forKey: (NSString*)kCTForegroundColorAttributeName];
-    self.summaryLabel.highlightedTextColor = [UIColor whiteColor];
-    self.summaryLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
-    self.summaryLabel.text = _summaryText;
-    [self.contentView addSubview:self.summaryLabel];
+    self.commentLabel = [[[TTTAttributedLabel alloc] initWithFrame:frame] autorelease];
+    self.commentLabel.font = [UIFont systemFontOfSize:kCommentTextFontSize];
+    self.commentLabel.textColor = [UIColor darkGrayColor];
+    self.commentLabel.lineBreakMode = UILineBreakModeWordWrap;
+    self.commentLabel.numberOfLines = 0;
+    self.commentLabel.backgroundColor = [UIColor clearColor];
+    self.commentLabel.linkAttributes = [NSDictionary dictionaryWithObject:(id)[[UIColor colorWithRed:48.0/255.0 green:78.0/255.0 blue:107.0/255.0 alpha:1.0] CGColor] forKey: (NSString*)kCTForegroundColorAttributeName];
+    self.commentLabel.highlightedTextColor = [UIColor whiteColor];
+    self.commentLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
+    self.commentLabel.text = _commentText;
+    [self.contentView addSubview:self.commentLabel];
     
     return self;
 }
@@ -134,24 +134,31 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
 -(void) cleanUpCellBeforeNextWrite
 {
     [userNameButton setTitle:@"" forState:UIControlStateNormal];
-    self.summaryText = @"";
+    self.commentText = @"";
     cellImageView.image = nil;
-    //timeLabel.text = @"";
+    timeLabel.text = @"";
 }
--(void)setRowWithCommentObject:(CommentObject*)commentObj withTextHeight:(CGFloat)height delegate:(id)_delegate
+-(void)setRowWithCommentObject:(CommentObject*)commentObj delegate:(id)_delegate
 {
     self.commentObject = commentObj;
     self.delegate = _delegate;
     
+    // set username
     [userNameButton setTitle:commentObject.foobarUser.username forState:UIControlStateNormal];
-    self.summaryText = [commentObject formattedCommentText];
-    self.summaryLabel.delegate = _delegate;
+    
+    //set comment text
+    self.commentText = [commentObject formattedCommentText];
+    self.commentLabel.delegate = _delegate;
+    
+    // adjust frame for comment
+    CGFloat height = [CommentsViewCell heightForCellWithText:self.commentText];
     height -= kAttributedLabelVerticalOffset + kCellBottomPadding;
     
-    CGRect frame = self.summaryLabel.frame;
+    CGRect frame = self.commentLabel.frame;
     frame.size.height = height;
-    self.summaryLabel.frame = frame;
+    self.commentLabel.frame = frame;
     
+    // set user image
     NSString* imageUrl = commentObject.foobarUser.photoUrl;
     
     if (imageUrl != nil)
@@ -159,26 +166,27 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
     else
         [cellImageView setImage:[UIImage imageNamed:@"DefaultUser.png"]];//defaultContactImage
     
+    // set time
     timeLabel.text = commentObj.created_dt;
 }
 
 + (CGFloat)heightForCellWithText:(NSString *)text 
 {
     CGFloat height = kAttributedLabelVerticalOffset;
-    height += ceilf([text sizeWithFont:[UIFont systemFontOfSize:kSummaryTextFontSize] constrainedToSize:CGSizeMake(270.0f, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height);
+    height += ceilf([text sizeWithFont:[UIFont systemFontOfSize:kCommentTextFontSize] constrainedToSize:CGSizeMake(270.0f, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height);
     height += kCellBottomPadding; // end padding
     return height;
 }
 
-- (void)setSummaryText:(NSString *)text
+- (void)setcommentText:(NSString *)text
 {
-    [self willChangeValueForKey:@"summaryText"];
-    [_summaryText release];
-    _summaryText = [text copy];
-    [self didChangeValueForKey:@"summaryText"];
+    [self willChangeValueForKey:@"commentText"];
+    [_commentText release];
+    _commentText = [text copy];
+    [self didChangeValueForKey:@"commentText"];
     
     // Text Formatting
-    [self.summaryLabel setText:self.summaryText afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+    [self.commentLabel setText:self.commentText afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
         NSRange stringRange = NSMakeRange(0, [mutableAttributedString length]);
         
         NSRegularExpression *regexp = MentionNameRegularExpression();
@@ -195,22 +203,22 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
     }];
     
     /////////////// Add link to username ///////////////////    
-    NSRange stringRange = NSMakeRange(0, [self.summaryText length]);
+    NSRange stringRange = NSMakeRange(0, [self.commentText length]);
     
     /////////////// Add links to all mentioned names ///////////////////    
     NSRegularExpression *mentionRegExp = MentionNameRegularExpression();
-    [mentionRegExp enumerateMatchesInString:self.summaryText options:0 range:stringRange usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+    [mentionRegExp enumerateMatchesInString:self.commentText options:0 range:stringRange usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
         
-        NSURL *mentionURL = [NSURL URLWithString:[NSString stringWithFormat:@"MentionName://%@", [self.summaryText substringWithRange:result.range]]];
-        [self.summaryLabel addLinkToURL:mentionURL withRange:result.range];
+        NSURL *mentionURL = [NSURL URLWithString:[NSString stringWithFormat:@"MentionName://%@", [self.commentText substringWithRange:result.range]]];
+        [self.commentLabel addLinkToURL:mentionURL withRange:result.range];
     }];
     
     /////////////// Add links to all Search tags ///////////////////    
     NSRegularExpression *searchRegExp = SearchTagRegularExpression();
-    [searchRegExp enumerateMatchesInString:self.summaryText options:0 range:stringRange usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+    [searchRegExp enumerateMatchesInString:self.commentText options:0 range:stringRange usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
         
-        NSURL *searchURL = [NSURL URLWithString:[NSString stringWithFormat:@"SearchFontli://%@", [self.summaryText substringWithRange:result.range]]];
-        [self.summaryLabel addLinkToURL:searchURL withRange:result.range];
+        NSURL *searchURL = [NSURL URLWithString:[NSString stringWithFormat:@"SearchFontli://%@", [self.commentText substringWithRange:result.range]]];
+        [self.commentLabel addLinkToURL:searchURL withRange:result.range];
     }];
 }
 
@@ -229,10 +237,10 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
     NSLog(@"CommentsViewCell : dealloc");
     
     self.delegate = nil;
-    self.summaryLabel.delegate = nil;
+    self.commentLabel.delegate = nil;
     
-    [_summaryLabel release];
-    [_summaryText release];
+    [_commentLabel release];
+    [_commentText release];
     
     [commentObject release];
     
