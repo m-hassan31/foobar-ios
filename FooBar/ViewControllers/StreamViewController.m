@@ -39,6 +39,8 @@
     [super viewWillAppear:animated];
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [self.navigationController setNavigationBarHidden:NO];
+    
+    [quiltView reloadData];
 }
 
 - (void)viewDidLoad
@@ -61,7 +63,6 @@
 
 - (NSInteger)quiltViewNumberOfCells:(TMQuiltView *)_quiltView 
 {
-    //return [self.images count];
     return feedsArray.count;
 }
 
@@ -74,7 +75,7 @@
     
     FeedObject *feedObject = [feedsArray objectAtIndex:indexPath.row];
     aFeed.photoView.imageUrl = feedObject.foobarPhoto.url;
-    aFeed.likesCountLabel.text = [NSString stringWithFormat:@"      25"];
+    aFeed.likesCountLabel.text = [NSString stringWithFormat:@"      %d", feedObject.likesCount];
     aFeed.profilePicView.imageUrl = feedObject.foobarUser.photoUrl;
     aFeed.usernameLabel.text = @"Dark Knight";
     return aFeed;
@@ -86,9 +87,7 @@
 {
     FeedObject *feedObject = [feedsArray objectAtIndex:indexPath.row];
     PhotoDetailsViewController *photoDetailsVC = [[PhotoDetailsViewController alloc] initWithNibName:@"PhotoDetailsViewController" bundle:nil];
-    photoDetailsVC.foobarPhoto = feedObject.foobarPhoto;
-    photoDetailsVC.profilePicUrl = feedObject.foobarUser.photoUrl;
-    photoDetailsVC.commentsArray = [feedObject.commentsArray mutableCopy];
+    photoDetailsVC.feedObject = feedObject;
     [self.navigationController pushViewController:photoDetailsVC animated:YES];
     [photoDetailsVC release];  
 }
@@ -132,20 +131,28 @@
     
     NSLog(@"Status Code - %d\nStatus Message - %@\nResponse:\n%@", statusCode, statusMessage, responseJSON);
     
-    [responseJSON release];
-    
     if([urlString hasPrefix:FeedsUrl])
     {
         if(statusCode == 200)
         {
-            self.feedsArray = [[Parser parseFeedsResponse:responseJSON] mutableCopy];
-            [quiltView reloadData];
+            NSArray *parsedFeedsArray = [Parser parseFeedsResponse:responseJSON];
+            if(parsedFeedsArray)
+            {
+                self.feedsArray = [parsedFeedsArray mutableCopy];
+                [quiltView reloadData];
+            }
+            else
+            {
+                [FooBarUtils showAlertMessage:@"Feeds not available"];
+            }
         }
         else if(statusCode == 403)
         {   
             
         }
     }
+    
+    [responseJSON release];
 }
 
 - (void)viewDidUnload

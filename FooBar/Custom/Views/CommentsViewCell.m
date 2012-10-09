@@ -2,11 +2,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import "FooBarUtils.h"
 
-#define PROFILE_PIC_BORDER_FRAME   CGRectMake(0,0,40,40)
-
 static CGFloat const kCommentTextFontSize = 14;
 static CGFloat const kAttributedLabelVerticalOffset = 30.0f;
-static CGFloat const kCellBottomPadding = 5.0;
+static CGFloat const kCellBottomPadding = 10.0;
 
 static NSRegularExpression *__mentionNameRegularExpression;
 static inline NSRegularExpression * MentionNameRegularExpression() {
@@ -55,42 +53,21 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
     [userNameButton addGestureRecognizer:longPressRecognizer];
     [longPressRecognizer release];
     
-    //init the imageview
-    
     CGRect contentRect = self.contentView.bounds;
 	CGFloat boundsX = contentRect.origin.x;
 	CGFloat boundsY = contentRect.origin.y;
 	CGRect frame;
-	frame= CGRectMake(boundsX+6 ,boundsY+10, 40, 40 );
-    profilePicBorder.frame = frame;
+	frame= CGRectMake(boundsX+6 ,boundsY+5, 40, 40 );
     
     cellImageView= [[AsyncImageView alloc] initWithFrame:frame];
     cellImageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.contentView addSubview:cellImageView];
     [cellImageView release];
     
-    profilePicBorder = [[UIImageView alloc]initWithFrame:CGRectMake(boundsX+2, boundsY+7, 48, 48)];
-    profilePicBorder.image = [UIImage imageNamed:@"posterring-white.png"];
-    profilePicBorder.userInteractionEnabled = YES;
-    UITapGestureRecognizer* tapProfilePic = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToProfile)];
-    [profilePicBorder addGestureRecognizer:tapProfilePic];
-    [tapProfilePic release];  
-    [self.contentView addSubview:profilePicBorder];
-    [profilePicBorder release];
-    
-    /*// Initialization code
-    timeLabel = [[UILabel alloc] init];
-    timeLabel.frame = CGRectMake(287, 13, 25, 15);
-    timeLabel.textColor = [UIColor colorWithRed:215.0/255.0 green:215.0/255.0 blue:215.0/255.0 alpha:1.0];
-    timeLabel.font = [UIFont boldSystemFontOfSize:12.0f];
-    timeLabel.textAlignment = UITextAlignmentRight;
-    [self addSubview:timeLabel];
-    [timeLabel release];*/
-    
-    frame = CGRectMake(53, 28, 270, 20);
+    frame = CGRectMake(53, 28, 260, 20);
     self.commentLabel = [[[TTTAttributedLabel alloc] initWithFrame:frame] autorelease];
     self.commentLabel.font = [UIFont systemFontOfSize:kCommentTextFontSize];
-    self.commentLabel.textColor = [UIColor darkGrayColor];
+    self.commentLabel.textColor = [UIColor blackColor];
     self.commentLabel.lineBreakMode = UILineBreakModeWordWrap;
     self.commentLabel.numberOfLines = 0;
     self.commentLabel.backgroundColor = [UIColor clearColor];
@@ -107,9 +84,6 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
 {
     if(delegate && [delegate respondsToSelector:@selector(goToProfile:)])
     {
-        /*if(![[Utils getUsername] isEqualToString:commentObject.username])
-         [delegate goToProfile:commentObject.user_id];
-         else*/
         [delegate goToProfile:nil];
     }
 }
@@ -131,27 +105,22 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
 	[super layoutSubviews];    
 }
 
--(void) cleanUpCellBeforeNextWrite
-{
-    [userNameButton setTitle:@"" forState:UIControlStateNormal];
-    self.commentText = @"";
-    cellImageView.image = nil;
-    timeLabel.text = @"";
-}
--(void)setRowWithCommentObject:(CommentObject*)commentObj delegate:(id)_delegate
+-(void)setRowWithCommentObject:(CommentObject*)commentObj delegate:(id)_delegate labelHeight:(CGFloat)height
 {
     self.commentObject = commentObj;
     self.delegate = _delegate;
     
     // set username
-    [userNameButton setTitle:commentObject.foobarUser.username forState:UIControlStateNormal];
+    if(commentObject.foobarUser.username && ![commentObject.foobarUser.username isEqualToString:@""])
+        [userNameButton setTitle:commentObject.foobarUser.username forState:UIControlStateNormal];
+    else
+        [userNameButton setTitle:@"First Last" forState:UIControlStateNormal];    
     
     //set comment text
     self.commentText = [commentObject formattedCommentText];
     self.commentLabel.delegate = _delegate;
     
     // adjust frame for comment
-    CGFloat height = [CommentsViewCell heightForCellWithText:self.commentText];
     height -= kAttributedLabelVerticalOffset + kCellBottomPadding;
     
     CGRect frame = self.commentLabel.frame;
@@ -160,25 +129,21 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
     
     // set user image
     NSString* imageUrl = commentObject.foobarUser.photoUrl;
-    
-    if (imageUrl != nil)
+    if (imageUrl && ![imageUrl isEqualToString:@""])
         [cellImageView setImageUrl:imageUrl];
     else
         [cellImageView setImage:[UIImage imageNamed:@"DefaultUser.png"]];//defaultContactImage
-    
-    // set time
-    timeLabel.text = commentObj.created_dt;
 }
 
 + (CGFloat)heightForCellWithText:(NSString *)text 
 {
     CGFloat height = kAttributedLabelVerticalOffset;
-    height += ceilf([text sizeWithFont:[UIFont systemFontOfSize:kCommentTextFontSize] constrainedToSize:CGSizeMake(270.0f, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height);
+    height += ceilf([text sizeWithFont:[UIFont systemFontOfSize:kCommentTextFontSize] constrainedToSize:CGSizeMake(260.0f, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height);
     height += kCellBottomPadding; // end padding
     return height;
 }
 
-- (void)setcommentText:(NSString *)text
+- (void)setCommentText:(NSString *)text
 {
     [self willChangeValueForKey:@"commentText"];
     [_commentText release];
@@ -225,7 +190,6 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-    
     // Configure the view for the selected state
 }
 

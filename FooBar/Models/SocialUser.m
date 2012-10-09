@@ -20,6 +20,12 @@
     return user;
 }
 
++(void)clearCurrentUser
+{
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs removeObjectForKey:kCurrentLoggedinSocialuser];
+}
+
 /* This code has been added to support encoding and decoding my objecst */
 -(id)initWithCoder:(NSCoder *)decoder
 {

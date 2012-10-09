@@ -1,9 +1,13 @@
 #import <UIKit/UIKit.h>
 #import "AsyncImageView.h"
-#import "FooBarPhoto.h"
+#import "FeedObject.h"
+#import "ConnectionManager.h"
 
 @interface PhotoDetailsViewController : UIViewController
-<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, ConnectionManagerDelegate>
+{
+    ConnectionManager *manager;
+}
 
 @property (retain, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (retain, nonatomic) IBOutlet UIView *likeHolderView;
@@ -17,8 +21,7 @@
 @property (retain, nonatomic) IBOutlet AsyncImageView *commentProfilePicView;
 @property (retain, nonatomic) IBOutlet UITextField *commentField;
 
-@property (retain, nonatomic) NSMutableArray *commentsArray;
-@property (retain, nonatomic) FooBarPhoto *foobarPhoto;
-@property (retain, nonatomic) NSString *profilePicUrl;
+@property (retain, nonatomic) FeedObject *feedObject;
+@property (retain, nonatomic) NSMutableArray *commentsHeightArray;
 
 @end

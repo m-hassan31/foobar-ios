@@ -49,7 +49,7 @@
     ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];
     [request setRequestMethod:@"POST"];
 	[request addRequestHeader:@"Content-Type" value:@"application/json"];
-
+    
     SocialUser *socialUser = [SocialUser currentUser];
     NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:
                             (socialUser.socialAccountType==FacebookAccount)?@"facebook":@"twitter", @"account_type",
@@ -108,6 +108,44 @@
     [request startAsynchronous];
 }
 
+-(void)comment:(NSString*)text onPost:(NSString*)postId
+{
+    [self showHUDwithText:@"Posting"];
+    // Instantiate an HTTP request.
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",CommentsUrl]];
+    ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];
+    [request setRequestMethod:@"POST"];
+    [request addRequestHeader:@"Content-Type" value:@"application/json"];
+    request.delegate = self;
+    
+    NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:
+                            postId, @"post_id",
+                            text, @"text", nil];
+    [request appendPostData:[FooBarUtils jsonFromDictionary:params]];
+    [params release];
+    
+    // Send the request.
+    [request startAsynchronous];
+}
+
+-(void)likePost:(NSString*)postId
+{
+    // Instantiate an HTTP request.
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",LikesUrl]];
+    ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];
+    [request setRequestMethod:@"POST"];
+    [request addRequestHeader:@"Content-Type" value:@"application/json"];
+    request.delegate = self;
+    
+    NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:
+                            postId, @"post_id", nil];
+    [request appendPostData:[FooBarUtils jsonFromDictionary:params]];
+    [params release];
+    
+    // Send the request.
+    [request startAsynchronous];
+}
+
 #pragma mark -
 #pragma mark SAProgressHUD delegate function
 
@@ -150,14 +188,14 @@
 	NSLog(@"Connection Manager : requestFinished");
 	
     if(hud)
-    [hud hide:YES];
-            
+        [hud hide:YES];
+    
 	if(delegate!=nil && [delegate respondsToSelector:@selector(httpRequestFinished:)])
-    [delegate httpRequestFinished:request];
-            
+        [delegate httpRequestFinished:request];
+    
     if([activeRequests containsObject:request])
-    [activeRequests removeObject:request];
-
+        [activeRequests removeObject:request];
+    
     request.delegate = nil;
 }
 
@@ -166,14 +204,14 @@
 	NSLog(@"Connection Manager : requestFailed");
 	
 	if(hud)
-    [hud hide:YES];
+        [hud hide:YES];
 	
     if(delegate!=nil && [delegate respondsToSelector:@selector(httpRequestFailed:)])
-    [delegate httpRequestFailed:request];        
+        [delegate httpRequestFailed:request];        
     
     if([activeRequests containsObject:request]) 
-    [activeRequests removeObject:request];
-
+        [activeRequests removeObject:request];
+    
     request.delegate = nil;
 }
 
@@ -188,18 +226,18 @@
     
     for(ASIHTTPRequest *request in activeRequests)
     {
-         NSLog(@"Active Request Cancelling");
+        NSLog(@"Active Request Cancelling");
         [request clearDelegatesAndCancel];
     }
     
     [activeRequests release];
-     activeRequests = nil;
+    activeRequests = nil;
     
     if(hud != nil) 
-    hud.delegate = nil;
+        hud.delegate = nil;
     
     self.delegate=nil;
-        
+    
 	[super dealloc];
 }
 

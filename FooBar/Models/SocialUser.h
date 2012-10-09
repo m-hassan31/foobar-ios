@@ -12,5 +12,6 @@
 
 +(void)saveCurrentUser:(SocialUser *)user;
 +(SocialUser*)currentUser;
++(void)clearCurrentUser;
 
 @end

@@ -2,12 +2,15 @@
 #import "CommentsViewCell.h"
 #import "CommentObject.h"
 #import "FooBarUtils.h"
+#import "EndPoints.h"
+#import "Parser.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface PhotoDetailsViewController()
 
 -(void)beginComment;
 -(void)dismissComment;
+-(void)postComment;
 
 @end
 
@@ -23,9 +26,8 @@
 @synthesize scrollView;
 @synthesize likeHolderView;
 @synthesize imageView;
-@synthesize commentsArray;
-@synthesize foobarPhoto;
-@synthesize profilePicUrl;
+@synthesize feedObject;
+@synthesize commentsHeightArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -65,6 +67,78 @@
                                                object:nil];
 }
 
+-(void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    
+    UIButton *backButton = [FooBarUtils backButton];
+    [backButton addTarget:self action:@selector(backButtonPressed:) forControlEvents:UIControlEventTouchUpInside ];
+    
+    UIBarButtonItem * customLeftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    self.navigationItem.leftBarButtonItem = customLeftBarButtonItem;
+    [customLeftBarButtonItem release];
+    
+    scrollView.frame = CGRectMake(0, -49, 320, 367);
+    
+    CGFloat imageWidth = feedObject.foobarPhoto.width;
+    CGFloat imageHeight = feedObject.foobarPhoto.height;
+    
+    if(imageWidth>320)
+    {
+        CGFloat height = (imageHeight*320)/imageWidth ;
+        imageView.frame = CGRectMake(0, 0, 320, height);
+    }
+    else
+    {
+        imageView.frame = CGRectMake((320-imageWidth)/2, 0, imageWidth, imageHeight);        
+    }
+    
+    imageView.imageUrl = feedObject.foobarPhoto.url;
+    profilePicView.imageUrl = feedObject.foobarUser.photoUrl;
+    commentProfilePicView.imageUrl = feedObject.foobarUser.photoUrl;
+    
+    likeHolderView.frame = CGRectMake(0, imageView.frame.size.height-likeHolderView.frame.size.height, 320.0f, 40.0f);
+    
+    userInfoHolderView.frame = CGRectMake(0, imageView.frame.size.height, 320.0f, 48.0f);
+    userInfoHolderView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    userInfoHolderView.layer.borderWidth = 1.0;
+    
+    commentsCountLabel.text = [NSString stringWithFormat:@"    %d Comments", feedObject.commentsCount];
+    commentsCountLabel.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height, 320.0f, 30.0f);
+    
+    NSMutableArray *heightsArray = [[NSMutableArray alloc] init];
+    self.commentsHeightArray = heightsArray;
+    [heightsArray release];
+    
+    CGFloat tableHeight = 0;
+    for(CommentObject *commentObject in feedObject.commentsArray)
+    {
+        CGFloat textheight = [CommentsViewCell heightForCellWithText:commentObject.commentText];
+        [commentsHeightArray addObject:[NSNumber numberWithFloat:textheight]];
+        tableHeight += textheight;
+    }
+    commentsTableView.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height, 320.0f, tableHeight);
+    
+    commentFieldHolder.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height+commentsTableView.frame.size.height, 320.0f, 44.0f);
+    
+    scrollView.contentSize = CGSizeMake(320, commentFieldHolder.frame.origin.y + commentFieldHolder.frame.size.height);
+    
+    manager = [[ConnectionManager alloc] init];
+    manager.delegate = self;
+}
+
+-(void)backButtonPressed:(id)senser
+{ 
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 -(void)keyboardWillShow
 {
     [self beginComment];
@@ -101,64 +175,16 @@
                          offset.y -= 168;
                          scrollView.contentOffset = offset;
                      }];
-} 
-
--(void) viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidLoad
+-(void)postComment
 {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    
-    UIButton *backButton = [FooBarUtils backButton];
-    [backButton addTarget:self action:@selector(backButtonPressed:) forControlEvents:UIControlEventTouchUpInside ];
-    
-    UIBarButtonItem * customLeftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
-    self.navigationItem.leftBarButtonItem = customLeftBarButtonItem;
-    [customLeftBarButtonItem release];
-    
-    scrollView.frame = CGRectMake(0, -47, 320, 367);
-    
-    CGFloat imageWidth = foobarPhoto.width;
-    CGFloat imageHeight = foobarPhoto.height;
-    
-    if(imageWidth>320)
-    {
-        CGFloat height = (imageHeight*320)/imageWidth ;
-        imageView.frame = CGRectMake(0, 0, 320, height);
-    }
-    else
-    {
-        imageView.frame = CGRectMake((320-imageWidth)/2, 0, imageWidth, imageHeight);        
-    }
-    
-    imageView.imageUrl = foobarPhoto.url;
-    profilePicView.imageUrl = profilePicUrl;
-    commentProfilePicView.imageUrl = profilePicUrl;
-      
-    likeHolderView.frame = CGRectMake(0, imageView.frame.size.height-likeHolderView.frame.size.height, 320.0f, 40.0f);
-    
-    userInfoHolderView.frame = CGRectMake(0, imageView.frame.size.height, 320.0f, 48.0f);
-    userInfoHolderView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    userInfoHolderView.layer.borderWidth = 1.0;
-    
-    commentsCountLabel.text = [NSString stringWithFormat:@"    %d Comments", commentsArray.count];
-    commentsCountLabel.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height, 320.0f, 30.0f);
-    
-    commentsTableView.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height, 320.0f, commentsArray.count*[CommentsViewCell heightForCellWithText:@"@DarkKnight - FooBar is rolling down the mountain. #FooBar"]);
-    
-    commentFieldHolder.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height+commentsTableView.frame.size.height, 320.0f, 44.0f);
-    
-    scrollView.contentSize = CGSizeMake(320, commentFieldHolder.frame.origin.y + commentFieldHolder.frame.size.height);
+    [manager comment:commentField.text onPost:feedObject.feedId];
 }
 
--(void)backButtonPressed:(id)senser
-{ 
-    [self.navigationController popViewControllerAnimated:YES];
+-(IBAction)likeButtonPressed:(id)sender
+{
+    [manager likePost:feedObject.feedId];
 }
 
 #pragma mark -
@@ -171,12 +197,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {	
-    return commentsArray.count;
+    return feedObject.commentsArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {    
-    return [CommentsViewCell heightForCellWithText:@"@DarkKnight - FooBar is rolling down the mountain. #FooBar"];
+    NSNumber *height = [commentsHeightArray objectAtIndex:indexPath.row];
+    return [height floatValue];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -186,11 +213,11 @@
     
     if(cell == nil) 
         cell = [[[CommentsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CommentsCellIdentifier] autorelease];
-    
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
-    CommentObject *commentObject = (CommentObject*)[commentsArray objectAtIndex:indexPath.row];
-    [cell setRowWithCommentObject:commentObject delegate:self];
+    CommentObject *commentObject = (CommentObject*)[feedObject.commentsArray objectAtIndex:indexPath.row];
+    NSNumber *height = [commentsHeightArray objectAtIndex:indexPath.row];
+    [cell setRowWithCommentObject:commentObject delegate:self labelHeight:[height floatValue]];
     return cell;
 }
 
@@ -203,9 +230,9 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {	
-    [textField setText:@""];
     [textField resignFirstResponder];
-	return YES;
+    [self postComment];
+    return YES;
 }
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField
@@ -235,12 +262,76 @@
     return YES;
 }
 
+#pragma mark - ConnectionManager delegate functions
+
+-(void)httpRequestFailed:(ASIHTTPRequest *)request
+{
+	NSError *error= [request error];
+	NSLog(@"%@",[error localizedDescription]);
+}
+
+-(void)httpRequestFinished:(ASIHTTPRequest *)request
+{
+	NSString *responseJSON = [[request responseString] retain];
+	NSString *urlString= [[request url] absoluteString];
+    int statusCode = [request responseStatusCode];
+    NSString *statusMessage = [request responseStatusMessage];
+    
+    NSLog(@"Status Code - %d\nStatus Message - %@\nResponse:\n%@", statusCode, statusMessage, responseJSON);
+    
+    if([urlString hasPrefix:CommentsUrl])
+    {
+        if(statusCode == 200)
+        {
+            CommentObject *commentObject = [Parser parseCommentResponse:responseJSON];
+            if(commentObject)
+            {
+                [commentField setText:@""];
+                [feedObject.commentsArray addObject:commentObject];
+                feedObject.commentsCount = feedObject.commentsArray.count;
+                CGFloat height = [CommentsViewCell heightForCellWithText:commentObject.commentText];
+                [commentsHeightArray addObject:[NSNumber numberWithFloat:height]];
+                commentsCountLabel.text = [NSString stringWithFormat:@"    %d Comments", feedObject.commentsCount];
+                [UIView animateWithDuration:0.2 
+                                 animations:^{
+                                     commentsTableView.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height, 320.0f, commentsTableView.frame.size.height+height);
+                                     
+                                     commentFieldHolder.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height+commentsTableView.frame.size.height, 320.0f, 44.0f);
+                                     
+                                     self.scrollView.contentSize = CGSizeMake(320, commentFieldHolder.frame.origin.y + commentFieldHolder.frame.size.height);
+                                     
+                                     CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+                                     [self.scrollView setContentOffset:bottomOffset animated:YES];
+                                 }
+                                 completion:^(BOOL finished) {
+                                     NSIndexPath *path = [NSIndexPath indexPathForRow:feedObject.commentsArray.count-1 inSection:0];                
+                                     NSArray *indexArray = [NSArray arrayWithObjects:path,nil];
+                                     [commentsTableView insertRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationBottom];
+                                 }];
+            }
+        }
+        else if(statusCode == 403)
+        {   
+            
+        }
+    }
+    else if([urlString hasPrefix:CommentsUrl])
+    {
+        if(statusCode == 200)
+        {
+            feedObject.likesCount++;
+        }
+    } 
+    
+    [responseJSON release];
+}
+
 #pragma mark - Memory Management
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-
+    
     [self setCommentsCountLabel:nil];
     [self setScrollView:nil];
     [self setCommentFieldHolder:nil];
@@ -252,13 +343,15 @@
     [self setProfilePicView:nil];
     [self setUsernameLabel:nil];
     [self setCommentsTableView:nil];
+    
+    manager.delegate = nil;
+    [manager release];
 }
 
 - (void)dealloc 
 {
-    [commentsArray release];
-    [foobarPhoto release];
-    [profilePicUrl release];
+    [feedObject release];
+    [commentsHeightArray release];
     [imageView release];
     [likeHolderView release];
     [userInfoHolderView release];
@@ -270,6 +363,10 @@
     [commentFieldHolder release];
     [commentProfilePicView release];
     [commentField release];
+    
+    manager.delegate = nil;
+    [manager release];
+    
     [super dealloc];
 }
 @end

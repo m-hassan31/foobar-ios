@@ -2,10 +2,11 @@
 
 @implementation CommentObject
 
-@synthesize commentId, commentText, created_dt, updated_dt, foobarUser;
+@synthesize commentId, commentText, postId, created_dt, updated_dt, foobarUser;
 
 -(NSString*)formattedCommentText
 {
+    NSLog(@"%@", self.commentText);
     return [NSString stringWithFormat:@"%@", self.commentText];
 }
 
@@ -15,6 +16,7 @@
     
     [commentId release];
     [commentText release];
+    [postId release];
     [created_dt release];
     [updated_dt release];
     [foobarUser release];

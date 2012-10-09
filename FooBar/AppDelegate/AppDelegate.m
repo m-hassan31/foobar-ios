@@ -5,6 +5,7 @@
 #import "ProfileViewController.h"
 #import "StreamViewController.h"
 #import "CaptureViewController.h"
+#import "SocialUser.h"
 
 @interface AppDelegate()
 - (NSDictionary*) parseURLParams:(NSString *)query;
@@ -29,7 +30,17 @@
 {
     self.window = [[[FooBarBackground alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
-    [self addSignInViewController];
+    
+    SocialUser *socialUser = [SocialUser currentUser];
+    if(socialUser)
+    {
+        [self addTabBarController];        
+    }
+    else
+    {
+        [self addSignInViewController];
+    }
+    
     [self.window makeKeyAndVisible];
     return YES;
 }

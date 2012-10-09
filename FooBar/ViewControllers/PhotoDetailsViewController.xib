@@ -235,7 +235,7 @@
 									<object class="IBUITextField" id="755230212">
 										<reference key="NSNextResponder" ref="1059794081"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{54, 6}, {255, 31}}</string>
+										<string key="NSFrame">{{54, 7}, {255, 31}}</string>
 										<reference key="NSSuperview" ref="1059794081"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView"/>
@@ -402,6 +402,15 @@
 					<int key="connectionID">35</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">likeButtonPressed:</string>
+						<reference key="source" ref="763026788"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">37</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">dataSource</string>
 						<reference key="source" ref="160394977"/>
@@ -560,7 +569,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">36</int>
+			<int key="maxID">37</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -578,12 +587,12 @@
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="commentField">UITextField</string>
 						<string key="commentFieldHolder">UIView</string>
-						<string key="commentProfilePicView">UIImageView</string>
+						<string key="commentProfilePicView">AsyncImageView</string>
 						<string key="commentsCountLabel">UILabel</string>
 						<string key="commentsTableView">UITableView</string>
-						<string key="imageView">UIImageView</string>
+						<string key="imageView">AsyncImageView</string>
 						<string key="likeHolderView">UIView</string>
-						<string key="profilePicView">UIImageView</string>
+						<string key="profilePicView">AsyncImageView</string>
 						<string key="scrollView">UIScrollView</string>
 						<string key="userInfoHolderView">UIView</string>
 						<string key="usernameLabel">UILabel</string>
@@ -599,7 +608,7 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="commentProfilePicView">
 							<string key="name">commentProfilePicView</string>
-							<string key="candidateClassName">UIImageView</string>
+							<string key="candidateClassName">AsyncImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="commentsCountLabel">
 							<string key="name">commentsCountLabel</string>
@@ -611,7 +620,7 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="imageView">
 							<string key="name">imageView</string>
-							<string key="candidateClassName">UIImageView</string>
+							<string key="candidateClassName">AsyncImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="likeHolderView">
 							<string key="name">likeHolderView</string>
@@ -619,7 +628,7 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="profilePicView">
 							<string key="name">profilePicView</string>
-							<string key="candidateClassName">UIImageView</string>
+							<string key="candidateClassName">AsyncImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="scrollView">
 							<string key="name">scrollView</string>

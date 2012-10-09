@@ -22,6 +22,8 @@
 -(void)getFeedsAtPage:(NSUInteger)_pageNum count:(NSUInteger)_count;
 -(void)getFooBarProducts;
 -(void)uploadPhoto:(UIImage*)image withProductId:(NSString*)productId;
+-(void)comment:(NSString*)text onPost:(NSString*)postId;
+-(void)likePost:(NSString*)postId;
 
 @end
 

@@ -3,7 +3,6 @@
 #import "EndPoints.h"
 #import "EndPointsKeys.h"
 #import "FeedObject.h"
-#import "CommentObject.h"
 
 @implementation Parser
 
@@ -18,17 +17,66 @@
         foobarUser.userId = (NSString*)[userDict objectForKey:kId];
         foobarUser.username = (NSString*)[userDict objectForKey:kUsername];
         foobarUser.lastname =  (NSString*)[userDict objectForKey:kLastname];
+        
         NSString *imageUrl = (NSString*)[userDict objectForKey:kPhotoUrl];
-        foobarUser.photoUrl = [NSString stringWithFormat:@"http://foobarnode.cloudfoundry.com%@", imageUrl];
+        if(imageUrl)
+            foobarUser.photoUrl = [NSString stringWithFormat:@"http://foobarnode.cloudfoundry.com%@", imageUrl];
+        else
+            foobarUser.photoUrl = @"";
+        
         foobarUser.accountType = [(NSString*)[userDict objectForKey:kAccountType] isEqualToString:@"facebook"]?FacebookAccount:TwitterAccount;
         foobarUser.created_dt = (NSString*)[userDict objectForKey:kCreatedDate];
         foobarUser.updated_dt = (NSString*)[userDict objectForKey:kUpdatedDate];
         return foobarUser;
     }
+    
+    return nil;
+}
+
++(CommentObject*)parseCommentResponse:(id)responseData
+{
+    NSDictionary *commentDict = nil;
+    
+    if(responseData && ![responseData isKindOfClass:[NSNull class]] && [responseData isKindOfClass:[NSDictionary class]])
+    {
+        // used while feeds parsing
+        commentDict = (NSDictionary*)responseData;                            
+    }
+    else if(responseData && ![responseData isKindOfClass:[NSNull class]] && [responseData isKindOfClass:[NSString class]])
+    {
+        //used directly during comment action
+        NSString *responseString = (NSString*)responseData;
+        SBJSON *sbJSON = [SBJSON new];
+        id parsedData = [sbJSON objectWithString:responseString];
+        if(parsedData && ![parsedData isKindOfClass:[NSNull class]] && [parsedData isKindOfClass:[NSDictionary class]])
+        {
+            commentDict = (NSDictionary*)parsedData;
+        }
+        else
+        {
+            return nil;
+        }
+    }
     else
     {
         return nil;
     }
+    
+    CommentObject *commentObject = [[[CommentObject alloc] init] autorelease];
+    commentObject.commentId = (NSString*)[commentDict objectForKey:kId];
+    commentObject.commentText = (NSString*)[commentDict objectForKey:kComments_Text];
+    //commentObject.postId = feedObject.feedId;
+    commentObject.created_dt = (NSString*)[commentDict objectForKey:kCreatedDate];
+    commentObject.updated_dt = (NSString*)[commentDict objectForKey:kUpdatedDate];
+    
+    // Parse User info
+    FooBarUser *foobaruser = [Parser parseUserResponse:commentDict];
+    if(foobaruser)
+    {
+        commentObject.foobarUser = foobaruser;
+        return commentObject;
+    }
+    return nil;
 }
 
 +(NSArray*)parseFeedsResponse:(NSString*)response
@@ -74,8 +122,13 @@
                     FooBarPhoto *foobarPhoto = [[FooBarPhoto alloc] init];
                     NSDictionary *photoDict = (NSDictionary*)photoData;                    
                     foobarPhoto.photoId = (NSString*)[photoDict objectForKey:kId];
+                    
                     NSString *imageUrl = (NSString*)[photoDict objectForKey:kUrl];
-                    foobarPhoto.url = [NSString stringWithFormat:@"http://foobarnode.cloudfoundry.com%@", imageUrl];
+                    if(imageUrl)
+                        foobarPhoto.url = [NSString stringWithFormat:@"http://foobarnode.cloudfoundry.com%@", imageUrl];
+                    else
+                        foobarPhoto.url = @"";
+                    
                     foobarPhoto.width =  [(NSString*)[photoDict objectForKey:kFeeds_Width] integerValue];
                     foobarPhoto.height =  [(NSString*)[photoDict objectForKey:kFeeds_Height] integerValue];
                     foobarPhoto.filename = (NSString*)[photoDict objectForKey:kFeeds_Filename];
@@ -95,12 +148,13 @@
                     NSArray *parsedCommentsArray = (NSArray*)parsedCommentsData;
                     for(id anObj in parsedCommentsArray)
                     {
-                        if(anObj && ![anObj isKindOfClass:[NSNull class]] && [anObj isKindOfClass:[NSDictionary class]])
+                        /*if(anObj && ![anObj isKindOfClass:[NSNull class]] && [anObj isKindOfClass:[NSDictionary class]])
                         {
                             NSDictionary *commentDict = (NSDictionary*)anObj;                            
                             CommentObject *commentObject = [[CommentObject alloc] init];
                             commentObject.commentId = (NSString*)[commentDict objectForKey:kId];
                             commentObject.commentText = (NSString*)[commentDict objectForKey:kComments_Text];
+                            commentObject.postId = feedObject.feedId;
                             commentObject.created_dt = (NSString*)[commentDict objectForKey:kCreatedDate];
                             commentObject.updated_dt = (NSString*)[commentDict objectForKey:kUpdatedDate];
                             
@@ -108,7 +162,7 @@
                             FooBarUser *foobaruser = [Parser parseUserResponse:commentDict];
                             if(foobaruser)
                             {
-                                feedObject.foobarUser = foobaruser;
+                                commentObject.foobarUser = foobaruser;
                             }
                             else
                             {
@@ -121,15 +175,25 @@
                         else
                         {
                             return nil;
+                        }*/
+                        
+                        CommentObject *commentObject = [Parser parseCommentResponse:anObj];
+                        if(commentObject)
+                        {
+                            [commentsArray addObject:commentObject];
+                        }
+                        else
+                        {
+                            return nil;
                         }
                     }
-                    feedObject.commentsArray = (NSArray*)commentsArray;
+                    feedObject.commentsArray = commentsArray;
                 }
                 else
                 {
                     return nil;
                 }
-                                
+                
                 [feedsArray addObject:feedObject];
             }
             else

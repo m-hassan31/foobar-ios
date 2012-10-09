@@ -15,9 +15,7 @@
 @interface CommentsViewCell : UITableViewCell
 {
     AsyncImageView *cellImageView;
-    UIImageView *profilePicBorder;
     UIButton *userNameButton;
-    UILabel *timeLabel;
     TTTAttributedLabel *_commentLabel;
     
     NSString *_commentText;
@@ -34,7 +32,6 @@
 @property (nonatomic, retain) TTTAttributedLabel *commentLabel;
 
 +(CGFloat)heightForCellWithText:(NSString *)text;
--(void)cleanUpCellBeforeNextWrite;
--(void)setRowWithCommentObject:(CommentObject*)commentObj delegate:(id)_delegate;
+-(void)setRowWithCommentObject:(CommentObject*)commentObj delegate:(id)_delegate labelHeight:(CGFloat)height;
 
 @end

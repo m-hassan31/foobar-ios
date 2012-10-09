@@ -2,6 +2,7 @@
 #import "AsyncImageView.h"
 #import "CustomCellBGView.h"
 #import "AppDelegate.h"
+#import "SocialUser.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation ProfileViewController
@@ -240,6 +241,7 @@
 {
     if(buttonIndex == 0)
     {
+        [SocialUser clearCurrentUser];
         AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
         [appDelegate addSignInViewController];
     }
