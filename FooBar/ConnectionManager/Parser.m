@@ -19,10 +19,7 @@
         foobarUser.lastname =  (NSString*)[userDict objectForKey:kLastname];
         
         NSString *imageUrl = (NSString*)[userDict objectForKey:kPhotoUrl];
-        if(imageUrl)
-            foobarUser.photoUrl = [NSString stringWithFormat:@"http://foobarnode.cloudfoundry.com%@", imageUrl];
-        else
-            foobarUser.photoUrl = @"";
+        foobarUser.photoUrl = imageUrl?imageUrl:@"";
         
         foobarUser.accountType = [(NSString*)[userDict objectForKey:kAccountType] isEqualToString:@"facebook"]?FacebookAccount:TwitterAccount;
         foobarUser.created_dt = (NSString*)[userDict objectForKey:kCreatedDate];

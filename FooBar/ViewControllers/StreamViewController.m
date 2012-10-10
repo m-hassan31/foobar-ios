@@ -74,17 +74,23 @@
     }
     
     FeedObject *feedObject = [feedsArray objectAtIndex:indexPath.row];
+    aFeed.photoView.image = nil;
     aFeed.photoView.imageUrl = feedObject.foobarPhoto.url;
     aFeed.likesCountLabel.text = [NSString stringWithFormat:@"      %d", feedObject.likesCount];
     
     // set user image
+    aFeed.profilePicView.image = nil;
     NSString* imageUrl = feedObject.foobarUser.photoUrl;
     if (imageUrl && ![imageUrl isEqualToString:@""])
         [aFeed.profilePicView setImageUrl:imageUrl];
     else
         [aFeed.profilePicView setImage:[UIImage imageNamed:@"DefaultUser.png"]];//defaultContactImage
     
-    aFeed.usernameLabel.text = @"username"/*feedObject.foobarUser.username*/;
+    if(feedObject.foobarUser.username && ![feedObject.foobarUser.username isEqualToString:@""])
+        aFeed.usernameLabel.text = feedObject.foobarUser.username;
+    else
+        aFeed.usernameLabel.text = @"username";
+    
     return aFeed;
 }
 

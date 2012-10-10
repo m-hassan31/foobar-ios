@@ -120,7 +120,7 @@
 
 - (void)twitterAccountSelected
 {
-    
+    return;
     if(!twitterUtil)
         twitterUtil= [[TwitterUtil alloc] initWithDelegate:self];
     

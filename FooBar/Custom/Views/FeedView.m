@@ -65,7 +65,7 @@ const CGFloat kFeedViewMargin = 0;
 - (AsyncImageView *)profilePicView {
     if (!_profilePicView) {
         _profilePicView = [[AsyncImageView alloc] init];
-        _profilePicView.contentMode = UIViewContentModeScaleAspectFill;
+        _profilePicView.contentMode = UIViewContentModeScaleAspectFit;
         _profilePicView.clipsToBounds = YES;
         [self addSubview:_profilePicView];
     }
