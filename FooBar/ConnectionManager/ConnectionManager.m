@@ -107,6 +107,24 @@
     [request startAsynchronous];
 }
 
+-(void)updatePost:(NSString*)postId withCaption:(NSString*)caption
+{
+    // Instantiate an HTTP request.
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",PhotosUrl, postId]];
+    ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];
+    [request setRequestMethod:@"PUT"];
+    [request addRequestHeader:@"Content-Type" value:@"application/json"];
+    request.delegate = self;
+    
+    NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:
+                            caption, @"photo_caption", nil];
+    [request appendPostData:[FooBarUtils jsonFromDictionary:params]];
+    [params release];
+    
+    // Send the request.
+    [request startAsynchronous];
+}
+
 -(void)comment:(NSString*)text onPost:(NSString*)postId
 {
     [self showHUDwithText:@"Posting"];

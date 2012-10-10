@@ -4,17 +4,31 @@
    version = "1.0">
    <FileBreakpoints>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "FooBar/ViewControllers/UploadViewController.m"
+         timestampString = "371566605.575861"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "262"
+         endingLineNumber = "262"
+         landmarkName = "-httpRequestFinished:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "FooBar/ConnectionManager/Parser.m"
-         timestampString = "371536068.396614"
+         timestampString = "371566655.884604"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "12"
-         endingLineNumber = "12"
-         landmarkName = "+parseUserResponse:"
+         startingLineNumber = "179"
+         endingLineNumber = "179"
+         landmarkName = "+parseUploadResponse:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

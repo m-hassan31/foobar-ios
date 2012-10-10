@@ -88,13 +88,28 @@
 
 -(IBAction)galleryButtonPressed:(id)sender
 {
-    UIImagePickerController *imagePickController=[[UIImagePickerController alloc]init];
-    //You can use isSourceTypeAvailable to check
-    imagePickController.sourceType=UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-    imagePickController.delegate=self;
-    imagePickController.allowsEditing=NO;
-    [self presentModalViewController:imagePickController animated:YES];
-    [imagePickController release];
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum])
+    {
+        UIImagePickerController *imagePickController=[[UIImagePickerController alloc]init];
+        imagePickController.sourceType=UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        imagePickController.delegate=self;
+        imagePickController.allowsEditing=NO;
+        [self presentModalViewController:imagePickController animated:YES];
+        [imagePickController release];
+    }
+    else if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+    {
+        UIImagePickerController *imagePickController=[[UIImagePickerController alloc]init];
+        imagePickController.sourceType=UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        imagePickController.delegate=self;
+        imagePickController.allowsEditing=NO;
+        [self presentModalViewController:imagePickController animated:YES];
+        [imagePickController release];        
+    }
+    else
+    {
+        [FooBarUtils showAlertMessage:@"Gallery not available."];
+    }
 }
 
 -(IBAction)cancelButtonPressed:(id)sender

@@ -35,4 +35,9 @@
 // Comments Response keys
 #define kComments_Text                      @"text"
 
+// FooBar Products Keys
+#define kProductsId                         @"id"
+#define kProductsName                       @"name"
+#define kProductsDescription                @"desc"
+
 #endif

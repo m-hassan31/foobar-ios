@@ -52,6 +52,11 @@
 		849762F415F4AA4100391813 /* FeedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 849762F315F4AA4100391813 /* FeedView.m */; };
 		8497630015F4D89000391813 /* PhotoDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849762FE15F4D88F00391813 /* PhotoDetailsViewController.m */; };
 		8497630115F4D89000391813 /* PhotoDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 849762FF15F4D89000391813 /* PhotoDetailsViewController.xib */; };
+		849AFE0E16257153006A5AD9 /* UploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849AFE0C16257152006A5AD9 /* UploadViewController.m */; };
+		849AFE0F16257153006A5AD9 /* UploadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 849AFE0D16257153006A5AD9 /* UploadViewController.xib */; };
+		849AFE171625739E006A5AD9 /* Upload.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AFE151625739E006A5AD9 /* Upload.png */; };
+		849AFE181625739E006A5AD9 /* Upload@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AFE161625739E006A5AD9 /* Upload@2x.png */; };
+		849AFE261625A30F006A5AD9 /* FooBarProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 849AFE251625A30F006A5AD9 /* FooBarProduct.m */; };
 		849BDB7A1622B74900C272B9 /* FooBarPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 849BDB791622B74900C272B9 /* FooBarPhoto.m */; };
 		849BDB871622E43800C272B9 /* FooBarUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 849BDB861622E43800C272B9 /* FooBarUser.m */; };
 		84A36BE615F50B100040A9EE /* Like.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A36BE415F50B100040A9EE /* Like.png */; };
@@ -214,6 +219,13 @@
 		849762FD15F4D88F00391813 /* PhotoDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoDetailsViewController.h; sourceTree = "<group>"; };
 		849762FE15F4D88F00391813 /* PhotoDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoDetailsViewController.m; sourceTree = "<group>"; };
 		849762FF15F4D89000391813 /* PhotoDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoDetailsViewController.xib; sourceTree = "<group>"; };
+		849AFE0B16257152006A5AD9 /* UploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadViewController.h; sourceTree = "<group>"; };
+		849AFE0C16257152006A5AD9 /* UploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadViewController.m; sourceTree = "<group>"; };
+		849AFE0D16257153006A5AD9 /* UploadViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadViewController.xib; sourceTree = "<group>"; };
+		849AFE151625739E006A5AD9 /* Upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Upload.png; sourceTree = "<group>"; };
+		849AFE161625739E006A5AD9 /* Upload@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Upload@2x.png"; sourceTree = "<group>"; };
+		849AFE241625A30F006A5AD9 /* FooBarProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooBarProduct.h; sourceTree = "<group>"; };
+		849AFE251625A30F006A5AD9 /* FooBarProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooBarProduct.m; sourceTree = "<group>"; };
 		849BDB781622B74900C272B9 /* FooBarPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooBarPhoto.h; sourceTree = "<group>"; };
 		849BDB791622B74900C272B9 /* FooBarPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooBarPhoto.m; sourceTree = "<group>"; };
 		849BDB7C1622BA9200C272B9 /* EndPointsKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EndPointsKeys.h; sourceTree = "<group>"; };
@@ -517,6 +529,8 @@
 				849BDB791622B74900C272B9 /* FooBarPhoto.m */,
 				849BDB851622E43800C272B9 /* FooBarUser.h */,
 				849BDB861622E43800C272B9 /* FooBarUser.m */,
+				849AFE241625A30F006A5AD9 /* FooBarProduct.h */,
+				849AFE251625A30F006A5AD9 /* FooBarProduct.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -650,6 +664,8 @@
 				84BBD71B15F1F7BF007D1F9D /* Back@2x.png */,
 				840D4EB3162448C30010B987 /* Front.png */,
 				840D4EB4162448C30010B987 /* Front@2x.png */,
+				849AFE151625739E006A5AD9 /* Upload.png */,
+				849AFE161625739E006A5AD9 /* Upload@2x.png */,
 				84BBD71C15F1F7BF007D1F9D /* Camera.png */,
 				84BBD71D15F1F7BF007D1F9D /* Camera@2x.png */,
 				84BBD71E15F1F7BF007D1F9D /* CancelCapture.png */,
@@ -741,6 +757,9 @@
 				849762E915F47D2000391813 /* ProfileViewController.h */,
 				849762EA15F47D2000391813 /* ProfileViewController.m */,
 				849762EB15F47D2000391813 /* ProfileViewController.xib */,
+				849AFE0B16257152006A5AD9 /* UploadViewController.h */,
+				849AFE0C16257152006A5AD9 /* UploadViewController.m */,
+				849AFE0D16257153006A5AD9 /* UploadViewController.xib */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -906,6 +925,9 @@
 				8C4005971603AFF500F11091 /* Logo@2x.png in Resources */,
 				840D4EB5162448C30010B987 /* Front.png in Resources */,
 				840D4EB6162448C30010B987 /* Front@2x.png in Resources */,
+				849AFE0F16257153006A5AD9 /* UploadViewController.xib in Resources */,
+				849AFE171625739E006A5AD9 /* Upload.png in Resources */,
+				849AFE181625739E006A5AD9 /* Upload@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -975,6 +997,8 @@
 				84B511131622B38E008CD03E /* FeedObject.m in Sources */,
 				849BDB7A1622B74900C272B9 /* FooBarPhoto.m in Sources */,
 				849BDB871622E43800C272B9 /* FooBarUser.m in Sources */,
+				849AFE0E16257153006A5AD9 /* UploadViewController.m in Sources */,
+				849AFE261625A30F006A5AD9 /* FooBarProduct.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

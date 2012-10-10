@@ -2,7 +2,7 @@
 #import "SBJSON.h"
 #import "EndPoints.h"
 #import "EndPointsKeys.h"
-#import "FeedObject.h"
+#import "FooBarProduct.h"
 
 @implementation Parser
 
@@ -144,36 +144,7 @@
                     NSMutableArray *commentsArray = [[[NSMutableArray alloc] init] autorelease];
                     NSArray *parsedCommentsArray = (NSArray*)parsedCommentsData;
                     for(id anObj in parsedCommentsArray)
-                    {
-                        /*if(anObj && ![anObj isKindOfClass:[NSNull class]] && [anObj isKindOfClass:[NSDictionary class]])
-                        {
-                            NSDictionary *commentDict = (NSDictionary*)anObj;                            
-                            CommentObject *commentObject = [[CommentObject alloc] init];
-                            commentObject.commentId = (NSString*)[commentDict objectForKey:kId];
-                            commentObject.commentText = (NSString*)[commentDict objectForKey:kComments_Text];
-                            commentObject.postId = feedObject.feedId;
-                            commentObject.created_dt = (NSString*)[commentDict objectForKey:kCreatedDate];
-                            commentObject.updated_dt = (NSString*)[commentDict objectForKey:kUpdatedDate];
-                            
-                            // Parse User info
-                            FooBarUser *foobaruser = [Parser parseUserResponse:commentDict];
-                            if(foobaruser)
-                            {
-                                commentObject.foobarUser = foobaruser;
-                            }
-                            else
-                            {
-                                return nil;
-                            }
-                            
-                            [commentsArray addObject:commentObject];
-                            [commentObject release];
-                        }
-                        else
-                        {
-                            return nil;
-                        }*/
-                        
+                    {                        
                         CommentObject *commentObject = [Parser parseCommentResponse:anObj];
                         if(commentObject)
                         {
@@ -201,6 +172,88 @@
     }
     
     return feedsArray;
+}
+
++(FeedObject*)parseUploadResponse:(NSString*)response
+{
+    SBJSON *sbJSON = [SBJSON new];
+    id parsedDict = [sbJSON objectWithString:response];
+    if(parsedDict && ![parsedDict isKindOfClass:[NSNull class]] && [parsedDict isKindOfClass:[NSDictionary class]])
+    {       
+        FeedObject *feedObject = [[[FeedObject alloc] init] autorelease];
+        
+        // Parse User info
+        FooBarUser *foobaruser = [Parser parseUserResponse:parsedDict];
+        if(foobaruser)
+        {
+            feedObject.foobarUser = foobaruser;
+        }
+        else
+        {
+            return nil;
+        }
+        
+        // Parse Feed info
+        feedObject.feedId = (NSString*)[parsedDict objectForKey:kId];
+        feedObject.created_dt = (NSString*)[parsedDict objectForKey:kCreatedDate];
+        feedObject.updated_dt = (NSString*)[parsedDict objectForKey:kUpdatedDate];
+        feedObject.productId = (NSString*)[parsedDict objectForKey:kFeeds_ProductId];
+        feedObject.photoCaption = (NSString*)[parsedDict objectForKey:kFeeds_PhotoCaption];
+        feedObject.commentsCount = [(NSString*)[parsedDict objectForKey:kFeeds_CommentsCount] integerValue];
+        feedObject.likesCount = [(NSString*)[parsedDict objectForKey:kFeeds_LikesCount] integerValue];
+        
+        // Parse Photo info
+        id photoData = [parsedDict objectForKey:kFeeds_Photo];
+        if(photoData && ![photoData isKindOfClass:[NSNull class]] && [photoData isKindOfClass:[NSDictionary class]])
+        {
+            FooBarPhoto *foobarPhoto = [[FooBarPhoto alloc] init];
+            NSDictionary *photoDict = (NSDictionary*)photoData;                    
+            foobarPhoto.photoId = (NSString*)[photoDict objectForKey:kId];
+            
+            NSString *imageUrl = (NSString*)[photoDict objectForKey:kUrl];
+            if(imageUrl)
+                foobarPhoto.url = [NSString stringWithFormat:@"http://foobarnode.cloudfoundry.com%@", imageUrl];
+            else
+                foobarPhoto.url = @"";
+            
+            foobarPhoto.width =  [(NSString*)[photoDict objectForKey:kFeeds_Width] integerValue];
+            foobarPhoto.height =  [(NSString*)[photoDict objectForKey:kFeeds_Height] integerValue];
+            foobarPhoto.filename = (NSString*)[photoDict objectForKey:kFeeds_Filename];
+            feedObject.foobarPhoto = foobarPhoto;
+            return  feedObject;
+        }
+    }
+    return nil;
+}
+
++(NSArray*)parseProductsresponse:(NSString*)response
+{
+    NSMutableArray *productsArray = [[[NSMutableArray alloc] init] autorelease];
+    SBJSON *sbJSON = [SBJSON new];
+    id parsedData = [sbJSON objectWithString:response];
+    if(parsedData && ![parsedData isKindOfClass:[NSNull class]] && [parsedData isKindOfClass:[NSArray class]])
+    {
+        NSArray *parsedArray = (NSArray*)parsedData;
+        for(id anObj in parsedArray)
+        {
+            if(anObj && ![anObj isKindOfClass:[NSNull class]] && [anObj isKindOfClass:[NSDictionary class]])
+            {
+                NSDictionary *parsedDict = (NSDictionary*)anObj;
+                
+                FooBarProduct *foobarProduct = [[[FooBarProduct alloc] init] autorelease];
+                
+                // Parse Product info
+                foobarProduct.productId = (NSString*)[parsedDict objectForKey:kProductsId];
+                foobarProduct.name = (NSString*)[parsedDict objectForKey:kProductsName];
+                foobarProduct.description = (NSString*)[parsedDict objectForKey:kProductsDescription];
+                
+                [productsArray addObject:foobarProduct];
+            }
+        }
+        return productsArray;
+    }
+                
+    return nil;
 }
 
 @end

@@ -2,6 +2,7 @@
 #import "FooBarUtils.h"
 #import "EndPoints.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UploadViewController.h"
 
 #define FOOBAR_IMAGE_WIDTH  243
 #define FOOBAR_IMAGE_HEIGHT 128
@@ -108,30 +109,25 @@
     
     manager = [[ConnectionManager alloc] init];
     manager.delegate = self;
-    
-    [manager getFooBarProducts];
 }
 
 -(void)backButtonPressed:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)uploadButtonPressed:(id)sender {
+-(void)uploadButtonPressed:(id)sender 
+{
     UIGraphicsBeginImageContext(imageView.bounds.size);
     [imageView.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *imageToSave = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
-    [manager uploadPhoto:imageToSave withProductId:[NSString stringWithFormat:@"%d",(arc4random()%5)+1]];
-}
 
--(void)saveImageAction:(id)sender {
-    UIGraphicsBeginImageContext(imageView.bounds.size);
-    [imageView.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *imageToSave = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
     UIImageWriteToSavedPhotosAlbum(imageToSave,nil, nil, nil);
+    
+    UploadViewController *uploadVC = [[UploadViewController alloc] initWithNibName:@"UploadViewController" bundle:nil];
+    uploadVC.image = imageToSave;
+    [self.navigationController pushViewController:uploadVC animated:YES];
+    [uploadVC release];
 }
 
 -(void)scale:(id)sender {
@@ -278,9 +274,11 @@
     {
         if(statusCode == 200)
         {
+            
         }
         else if(statusCode == 403)
-        {   
+        {
+            
         }
     }
 }
