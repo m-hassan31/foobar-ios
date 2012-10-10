@@ -5,6 +5,14 @@
 #import "SocialUser.h"
 #import <QuartzCore/QuartzCore.h>
 
+@interface ProfileViewController()
+
+-(void)showHUDwithText:(NSString*)text;
+-(void)hideHud;
+-(void)signOutAction;
+
+@end
+
 @implementation ProfileViewController
 @synthesize accountsTableView;
 
@@ -233,9 +241,50 @@
 {
     if(buttonIndex == 0)
     {
-        [SocialUser clearCurrentUser];
-        AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-        [appDelegate addSignInViewController];
+        [self showHUDwithText:@"Signing Out"];
+        [self performSelector:@selector(signOutAction) withObject:nil afterDelay:1.0];
+    }
+}
+
+-(void)signOutAction
+{
+    [self hideHud];
+    [SocialUser clearCurrentUser];
+    [FooBarUtils showAlertMessage:@"You have successfully signed out"];
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate addSignInViewController];
+}
+
+#pragma mark -
+#pragma mark SAProgressHUD functions
+
+- (void)hideHud
+{
+	// Remove HUD from screen when the HUD was hidded
+    if(hud)
+    {
+        hud.delegate = nil;
+		[hud removeFromSuperview];
+		[hud release];
+		hud = nil;
+    }
+}
+
+-(void)showHUDwithText:(NSString *)text
+{
+	if(!hud)
+    {
+		UIWindow *window = [UIApplication sharedApplication].keyWindow;
+		hud = [[SAProgressHUD alloc] initWithWindow:window];
+		// Add HUD to screen
+		[window addSubview:hud];
+		
+		// Regisete for HUD callbacks so we can remove it from the window at the right time
+        hud.delegate = nil; /* Setting hud delegate to nil to handle this manually*/
+		
+		// Show the HUD while the provided method executes in a new thread
+		[hud show:YES];
+		hud.labelText = text;
     }
 }
 

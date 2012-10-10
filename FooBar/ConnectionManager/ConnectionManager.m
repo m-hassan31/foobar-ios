@@ -100,7 +100,6 @@
     [request addRequestHeader:@"X-foobar-access-token" value:socialUser.accessToken];
     [request addRequestHeader:@"X-foobar-product-id" value:productId];
     
-    //NSString* filename = [NSString stringWithFormat:@"%d_%@.jpg", arc4random()%57, @"FooBar"]; 
     [request setData:UIImageJPEGRepresentation(image, 1.0) forKey:@"pic"];
     
     request.delegate = self;

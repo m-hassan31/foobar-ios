@@ -179,7 +179,6 @@
     //[manager signin];
 }
 
-
 #pragma mark -
 #pragma mark SAProgressHUD functions
 
