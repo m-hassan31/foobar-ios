@@ -78,7 +78,8 @@
     NSLog(@"AsyncImageView : touchesEnded");
 
     if(delegate && [delegate respondsToSelector:@selector(handleTapWithId:)])
-    [delegate handleTapWithId:self.Id];
+    //[delegate handleTapWithId:self.Id];
+        [delegate handleTap];
 }
 
 #pragma ImageDownloader delegate

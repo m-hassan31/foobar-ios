@@ -31,5 +31,6 @@
 
 @optional
 -(void) didFinishLoadingImage:(UIImage *)image fromCache:(BOOL)cache;
--(void) handleTapWithId:(NSString *)ID;
+//-(void) handleTapWithId:(NSString*)ID;
+-(void) handleTap;
 @end

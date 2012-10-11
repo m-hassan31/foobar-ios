@@ -8,6 +8,7 @@
 #import "EndPoints.h"
 #import "Parser.h"
 #import "FeedObject.h"
+#import "ImageZoomingViewController.h"
 
 @interface StreamViewController ()
 @end
@@ -111,7 +112,15 @@
     PhotoDetailsViewController *photoDetailsVC = [[PhotoDetailsViewController alloc] initWithNibName:@"PhotoDetailsViewController" bundle:nil];
     photoDetailsVC.feedObject = feedObject;
     [self.navigationController pushViewController:photoDetailsVC animated:YES];
-    [photoDetailsVC release];  
+    [photoDetailsVC release];
+    
+    /*FeedView *fView = (FeedView*)[quiltView cellAtIndexPath:indexPath];
+    
+    
+    ImageZoomingViewController* imageZoomingViewController = [[ImageZoomingViewController alloc] initWithImage:fView.photoView.image];
+    imageZoomingViewController.animateFrame= CGRectOffset(fView.photoView.frame,0,44);
+    [self.navigationController pushViewController:imageZoomingViewController animated:NO];
+    [imageZoomingViewController release];*/
 }
 
 - (NSInteger)quiltViewNumberOfColumns:(TMQuiltView *)_quiltView 

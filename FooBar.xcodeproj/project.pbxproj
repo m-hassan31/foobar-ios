@@ -128,6 +128,7 @@
 		8C4005931603A9BF00F11091 /* Or@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C40058F1603A9BF00F11091 /* Or@2x.png */; };
 		8C4005961603AFF500F11091 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C4005941603AFF400F11091 /* Logo.png */; };
 		8C4005971603AFF500F11091 /* Logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C4005951603AFF500F11091 /* Logo@2x.png */; };
+		8C5B599B162744C600325A39 /* ImageZoomingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B59981627435500325A39 /* ImageZoomingViewController.m */; };
 		8CB4D4191620BF2A00A42B78 /* FacebookUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4D40A1620BF2A00A42B78 /* FacebookUtil.m */; };
 		8CB4D41A1620BF2A00A42B78 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4D40E1620BF2A00A42B78 /* NSData+Base64.m */; };
 		8CB4D41B1620BF2A00A42B78 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4D4101620BF2A00A42B78 /* OAuth+Additions.m */; };
@@ -326,6 +327,9 @@
 		8C40058F1603A9BF00F11091 /* Or@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Or@2x.png"; sourceTree = "<group>"; };
 		8C4005941603AFF400F11091 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo.png; sourceTree = "<group>"; };
 		8C4005951603AFF500F11091 /* Logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Logo@2x.png"; sourceTree = "<group>"; };
+		8C5B59971627435500325A39 /* ImageZoomingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageZoomingViewController.h; sourceTree = "<group>"; };
+		8C5B59981627435500325A39 /* ImageZoomingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageZoomingViewController.m; sourceTree = "<group>"; };
+		8C5B59991627435500325A39 /* ImageZoomingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageZoomingViewController.xib; sourceTree = "<group>"; };
 		8CB4D4091620BF2A00A42B78 /* FacebookUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookUtil.h; sourceTree = "<group>"; };
 		8CB4D40A1620BF2A00A42B78 /* FacebookUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookUtil.m; sourceTree = "<group>"; };
 		8CB4D40D1620BF2A00A42B78 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -773,6 +777,9 @@
 				849AFE0B16257152006A5AD9 /* UploadViewController.h */,
 				849AFE0C16257152006A5AD9 /* UploadViewController.m */,
 				849AFE0D16257153006A5AD9 /* UploadViewController.xib */,
+				8C5B59971627435500325A39 /* ImageZoomingViewController.h */,
+				8C5B59981627435500325A39 /* ImageZoomingViewController.m */,
+				8C5B59991627435500325A39 /* ImageZoomingViewController.xib */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -951,6 +958,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C5B599B162744C600325A39 /* ImageZoomingViewController.m in Sources */,
 				84D613B715EFDB57000B0CE5 /* AppDelegate.m in Sources */,
 				84D613BB15EFDB57000B0CE5 /* main.m in Sources */,
 				84D613BC15EFDB57000B0CE5 /* FooBarUtils.m in Sources */,
