@@ -71,9 +71,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(section == 0)
-        return 3;
+        return 2;
     else if(section == 1)
-        return 4;
+        return 2;
     else
         return 0;
 }
@@ -85,22 +85,13 @@
         UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
         
         UILabel *fullName = [[UILabel alloc] init];
-        fullName.frame = CGRectMake(10, 10, 220, 18);
+        fullName.frame = CGRectMake(10, 18, 220, 18);
         fullName.backgroundColor = [UIColor clearColor];
         fullName.font = [UIFont boldSystemFontOfSize:16.0];
         fullName.textColor = [UIColor blackColor];
         fullName.highlightedTextColor = [UIColor whiteColor];
         [cell.contentView addSubview:fullName];
         [fullName release];
-        
-        /*UILabel *screenName = [[UILabel alloc] init];
-        screenName.backgroundColor = [UIColor clearColor];
-        screenName.frame = CGRectMake(10, 30, 220, 16);
-        screenName.font = [UIFont systemFontOfSize:14.0];
-        screenName.textColor = [UIColor colorWithRed:182.0/255.0 green:49.0/255.0 blue:37.0/255.0 alpha:1.0];
-        screenName.highlightedTextColor = [UIColor whiteColor];
-        [cell.contentView addSubview:screenName];
-        [screenName release];*/
         
         AsyncImageView *profilePic = [[AsyncImageView alloc]initWithFrame:CGRectMake(235, 7, 40, 40)];
         profilePic.contentMode = UIViewContentModeScaleAspectFit;
@@ -111,7 +102,6 @@
         if(foobarUser)
         {
             fullName.text = [NSString stringWithFormat:@"%@ %@", foobarUser.firstname, foobarUser.lastname?foobarUser.lastname:@""];
-            //screenName.text = [NSString stringWithFormat:@"@%@",@"rvp"];
             
             // set user image
             profilePic.image = nil;
@@ -142,10 +132,6 @@
                     cell.textLabel.text = @"Edit Profile";
                     break;
                     
-                case 2:
-                    cell.textLabel.text = @"Change Profile Pic";
-                    break;
-                    
                 default:
                     break;
             }
@@ -159,14 +145,6 @@
                     break;
                     
                 case 1:
-                    cell.textLabel.text = @"Search Users";
-                    break;
-                    
-                case 2:
-                    cell.textLabel.text = @"Search HashTags";
-                    break;
-                    
-                case 3:
                     cell.textLabel.text = @"Sign Out";
                     break;
                     
@@ -197,7 +175,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if(indexPath.section == 1 && indexPath.row == 3)
+    if(indexPath.section == 1 && indexPath.row == 1)
     {
         UIActionSheet *signOutActionSheet = [[UIActionSheet alloc]
                                              initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Sign Out", nil];

@@ -109,11 +109,12 @@
     if(!twitterAccountPicker)
     {
         twitterAccountPicker = [[TwitterAccountPickerController alloc]init];
-        twitterAccountPicker.view.frame = CGRectMake(0, 480, 320, 260);
+        twitterAccountPicker.view.frame = CGRectMake(0, 416, 320, 260);
         twitterAccountPicker.delegate = self;
         [self.view addSubview:twitterAccountPicker.view];
     }
-    
+    self.facebookButton.userInteractionEnabled = NO;
+    self.twitterButton.userInteractionEnabled = NO;
     [twitterAccountPicker fetchTwitterAccountsAndConfigure];
 }
 
@@ -130,6 +131,12 @@
         NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
         [twitterUtil getTwitterInfo:[defaults objectForKey:kTwitterUsername]];
     }
+}
+
+-(void)twitterAccountCancelled
+{
+    self.facebookButton.userInteractionEnabled = YES;
+    self.twitterButton.userInteractionEnabled = YES;
 }
 
 #pragma mark -
@@ -176,7 +183,7 @@
     [self hideHud];
     
     [twitterUtil getAccessToken];
-//   [manager signin];
+    //   [manager signin];
 }
 
 #pragma mark -

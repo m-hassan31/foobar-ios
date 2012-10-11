@@ -19,7 +19,7 @@
     NSLog(@"TwitterAccountPickerController : viewDidLoad");
     
     [super viewDidLoad];
-        
+    
     // create the array to hold the buttons, which then gets added to the toolbar
     NSMutableArray* buttons = [[NSMutableArray alloc] initWithCapacity:3];
     
@@ -45,35 +45,35 @@
     // stick the buttons in the toolbar
     [toolBar setItems:buttons animated:NO];
     
-    [buttons release];    
+    [buttons release];
 }
 
 -(void)fetchTwitterAccountsAndConfigure
 {
     if([FooBarUtils isDeviceOS5])
-      {
+    {
 #ifdef __IPHONE_5_0
 		
         // clear previously saved twitter account (if any)
         NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
         [defaults setObject:nil forKey:@"PhoneTwitterAccount"];
         
-        if([TWTweetComposeViewController canSendTweet]) 
-        {       
+        if([TWTweetComposeViewController canSendTweet])
+        {
             store = [[ACAccountStore alloc] init];
             ACAccountType *twitterType = [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
             
             //[self showHUDwithText:@""];
 			
-            [store requestAccessToAccountsWithType:twitterType withCompletionHandler:^(BOOL granted, NSError *error) 
+            [store requestAccessToAccountsWithType:twitterType withCompletionHandler:^(BOOL granted, NSError *error)
              {
                  BOOL bConfigured = FALSE;
                  
                  if(granted)
-                 {                      
+                 {
                      //accessgranted
                      [self setTwitterAccountsArray : [store accountsWithAccountType:twitterType]];
-                      selectedRow = 0;
+                     selectedRow = 0;
                      
                      if(twitterAccountsArray != nil)
                      {
@@ -105,7 +105,7 @@
             {
                 [hud hide:YES];
             }
-        } 
+        }
         else
         {
             //[[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_ENABLE_ACCOUNTPICKER_CANCEL object:nil];
@@ -128,7 +128,7 @@
 	
 	if(delegate)
 	{
-		if ([delegate respondsToSelector:@selector(twitterAccountSelected)]) 
+		if ([delegate respondsToSelector:@selector(twitterAccountSelected)])
         {
 			TwitterUtil* twUtil = (TwitterUtil*)[[TwitterUtil alloc] initWithDelegate:nil];
 			[twUtil setTwitterEnabled:YES];
@@ -143,9 +143,9 @@
 -(BOOL)hasAccountWithUsername:(NSString*)username
 {
     BOOL hasAccount = NO;
-
-    if([TWTweetComposeViewController canSendTweet]) 
-    {       
+    
+    if([TWTweetComposeViewController canSendTweet])
+    {
         ACAccountStore *_store = [[ACAccountStore alloc] init];
         ACAccountType *type = [_store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
         NSArray *accounts = [_store accountsWithAccountType:type];
@@ -161,7 +161,7 @@
         }
         
         [_store release];
-    }   
+    }
     
     return hasAccount;
 }
@@ -187,7 +187,7 @@
     selectedRow = [twitterAccountPickerView selectedRowInComponent:0];
     
     if(selectedRow < twitterAccountsArray.count)
-    { 
+    {
         [self setPhoneTwitterAccount:[twitterAccountsArray objectAtIndex:selectedRow]];
         
         NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
@@ -219,14 +219,18 @@
 - (void) cancelButtonPressed:(id)sender
 {
     NSLog(@"TwitterAccountPickerController : cancelButtonPressed");
-    //[[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_ENABLE_ACCOUNTPICKER_CANCEL object: nil];
+    
+    if(delegate && [delegate respondsToSelector:@selector(twitterPickerCancelled)])
+    {
+        [delegate twitterAccountCancelled];
+    }
     [self hide];
 }
 
 -(void)show
 {
     NSLog(@"TwitterAccountPickerController : show");
-
+    
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
     CGFloat yPos = self.view.frame.origin.y;
@@ -238,11 +242,11 @@
 -(void)hide
 {
     NSLog(@"TwitterAccountPickerController : hide");
-
+    
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
     CGFloat yPos = self.view.frame.origin.y;
-    [self.view setFrame:CGRectMake(0, yPos+266, 320, 266)];
+    [self.view setFrame:CGRectMake(0, yPos+260, 320, 260)];
     [UIView commitAnimations];
 }
 
@@ -286,7 +290,7 @@
 	
 	NSLog(@"TwitterAccountPickerController : pickerView didSelectRow");
     
-    selectedRow = row;    
+    selectedRow = row;
 }
 
 #pragma mark -
@@ -312,7 +316,7 @@
 
 #pragma mark -
 #pragma mark SAProgressHUD delegate function
-- (void)hudWasHidden 
+- (void)hudWasHidden
 {
 	NSLog(@"TwitterAccountPickerController: hudWasHidden");
 	// Remove HUD from screen when the HUD was hidded
@@ -322,7 +326,7 @@
 		[hud removeFromSuperview];
 		[hud release];
 		hud = nil;
-	}	
+	}
 }
 
 #pragma mark -
@@ -339,22 +343,22 @@
 -(void)dealloc
 {
     NSLog(@"TwitterAccountPickerController : dealloc");
-
+    
     if(hud)
 	{
         hud.delegate = nil;
 		[hud removeFromSuperview];
 		[hud release];
 		hud = nil;
-	}	
-
+	}
+    
     self.delegate = nil;
     
 	[twitterAccountsArray release];
 #ifdef __IPHONE_5_0
 	
-	[phoneTwitterAccount release];	 
-    [store release];    
+	[phoneTwitterAccount release];
+    [store release];
 	
 #endif
     
