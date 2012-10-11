@@ -12,6 +12,7 @@
 @interface UploadViewController()
 {
     NSInteger selectedFooBarProductIndex;
+    UITextView *captionTextViewPointer;
 }
 
 -(void)showHUDwithText:(NSString*)text;
@@ -108,6 +109,8 @@
         [cell.contentView addSubview:captionTextView];
         [captionTextView release];
         
+        captionTextViewPointer = captionTextView;
+        
         //cell.textLabel.text = @"Caption";
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -156,9 +159,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if(captionTextViewPointer)
+        [captionTextViewPointer resignFirstResponder];
     [UIView animateWithDuration:0.25
                      animations:^{
-                         foobarProductPicker.frame = CGRectOffset(foobarProductPicker.frame, 0, -220);
+                         foobarProductPicker.frame = CGRectMake(0, 222, 320, 216);
                      }];
 }
 
@@ -210,7 +215,7 @@
         
         [UIView animateWithDuration:0.25
                          animations:^{
-                             foobarProductPicker.frame = CGRectOffset(foobarProductPicker.frame, 0, 220);
+                             foobarProductPicker.frame = CGRectMake(0, 436, 320, 216);
                          }];
     }
     else
@@ -239,6 +244,15 @@
     return TRUE;
 }
 
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         foobarProductPicker.frame = CGRectMake(0, 436, 320, 216);
+                     }];
+    return YES;
+}
+
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
     if([[textView.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"Addacaption"])
@@ -261,6 +275,9 @@
     [self.navigationController popToRootViewControllerAnimated:NO];
     CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;
     [customTabBar selectTab:STREAM_TAB];
+    
+    if(hud)
+        [hud hide:YES];
 }
 
 -(void)httpRequestFinished:(ASIHTTPRequest *)request
@@ -285,6 +302,8 @@
             }
             else if([request.requestMethod isEqualToString:@"PUT"])
             {
+                if(hud)
+                    [hud hide:YES];
                 CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;
                 [customTabBar selectTab:STREAM_TAB];
                 [self.navigationController popToRootViewControllerAnimated:NO];
@@ -292,6 +311,8 @@
         }
         else if(statusCode == 403)
         {
+            if(hud)
+                [hud hide:YES];
             [FooBarUtils showAlertMessage:@"Sorry! Upload Failed."];
             [self.navigationController popToRootViewControllerAnimated:NO];
             CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;
