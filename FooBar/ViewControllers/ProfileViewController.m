@@ -3,7 +3,8 @@
 #import "CustomCellBGView.h"
 #import "AppDelegate.h"
 #import "SocialUser.h"
-#import <QuartzCore/QuartzCore.h>
+#import "EndPoints.h"
+#import "Parser.h"
 
 @interface ProfileViewController()
 
@@ -14,7 +15,7 @@
 @end
 
 @implementation ProfileViewController
-@synthesize accountsTableView;
+@synthesize accountsTableView, foobarUser;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -46,6 +47,17 @@
 {
     [super viewDidLoad];
     accountsTableView.separatorColor = [UIColor colorWithRed:238.0/255.0 green:225.0/255.0 blue:123.0/255.0 alpha:1.0];
+    manager = [[ConnectionManager alloc] init];
+    manager.delegate = self;
+    FooBarUser *defaultsFoobarUser = [FooBarUser currentUser];
+    if(defaultsFoobarUser)
+    {
+        self.foobarUser = defaultsFoobarUser;    
+    }
+    else
+    {
+        [manager getProfile];        
+    }
 }
 
 #pragma mark -
@@ -81,28 +93,37 @@
         [cell.contentView addSubview:fullName];
         [fullName release];
         
-        UILabel *screenName = [[UILabel alloc] init];
+        /*UILabel *screenName = [[UILabel alloc] init];
         screenName.backgroundColor = [UIColor clearColor];
         screenName.frame = CGRectMake(10, 30, 220, 16);
         screenName.font = [UIFont systemFontOfSize:14.0];
         screenName.textColor = [UIColor colorWithRed:182.0/255.0 green:49.0/255.0 blue:37.0/255.0 alpha:1.0];
         screenName.highlightedTextColor = [UIColor whiteColor];
         [cell.contentView addSubview:screenName];
-        [screenName release];
+        [screenName release];*/
         
         AsyncImageView *profilePic = [[AsyncImageView alloc]initWithFrame:CGRectMake(235, 7, 40, 40)];
-        profilePic.layer.cornerRadius = 5.0f;
-        profilePic.layer.masksToBounds = YES;
-        profilePic.layer.borderWidth = 0.2;
-        profilePic.layer.borderColor = [UIColor blackColor].CGColor;
+        profilePic.contentMode = UIViewContentModeScaleAspectFit;
+        [profilePic setImage:[UIImage imageNamed:@"DefaultUser.png"]];
         [cell.contentView addSubview:profilePic];
         [profilePic release];
         
-        fullName.text = @"Robin Van Persie";
-        screenName.text = [NSString stringWithFormat:@"@%@",@"rvp"];
-        [profilePic setImageUrl:@"http://mancunianmatters.co.uk/files/mancunianmatters/imagecache/full_image/robin%20van%20persie%20manchester%20united_0.jpg"];        
+        if(foobarUser)
+        {
+            fullName.text = [NSString stringWithFormat:@"%@ %@", foobarUser.firstname, foobarUser.lastname?foobarUser.lastname:@""];
+            //screenName.text = [NSString stringWithFormat:@"@%@",@"rvp"];
+            
+            // set user image
+            profilePic.image = nil;
+            NSString* imageUrl = foobarUser.photoUrl;
+            if (imageUrl && ![imageUrl isEqualToString:@""])
+                [profilePic setImageUrl:imageUrl];
+            else
+                [profilePic setImage:[UIImage imageNamed:@"DefaultUser.png"]];//defaultContactImage
+        }
+        
         cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
     else
@@ -144,7 +165,7 @@
                 case 2:
                     cell.textLabel.text = @"Search HashTags";
                     break;
-
+                    
                 case 3:
                     cell.textLabel.text = @"Sign Out";
                     break;
@@ -175,7 +196,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
+    
     if(indexPath.section == 1 && indexPath.row == 3)
     {
         UIActionSheet *signOutActionSheet = [[UIActionSheet alloc]
@@ -249,10 +270,51 @@
 -(void)signOutAction
 {
     [self hideHud];
+    [FooBarUser clearCurrentUser];
     [SocialUser clearCurrentUser];
     [FooBarUtils showAlertMessage:@"You have successfully signed out"];
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate addSignInViewController];
+}
+
+#pragma mark - ConnectionManager delegate functions
+
+-(void)httpRequestFailed:(ASIHTTPRequest *)request
+{
+	NSError *error= [request error];
+	NSLog(@"%@",[error localizedDescription]);
+}
+
+-(void)httpRequestFinished:(ASIHTTPRequest *)request
+{
+	NSString *responseJSON = [[request responseString] retain];
+	NSString *urlString= [[request url] absoluteString];
+    int statusCode = [request responseStatusCode];
+    NSString *statusMessage = [request responseStatusMessage];
+    
+    NSLog(@"Status Code - %d\nStatus Message - %@\nResponse:\n%@", statusCode, statusMessage, responseJSON);
+    
+    [responseJSON release];
+    
+    if([urlString hasPrefix:MyProfileUrl])
+    {
+        if(statusCode == 200)
+        {
+            FooBarUser *currentLoggedInUser = [Parser parseUserResponse:responseJSON];
+            if(currentLoggedInUser)
+            {
+                self.foobarUser = currentLoggedInUser;
+                [self.accountsTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                [FooBarUser saveCurrentUser:self.foobarUser];
+            }
+            else
+                [FooBarUtils showAlertMessage:@"Profile not available."];
+        }
+        else if(statusCode == 403)
+        {
+            
+        }
+    }
 }
 
 #pragma mark -
@@ -292,10 +354,10 @@
 
 - (void)viewDidUnload
 {
-    [self setAccountsTableView:nil];
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    manager.delegate = nil;
+    [manager release];
+    [self setAccountsTableView:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -305,7 +367,11 @@
 }
 
 - (void)dealloc {
+    manager.delegate = nil;
+    [manager release];
     [accountsTableView release];
+    [foobarUser release];
     [super dealloc];
 }
+
 @end

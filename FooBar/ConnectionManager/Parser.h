@@ -6,7 +6,7 @@
 
 @interface Parser : NSObject
 
-+(FooBarUser*)parseUserResponse:(NSDictionary*)responseDict;
++(FooBarUser*)parseUserResponse:(id)responseData;
 +(CommentObject*)parseCommentResponse:(id)responseData;
 +(NSArray*)parseFeedsResponse:(NSString*)response;
 +(FeedObject*)parseUploadResponse:(NSString*)response;

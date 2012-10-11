@@ -87,7 +87,7 @@
         [aFeed.profilePicView setImage:[UIImage imageNamed:@"DefaultUser.png"]];//defaultContactImage
     
     if(feedObject.foobarUser.username && ![feedObject.foobarUser.username isEqualToString:@""])
-        aFeed.usernameLabel.text = feedObject.foobarUser.username;
+        aFeed.usernameLabel.text = feedObject.foobarUser.firstname;
     else
         aFeed.usernameLabel.text = @"username";
     

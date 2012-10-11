@@ -6,28 +6,49 @@
 
 @implementation Parser
 
-+(FooBarUser*)parseUserResponse:(NSDictionary*)responseDict
++(FooBarUser*)parseUserResponse:(id)responseData
 {
-    // Parse User info
-    id userData = [responseDict objectForKey:kCreator];
-    if(userData && ![userData isKindOfClass:[NSNull class]] && [userData isKindOfClass:[NSDictionary class]])
+    NSDictionary *userDict = nil;
+    
+    if(responseData && ![responseData isKindOfClass:[NSNull class]] && [responseData isKindOfClass:[NSDictionary class]])
     {
-        FooBarUser *foobarUser = [[[FooBarUser alloc] init] autorelease];
-        NSDictionary *userDict = (NSDictionary*)userData;
-        foobarUser.userId = (NSString*)[userDict objectForKey:kId];
-        foobarUser.username = (NSString*)[userDict objectForKey:kUsername];
-        foobarUser.lastname =  (NSString*)[userDict objectForKey:kLastname];
-        
-        NSString *imageUrl = (NSString*)[userDict objectForKey:kPhotoUrl];
-        foobarUser.photoUrl = imageUrl?imageUrl:@"";
-        
-        foobarUser.accountType = [(NSString*)[userDict objectForKey:kAccountType] isEqualToString:@"facebook"]?FacebookAccount:TwitterAccount;
-        foobarUser.created_dt = (NSString*)[userDict objectForKey:kCreatedDate];
-        foobarUser.updated_dt = (NSString*)[userDict objectForKey:kUpdatedDate];
-        return foobarUser;
+        // used while feeds parsing
+        userDict = (NSDictionary*)responseData;                            
+    }
+    else if(responseData && ![responseData isKindOfClass:[NSNull class]] && [responseData isKindOfClass:[NSString class]])
+    {
+        //used directly while getting profile
+        NSString *responseString = (NSString*)responseData;
+        SBJSON *sbJSON = [SBJSON new];
+        id parsedData = [sbJSON objectWithString:responseString];
+        if(parsedData && ![parsedData isKindOfClass:[NSNull class]] && [parsedData isKindOfClass:[NSDictionary class]])
+        {
+            userDict = (NSDictionary*)parsedData;
+        }
+        else
+        {
+            return nil;
+        }
+    }
+    else
+    {
+        return nil;
     }
     
-    return nil;
+    // Parse User info
+    FooBarUser *foobarUser = [[[FooBarUser alloc] init] autorelease];
+    foobarUser.userId = (NSString*)[userDict objectForKey:kId];
+    foobarUser.username = (NSString*)[userDict objectForKey:kUsername];
+    foobarUser.firstname =  (NSString*)[userDict objectForKey:kFirstname];
+    foobarUser.lastname =  (NSString*)[userDict objectForKey:kLastname];
+    
+    NSString *imageUrl = (NSString*)[userDict objectForKey:kPhotoUrl];
+    foobarUser.photoUrl = imageUrl?imageUrl:@"";
+    
+    foobarUser.accountType = [(NSString*)[userDict objectForKey:kAccountType] isEqualToString:@"facebook"]?FacebookAccount:TwitterAccount;
+    foobarUser.created_dt = (NSString*)[userDict objectForKey:kCreatedDate];
+    foobarUser.updated_dt = (NSString*)[userDict objectForKey:kUpdatedDate];
+    return foobarUser;
 }
 
 +(CommentObject*)parseCommentResponse:(id)responseData

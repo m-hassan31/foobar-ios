@@ -11,6 +11,7 @@
 #define kEncryptionKey                              @"6b2c8762aedjkee0bce1485da86530dc0*2-01dn102)-1-~~`%$#@#"
 
 #define kCurrentLoggedinSocialuser                  @"CurrentLoggedinSocialuser"
+#define kCurrentLoggedinFooBaruser                  @"CurrentLoggedinFoobaruser"
 #define kUsername								    @"username"
 #define kPassword                                   @"password"
 #define kEmail                                      @"email"

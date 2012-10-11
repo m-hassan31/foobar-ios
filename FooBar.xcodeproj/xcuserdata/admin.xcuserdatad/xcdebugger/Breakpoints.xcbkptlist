@@ -23,11 +23,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "FooBar/ConnectionManager/Parser.m"
-         timestampString = "371566655.884604"
+         timestampString = "371627138.212777"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "179"
-         endingLineNumber = "179"
+         startingLineNumber = "200"
+         endingLineNumber = "200"
          landmarkName = "+parseUploadResponse:"
          landmarkType = "5">
       </FileBreakpoint>
