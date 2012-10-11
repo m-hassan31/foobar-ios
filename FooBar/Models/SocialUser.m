@@ -54,6 +54,11 @@
     [encoder encodeObject:self.accessToken forKey:kAccessToken];
 }
 
+-(BOOL)authenticated
+{
+    return (![self.socialId isEqualToString:@""] && ![self.accessToken isEqualToString:@""]);
+}
+
 -(void)dealloc
 {
     [socialId release];

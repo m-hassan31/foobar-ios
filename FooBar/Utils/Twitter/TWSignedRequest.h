@@ -28,4 +28,10 @@ void(^TWSignedRequestHandler)
 // You should ensure that you obfuscate your keys before shipping
 + (NSString *)consumerKey;
 + (NSString *)consumerSecret;
+
+
+@property (nonatomic, retain) NSURL *url;
+@property (nonatomic, retain) NSDictionary *parameters;
+@property (nonatomic, assign) TWSignedRequestMethod signedRequestMethod;
+
 @end

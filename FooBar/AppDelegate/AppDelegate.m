@@ -6,6 +6,7 @@
 #import "StreamViewController.h"
 #import "CaptureViewController.h"
 #import "SocialUser.h"
+#import "FooBarConstants.h"
 
 @interface AppDelegate()
 - (NSDictionary*) parseURLParams:(NSString *)query;
@@ -32,9 +33,59 @@
     // Override point for customization after application launch.
     
     SocialUser *socialUser = [SocialUser currentUser];
-    if(socialUser)
+    if(socialUser && [socialUser authenticated])
     {
-        [self addTabBarController];        
+        // check if the configured twitter account still exists in iOS 5 Settings
+        if(socialUser.socialAccountType == TwitterAccount)
+        {            
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSString *previousUserName = [defaults objectForKey:kTwitterUsername];
+            
+            if([TWTweetComposeViewController canSendTweet])
+            {
+                ACAccountStore *store = [[ACAccountStore alloc] init];
+                ACAccountType *twitterType = [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+                
+                [store requestAccessToAccountsWithType:twitterType withCompletionHandler:^(BOOL granted, NSError *error){
+                    if(granted)
+                    {
+                        NSArray *arrayOfAccounts =  [store accountsWithAccountType:twitterType];
+                        ACAccount *account = nil;
+                        if (arrayOfAccounts != nil && [arrayOfAccounts count]>0) {
+                            if (previousUserName) {
+                                for(ACAccount *anAccount in arrayOfAccounts)
+                                {
+                                    if ([anAccount.username isEqualToString:previousUserName] ) 
+                                    {
+                                        account = anAccount;
+                                        break;
+                                    }
+                                }
+                            }
+                            //previous account was deleted if a userName match was not found
+                            //show the picker or just pick the first account.
+                            if (account == nil) 
+                            {
+                                // clear tokens and defaults cache
+                                [FooBarUser clearCurrentUser];
+                                [SocialUser clearCurrentUser];
+                                // show signin view controller again
+                                [self addSignInViewController];
+                            }
+                            else
+                            {
+                                // twitter account still exists.. continue with feeds
+                                [self addTabBarController];
+                            }                            
+                        }
+                    }
+                }];
+            }
+        }
+        else
+        {
+            [self addTabBarController];
+        }
     }
     else
     {
@@ -52,7 +103,7 @@
     if([FooBarUtils isDeviceOS5])
     {
         [navController.navigationBar setBackgroundImage:[UIImage imageNamed:@"TopBar.png"]
-                                                 forBarMetrics:UIBarMetricsDefault];
+                                          forBarMetrics:UIBarMetricsDefault];
     }
     [signInVC release];
     self.signInNavController = navController;
@@ -74,7 +125,7 @@
 -(void)addTabBarController
 {
     CustomTabBarController *customTabBarController = [[CustomTabBarController alloc] init];    
-
+    
     UIImage *navBarBG = [UIImage imageNamed:@"TopBar.png"];
     
     ProfileViewController *profileViewController  = [[ProfileViewController alloc]init];

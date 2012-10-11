@@ -10,11 +10,6 @@
 #define kTWConsumerSecret @"IJR2C0crhBQKCa7fbHnv7rpmTxnFU4xxq19ytpHmw"
 
 @interface TWSignedRequest()
-{
-    NSURL *_url;
-    NSDictionary *_parameters;
-    TWSignedRequestMethod _signedRequestMethod;
-}
 
 - (NSURLRequest *)_buildRequest;
 
@@ -23,16 +18,19 @@
 @implementation TWSignedRequest
 @synthesize authToken = _authToken;
 @synthesize authTokenSecret = _authTokenSecret;
+@synthesize url;
+@synthesize parameters;
+@synthesize signedRequestMethod;
 
-- (id)initWithURL:(NSURL *)url
-       parameters:(NSDictionary *)parameters
-    requestMethod:(TWSignedRequestMethod)requestMethod;
+- (id)initWithURL:(NSURL *)aUrl
+       parameters:(NSDictionary *)params
+    requestMethod:(TWSignedRequestMethod)reqMethod;
 {
     self = [super init];
     if (self) {
-        _url = url;
-        _parameters = parameters;
-        _signedRequestMethod = requestMethod;
+        self.url = aUrl;
+        self.parameters = params;
+        self.signedRequestMethod = reqMethod;
     }
     return self;
 }
@@ -41,7 +39,7 @@
 {
     NSString *method;
     
-    switch (_signedRequestMethod) {
+    switch (self.signedRequestMethod) {
         case TWSignedRequestMethodPOST:
             method = TW_HTTP_METHOD_POST;
             break;
@@ -55,14 +53,14 @@
     
     //  Build our parameter string
     NSMutableString *paramsAsString = [[NSMutableString alloc] init];
-    [_parameters enumerateKeysAndObjectsUsingBlock:
+    [self.parameters enumerateKeysAndObjectsUsingBlock:
      ^(id key, id obj, BOOL *stop) {
          [paramsAsString appendFormat:@"%@=%@&", key, obj];
      }];
     
     //  Create the authorization header and attach to our request
     NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
-    NSString *authorizationHeader = OAuthorizationHeader(_url,
+    NSString *authorizationHeader = OAuthorizationHeader(self.url,
                                                          method,
                                                          bodyData,
                                                          [TWSignedRequest
@@ -73,7 +71,7 @@
                                                          _authTokenSecret);
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]
-                                    initWithURL:_url];
+                                    initWithURL:self.url];
     [request setHTTPMethod:method];
     [request setValue:authorizationHeader
    forHTTPHeaderField:TW_HTTP_HEADER_AUTHORIZATION];
@@ -111,6 +109,16 @@
     NSAssert([kTWConsumerSecret length] > 0,
              @"You must enter your consumer secret in Build Settings.");
     return kTWConsumerSecret;
+}
+
+-(void)dealloc
+{    
+    [_authToken release];
+    [_authTokenSecret release];
+    [url release];
+    [parameters release];
+    
+    [super dealloc];
 }
 
 @end

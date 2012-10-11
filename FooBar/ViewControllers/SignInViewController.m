@@ -121,7 +121,6 @@
 
 - (void)twitterAccountSelected
 {
-    return;
     if(!twitterUtil)
         twitterUtil= [[TwitterUtil alloc] initWithDelegate:self];
     
@@ -172,12 +171,12 @@
     if(currentLoggedinUser.username == nil)
         currentLoggedinUser.username = currentLoggedinUser.firstname;
     
-    [SocialUser saveCurrentUser:currentLoggedinUser];
+    //[SocialUser saveCurrentUser:currentLoggedinUser];
     [userInfo release];
     [self hideHud];
     
-    //[twitterUtil getAccessToken];
-    //[manager signin];
+    [twitterUtil getAccessToken];
+//   [manager signin];
 }
 
 #pragma mark -

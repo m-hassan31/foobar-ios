@@ -14,4 +14,6 @@
 +(SocialUser*)currentUser;
 +(void)clearCurrentUser;
 
+-(BOOL)authenticated;
+
 @end

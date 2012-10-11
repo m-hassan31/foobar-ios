@@ -149,10 +149,11 @@ typedef void(^TWAPIHandler)(NSData *data, NSError *error);
     
     [step1Request performRequestWithHandler:
      ^(NSData *data, NSURLResponse *response, NSError *error) {
-         dispatch_async(dispatch_get_global_queue
+         completion(data, error);
+         /*dispatch_async(dispatch_get_global_queue
                         (DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                             completion(data, error);
-                        });
+                        });*/
      }];
 }
 

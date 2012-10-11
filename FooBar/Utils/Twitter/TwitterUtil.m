@@ -205,53 +205,56 @@
                             }
                         }
                     }
-                    //previous account was deleted if a userName match was not found
-                    //show the picker or just pick the first account.
-                    //TODO: provide a picker from here as well.
-                    
-                    if (account == nil) {
-                        account = [arrayOfAccounts objectAtIndex:0];
-                    }
+                    /*//previous account was deleted if a userName match was not found
+                     //show the picker or just pick the first account.
+                     //TODO: provide a picker from here as well.
+                     
+                     if (account == nil) {
+                     account = [arrayOfAccounts objectAtIndex:0];
+                     }*/
                     
                     //save the account info in defaults
                     [self setTwitterUsername:account.username];
                     //now that account has been created, call the request
                     
-                    TWAPIManager *apiManager = [[TWAPIManager alloc] init];
-                    [apiManager
-                     performReverseAuthForAccount:account
-                     withHandler:^(NSData *responseData, NSError *error) {
-                         if (responseData) {
-                             NSString *responseStr = [[NSString alloc]
-                                                      initWithData:responseData
-                                                      encoding:NSUTF8StringEncoding];
-                             
-                             NSArray *parts = [responseStr
-                                               componentsSeparatedByString:@"&"];
-                             
-                             NSString *lined = [parts componentsJoinedByString:@"\n"];
-                             
-                             dispatch_async(dispatch_get_main_queue(), ^{
-                                 UIAlertView *alert = [[UIAlertView alloc]
-                                                       initWithTitle:@"Success!"
-                                                       message:lined
-                                                       delegate:nil
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil];
-                                 [alert show];
-                             });
-                         }
-                         else 
-                         {
-                             NSLog(@"Error!\n%@", [error localizedDescription]);
-                         }
-                     }];
-
+                    [self performSelectorOnMainThread:@selector(accessTokenForAccount:) withObject:account waitUntilDone:NO];
                 }
             }
         }];
     }
 }
+
+-(void)accessTokenForAccount:(ACAccount*)_account
+{
+    TWAPIManager *apiManager = [[[TWAPIManager alloc] init] autorelease];
+    [apiManager performReverseAuthForAccount:_account withHandler:^(NSData *responseData, NSError *error) {
+        if (responseData) {
+            NSString *responseStr = [[NSString alloc]
+                                     initWithData:responseData
+                                     encoding:NSUTF8StringEncoding];
+            
+            NSArray *parts = [responseStr
+                              componentsSeparatedByString:@"&"];
+            
+            NSString *lined = [parts componentsJoinedByString:@"\n"];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertView *alert = [[UIAlertView alloc]
+                                      initWithTitle:@"Success!"
+                                      message:lined
+                                      delegate:nil
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:nil];
+                [alert show];
+            });
+        }
+        else 
+        {
+            NSLog(@"Error!\n%@", [error localizedDescription]);
+        }
+    }];
+}
+
 
 - (void)getTwitterInfo:(NSString *)userId
 {

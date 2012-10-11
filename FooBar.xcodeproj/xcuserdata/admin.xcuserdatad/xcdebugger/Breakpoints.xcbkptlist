@@ -8,13 +8,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "FooBar/ViewControllers/UploadViewController.m"
-         timestampString = "371566605.575861"
+         filePath = "FooBar/Utils/Twitter/TWAPIManager.m"
+         timestampString = "371644701.693998"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "262"
-         endingLineNumber = "262"
-         landmarkName = "-httpRequestFinished:"
+         startingLineNumber = "59"
+         endingLineNumber = "59"
+         landmarkName = "-performReverseAuthForAccount:withHandler:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -22,13 +22,27 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "FooBar/ConnectionManager/Parser.m"
-         timestampString = "371627138.212777"
+         filePath = "FooBar/Utils/Twitter/TWAPIManager.m"
+         timestampString = "371643077.545249"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "200"
-         endingLineNumber = "200"
-         landmarkName = "+parseUploadResponse:"
+         startingLineNumber = "65"
+         endingLineNumber = "65"
+         landmarkName = "-performReverseAuthForAccount:withHandler:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "FooBar/Utils/Twitter/TWAPIManager.m"
+         timestampString = "371644627.233966"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "155"
+         endingLineNumber = "155"
+         landmarkName = "-_step1WithCompletion:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

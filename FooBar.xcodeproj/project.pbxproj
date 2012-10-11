@@ -131,9 +131,9 @@
 		8CB4D41A1620BF2A00A42B78 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4D40E1620BF2A00A42B78 /* NSData+Base64.m */; };
 		8CB4D41B1620BF2A00A42B78 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4D4101620BF2A00A42B78 /* OAuth+Additions.m */; };
 		8CB4D41C1620BF2A00A42B78 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4D4121620BF2A00A42B78 /* OAuthCore.m */; };
-		8CB4D41D1620BF2A00A42B78 /* TWAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4D4141620BF2A00A42B78 /* TWAPIManager.m */; };
+		8CB4D41D1620BF2A00A42B78 /* TWAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4D4141620BF2A00A42B78 /* TWAPIManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8CB4D41E1620BF2A00A42B78 /* TwitterUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4D4161620BF2A00A42B78 /* TwitterUtil.m */; };
-		8CB4D41F1620BF2A00A42B78 /* TWSignedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4D4181620BF2A00A42B78 /* TWSignedRequest.m */; };
+		8CB4D41F1620BF2A00A42B78 /* TWSignedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4D4181620BF2A00A42B78 /* TWSignedRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
