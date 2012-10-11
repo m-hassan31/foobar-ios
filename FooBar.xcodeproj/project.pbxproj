@@ -36,6 +36,7 @@
 		8401DAA215F0CF7500659482 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8401DAA115F0CF7500659482 /* libz.dylib */; };
 		840D4EB5162448C30010B987 /* Front.png in Resources */ = {isa = PBXBuildFile; fileRef = 840D4EB3162448C30010B987 /* Front.png */; };
 		840D4EB6162448C30010B987 /* Front@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 840D4EB4162448C30010B987 /* Front@2x.png */; };
+		841BB48D1626F7C500365D39 /* ODRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 841BB48C1626F7C500365D39 /* ODRefreshControl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8459882415F21A3D00A5486C /* CaptureSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8459882315F21A3D00A5486C /* CaptureSessionManager.m */; };
 		8459882715F21BEB00A5486C /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8459882615F21BEB00A5486C /* ImageIO.framework */; };
 		8459885C15F22C5E00A5486C /* EditImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8459885A15F22C5E00A5486C /* EditImageViewController.xib */; };
@@ -194,6 +195,8 @@
 		8401DAA115F0CF7500659482 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		840D4EB3162448C30010B987 /* Front.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Front.png; sourceTree = "<group>"; };
 		840D4EB4162448C30010B987 /* Front@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Front@2x.png"; sourceTree = "<group>"; };
+		841BB48B1626F7C500365D39 /* ODRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODRefreshControl.h; sourceTree = "<group>"; };
+		841BB48C1626F7C500365D39 /* ODRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRefreshControl.m; sourceTree = "<group>"; };
 		8459882215F21A3D00A5486C /* CaptureSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaptureSessionManager.h; sourceTree = "<group>"; };
 		8459882315F21A3D00A5486C /* CaptureSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaptureSessionManager.m; sourceTree = "<group>"; };
 		8459882615F21BEB00A5486C /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -471,6 +474,15 @@
 			path = Categories;
 			sourceTree = "<group>";
 		};
+		841BB48A1626F7C500365D39 /* ODRefreshControl */ = {
+			isa = PBXGroup;
+			children = (
+				841BB48B1626F7C500365D39 /* ODRefreshControl.h */,
+				841BB48C1626F7C500365D39 /* ODRefreshControl.m */,
+			);
+			path = ODRefreshControl;
+			sourceTree = "<group>";
+		};
 		8459882115F21A3D00A5486C /* CaptureSessionManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -503,6 +515,7 @@
 		849762F115F4A9B800391813 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				841BB48A1626F7C500365D39 /* ODRefreshControl */,
 				84EA282515F5C8FD009A107E /* TwitterAccountPickerController.h */,
 				84EA282715F5C8FD009A107E /* TwitterAccountPickerController.m */,
 				84EA282615F5C8FD009A107E /* TwitterAccountPickerController.xib */,
@@ -999,6 +1012,7 @@
 				849BDB871622E43800C272B9 /* FooBarUser.m in Sources */,
 				849AFE0E16257153006A5AD9 /* UploadViewController.m in Sources */,
 				849AFE261625A30F006A5AD9 /* FooBarProduct.m in Sources */,
+				841BB48D1626F7C500365D39 /* ODRefreshControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

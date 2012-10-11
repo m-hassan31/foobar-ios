@@ -52,10 +52,19 @@
     quiltView.dataSource = self;
     quiltView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:quiltView];    
-    [quiltView release];    
+    [quiltView release];       
+    
+    refreshControl = [[ODRefreshControl alloc] initInScrollView:quiltView];
+    refreshControl.tintColor = [UIColor colorWithRed:182.0/255.0 green:49.0/255.0 blue:37.0/255.0 alpha:1.0];
+    [refreshControl addTarget:self action:@selector(dropViewDidBeginRefreshing:) forControlEvents:UIControlEventValueChanged];
     
     manager = [[ConnectionManager alloc] init];
     manager.delegate = self;
+    [manager getFeedsAtPage:1 count:10];
+}
+
+- (void)dropViewDidBeginRefreshing:(ODRefreshControl *)refreshControl
+{
     [manager getFeedsAtPage:1 count:10];
 }
 
@@ -133,6 +142,7 @@
 {
 	NSError *error= [request error];
 	NSLog(@"%@",[error localizedDescription]);
+    [refreshControl endRefreshing];
 }
 
 -(void)httpRequestFinished:(ASIHTTPRequest *)request
@@ -153,6 +163,7 @@
             {
                 self.feedsArray = [parsedFeedsArray mutableCopy];
                 [quiltView reloadData];
+                [refreshControl endRefreshing];
             }
             else
             {
