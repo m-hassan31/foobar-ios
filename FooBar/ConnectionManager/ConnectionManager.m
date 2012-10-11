@@ -98,8 +98,6 @@
 
 -(void)uploadPhoto:(UIImage*)image withProductId:(NSString*)productId
 {
-    [self showHUDwithText:@"Uploading.."];
-    
     SocialUser *socialUser = [SocialUser currentUser];
     
     // Instantiate an HTTP request.
@@ -121,7 +119,7 @@
 -(void)updatePost:(NSString*)postId withCaption:(NSString*)caption
 {
     // Instantiate an HTTP request.
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",PhotosUrl, postId]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",PhotosUrl, postId]];
     ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];
     [request setRequestMethod:@"PUT"];
     [request addRequestHeader:@"Content-Type" value:@"application/json"];

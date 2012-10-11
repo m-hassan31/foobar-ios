@@ -12,13 +12,15 @@
 @interface UploadViewController()
 {
     NSInteger selectedFooBarProductIndex;
-    NSString *captionText;
 }
+
+-(void)showHUDwithText:(NSString*)text;
+-(void)hideHud;
 
 @end
 
 @implementation UploadViewController
-@synthesize uploadTableView, foobarProductPicker, foobarProductsArray, image;
+@synthesize uploadTableView, foobarProductPicker, foobarProductsArray, image, captionText;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -70,7 +72,10 @@
 
 -(IBAction)uploadButtonPressed:(id)sender 
 {    
-    [manager uploadPhoto:self.image withProductId:[NSString stringWithFormat:@"%d",(arc4random()%5)+1]];
+    [self showHUDwithText:@"Uploading.."];
+#warning TODO - Confirm from Foobar team - if Foobar products are not available what should be the action?
+    NSString *productId = (selectedFooBarProductIndex != -1)?[NSString stringWithFormat:@"%d",(arc4random()%5)+1]:@"";
+    [manager uploadPhoto:self.image withProductId:productId];
 }
 
 #pragma mark -
@@ -195,16 +200,23 @@
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{	
-    selectedFooBarProductIndex = row;
-    NSIndexPath *path = [NSIndexPath indexPathForRow:1 inSection:0];                
-    NSArray *indexArray = [NSArray arrayWithObjects:path,nil];
-    [uploadTableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationFade];
-    
-    [UIView animateWithDuration:0.25
-                     animations:^{
-                         foobarProductPicker.frame = CGRectOffset(foobarProductPicker.frame, 0, 220);
-                     }];
+{
+	if(foobarProductsArray && foobarProductsArray.count > 0)
+    {
+        selectedFooBarProductIndex = row;
+        NSIndexPath *path = [NSIndexPath indexPathForRow:1 inSection:0];                
+        NSArray *indexArray = [NSArray arrayWithObjects:path,nil];
+        [uploadTableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationFade];
+        
+        [UIView animateWithDuration:0.25
+                         animations:^{
+                             foobarProductPicker.frame = CGRectOffset(foobarProductPicker.frame, 0, 220);
+                         }];
+    }
+    else
+    {
+        [FooBarUtils showAlertMessage:@"Products not available"];
+    }
 }
 
 #pragma mark -
@@ -235,7 +247,7 @@
 
 -(void)textViewDidEndEditing:(UITextView *)textView
 {
-    captionText = textView.text;
+    self.captionText = textView.text;
 }
 
 #pragma mark - ConnectionManager delegate functions
@@ -244,6 +256,11 @@
 {
 	NSError *error= [request error];
 	NSLog(@"%@",[error localizedDescription]);
+    
+    [FooBarUtils showAlertMessage:@"Sorry! Upload Failed."];
+    [self.navigationController popToRootViewControllerAnimated:NO];
+    CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;
+    [customTabBar selectTab:STREAM_TAB];
 }
 
 -(void)httpRequestFinished:(ASIHTTPRequest *)request
@@ -264,13 +281,13 @@
             if([request.requestMethod isEqualToString:@"POST"])
             {
                 FeedObject *feedObject = [Parser parseUploadResponse:responseJSON];
-                [manager updatePost:feedObject.feedId withCaption:captionText];                
+                [manager updatePost:feedObject.feedId withCaption:self.captionText];                
             }
             else if([request.requestMethod isEqualToString:@"PUT"])
             {
-                [self.navigationController popToRootViewControllerAnimated:NO];
                 CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;
-                [customTabBar selectTab:STREAM_TAB];            
+                [customTabBar selectTab:STREAM_TAB];
+                [self.navigationController popToRootViewControllerAnimated:NO];
             }
         }
         else if(statusCode == 403)
@@ -293,10 +310,39 @@
                 [foobarProductPicker reloadAllComponents];
             }
         }
-        else if(statusCode == 403)
-        {
-            
-        }
+    }
+}
+
+#pragma mark -
+#pragma mark SAProgressHUD functions
+
+- (void)hideHud
+{
+	// Remove HUD from screen when the HUD was hidded
+    if(hud)
+    {
+        hud.delegate = nil;
+		[hud removeFromSuperview];
+		[hud release];
+		hud = nil;
+    }
+}
+
+-(void)showHUDwithText:(NSString *)text
+{
+	if(!hud)
+    {
+		UIWindow *window = [UIApplication sharedApplication].keyWindow;
+		hud = [[SAProgressHUD alloc] initWithWindow:window];
+		// Add HUD to screen
+		[window addSubview:hud];
+		
+		// Regisete for HUD callbacks so we can remove it from the window at the right time
+        hud.delegate = nil; /* Setting hud delegate to nil to handle this manually*/
+		
+		// Show the HUD while the provided method executes in a new thread
+		[hud show:YES];
+		hud.labelText = text;
     }
 }
 
@@ -326,6 +372,8 @@
     [uploadTableView release];
     [foobarProductPicker release];
     [foobarProductsArray release];
+    [captionText release];
+    [image release];
     [super dealloc];
 }
 @end
