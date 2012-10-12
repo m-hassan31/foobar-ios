@@ -138,7 +138,13 @@
 
 -(void)backButtonPressed:(id)senser
 { 
-    [self.navigationController popViewControllerAnimated:YES];
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.3;
+    transition.type = kCATransitionFade;
+    transition.subtype = kCATransitionFromLeft;
+    
+    [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 -(void)keyboardWillShow

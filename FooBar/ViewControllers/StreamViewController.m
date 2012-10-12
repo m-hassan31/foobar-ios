@@ -8,7 +8,6 @@
 #import "EndPoints.h"
 #import "Parser.h"
 #import "FeedObject.h"
-#import "ImageZoomingViewController.h"
 
 @interface StreamViewController ()
 @end
@@ -109,9 +108,17 @@
 - (void)quiltView:(TMQuiltView *)_quiltView didSelectCellAtIndexPath:(NSIndexPath *)indexPath
 {
     FeedObject *feedObject = [feedsArray objectAtIndex:indexPath.row];
+    
     PhotoDetailsViewController *photoDetailsVC = [[PhotoDetailsViewController alloc] initWithNibName:@"PhotoDetailsViewController" bundle:nil];
     photoDetailsVC.feedObject = feedObject;
-    [self.navigationController pushViewController:photoDetailsVC animated:YES];
+
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.3;
+    transition.type = kCATransitionFade;
+    transition.subtype = kCATransitionFromRight;
+    
+    [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+    [self.navigationController pushViewController:photoDetailsVC animated:NO];
     [photoDetailsVC release];
     
     /*FeedView *fView = (FeedView*)[quiltView cellAtIndexPath:indexPath];

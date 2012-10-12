@@ -590,18 +590,7 @@ NSString *const kDefaultReusableIdentifier = @"kTMQuiltViewDefaultReusableIdenti
             if (CGRectContainsPoint(photoCell.frame, tapPoint)) {
                 photoCell.selected = YES;
                 if ([self.delegate respondsToSelector:@selector(quiltView:didSelectCellAtIndexPath:)]) 
-                {
-                    [UIView animateWithDuration:0.15
-                                     animations:^{                         
-                                         self.alpha = 0.7;
-                                     }
-                                     completion:^(BOOL finished) {
-                                         if(finished)
-                                         {
-                                             self.alpha = 1.0;
-                                         }
-                                     }];
-                    
+                {                    
                     [self.delegate quiltView:self didSelectCellAtIndexPath:indexPath];
                 }
                 return;
