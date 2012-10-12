@@ -7,6 +7,7 @@
 #import "FooBarProduct.h"
 #import "Parser.h"
 #import "CustomTabBarController.h"
+#import "PlaceHolderTextView.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface UploadViewController()
@@ -99,11 +100,12 @@
         UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
         
         //Caption text View         
-        UITextView *captionTextView = [[UITextView alloc] initWithFrame:CGRectMake(10, 5, 280, 65)];
+        PlaceHolderTextView *captionTextView = [[PlaceHolderTextView alloc] initWithFrame:CGRectMake(10, 5, 280, 65)];
         captionTextView.backgroundColor = [UIColor clearColor];
         captionTextView.layer.cornerRadius = 7.0f;
         [captionTextView setFont:[UIFont systemFontOfSize:14.0]];
-        captionTextView.text = @"Add a caption..";
+        captionTextView.placeholder = @"Add a caption..";
+        captionTextView.placeholderColor = [UIColor darkGrayColor];
         captionTextView.delegate = self;
         captionTextView.returnKeyType = UIReturnKeyDone;
         [cell.contentView addSubview:captionTextView];
@@ -230,17 +232,10 @@
 {
     if([text isEqualToString:@"\n"]) 
     {
-        if([[textView.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
-            textView.text = @"Add a caption..";
         [textView resignFirstResponder];
         return NO;
     }
     
-    return TRUE;
-}
-
-- (BOOL)textViewShouldEndEditing:(UITextView *)textView
-{
     return TRUE;
 }
 
@@ -251,12 +246,6 @@
                          foobarProductPicker.frame = CGRectMake(0, 436, 320, 216);
                      }];
     return YES;
-}
-
--(void)textViewDidBeginEditing:(UITextView *)textView
-{
-    if([[textView.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"Addacaption"])
-        textView.text = @"";
 }
 
 -(void)textViewDidEndEditing:(UITextView *)textView

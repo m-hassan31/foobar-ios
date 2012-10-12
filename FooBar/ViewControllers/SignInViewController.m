@@ -122,6 +122,9 @@
 
 - (void)twitterAccountSelected
 {
+    self.facebookButton.userInteractionEnabled = YES;
+    self.twitterButton.userInteractionEnabled = YES;
+    
     if(!twitterUtil)
         twitterUtil= [[TwitterUtil alloc] initWithDelegate:self];
     
@@ -130,10 +133,10 @@
         [self showHUDwithText:@"Getting Twitter Info"];
         NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
         [twitterUtil getTwitterInfo:[defaults objectForKey:kTwitterUsername]];
-    }
+    }    
 }
 
--(void)twitterAccountCancelled
+-(void)twitterPickerCancelled
 {
     self.facebookButton.userInteractionEnabled = YES;
     self.twitterButton.userInteractionEnabled = YES;
@@ -271,6 +274,13 @@
         twitterAccountPicker = nil;
     }
     
+    if(twitterUtil)
+    {
+        twitterUtil.delegate = nil;
+        [twitterUtil release];
+        twitterUtil = nil;
+    }
+    
     [self setFacebookButton:nil];
     [self setTwitterButton:nil];
 }
@@ -283,6 +293,13 @@
     {
         [twitterAccountPicker release];
         twitterAccountPicker = nil;
+    }
+    
+    if(twitterUtil)
+    {
+        twitterUtil.delegate = nil;
+        [twitterUtil release];
+        twitterUtil = nil;
     }
     
     manager.delegate = nil;

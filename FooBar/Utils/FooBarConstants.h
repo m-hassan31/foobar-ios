@@ -15,7 +15,6 @@
 #define kUsername								    @"username"
 #define kPassword                                   @"password"
 #define kEmail                                      @"email"
-#define kPhotoUrl                                   @"photoUrl"
 #define kIsSignedIn                                 @"is_signed_in"
 #define kAccessToken                                @"access_token"
 

@@ -50,6 +50,6 @@
 @protocol TwitterAccountPickerDelegate <NSObject>
 
 -(void)twitterAccountSelected;
--(void)twitterAccountCancelled;
+-(void)twitterPickerCancelled;
 
 @end

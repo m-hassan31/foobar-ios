@@ -5,12 +5,17 @@
 #import "EndPoints.h"
 #import "Parser.h"
 #import <QuartzCore/QuartzCore.h>
+#import "NSData+Base64.h"
+#import "ShareViewController.h"
 
 @interface PhotoDetailsViewController()
 
 -(void)beginComment;
 -(void)dismissComment;
 -(void)postComment;
+-(void)shareAction;
+-(void)sendViaEmail;
+-(void)displayMailComposerSheet;
 
 @end
 
@@ -87,6 +92,8 @@
     
     scrollView.frame = CGRectMake(0, -49, 320, 367);
     
+    imageView.delegate = self;
+    imageView.userInteractionEnabled = YES;
     CGFloat imageWidth = feedObject.foobarPhoto.width;
     CGFloat imageHeight = feedObject.foobarPhoto.height;
     
@@ -136,15 +143,11 @@
     manager.delegate = self;
 }
 
+#pragma mark - Other Actions
+
 -(void)backButtonPressed:(id)senser
 { 
-    CATransition* transition = [CATransition animation];
-    transition.duration = 0.3;
-    transition.type = kCATransitionFade;
-    transition.subtype = kCATransitionFromLeft;
-    
-    [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)keyboardWillShow
@@ -193,6 +196,49 @@
 -(IBAction)likeButtonPressed:(id)sender
 {
     [manager likePost:feedObject.feedId];
+}
+
+#pragma mark - AsynImageDelegate
+
+-(void) handleTap
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Share", @"Email", @"Save to Album", @"Copy Url", nil];
+    actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    [actionSheet showInView:self.view];
+    [actionSheet release];
+}
+
+#pragma mark - Action Sheet Delegates
+
+-(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) 
+    {
+        case 0:
+        {
+            [self shareAction];
+        }
+            break;
+        case 1:
+        {
+            [self sendViaEmail];
+        }
+            break;
+        case 2:
+        {
+            UIImageWriteToSavedPhotosAlbum(imageView.image,nil, nil, nil);
+        }
+            break;
+        case 3:
+        {
+            [UIPasteboard generalPasteboard].string = feedObject.foobarPhoto.url;
+        }
+            break;
+        
+        default:
+            break;
+    }
 }
 
 #pragma mark -
@@ -270,18 +316,128 @@
     return YES;
 }
 
+#pragma mark -
+#pragma mark Share
+
+-(void)shareAction
+{
+    ShareViewController *shareVC = [[ShareViewController alloc] initWithNibName:@"ShareViewController" bundle:nil];
+    shareVC.image = imageView.image;
+    shareVC.feedObject = self.feedObject;
+    [self.navigationController pushViewController:shareVC animated:YES];
+    [shareVC release];
+}
+
+#pragma mark -
+#pragma mark Email
+
+- (void)sendViaEmail
+{
+    // We display an email composition interface if MFMailComposeViewController exists and the device can send emails.
+    // We launch the Mail application on the device, otherwise.
+    
+    BOOL bCanSendEmail = FALSE;
+    Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
+    
+    if(mailClass != nil)
+    {
+        // We must always check whether the current device is configured for sending emails
+        if([mailClass canSendMail])
+        {
+            bCanSendEmail = TRUE;			
+        }
+        else
+        {
+            bCanSendEmail = FALSE;
+        }
+    }
+    else
+    {
+        bCanSendEmail = FALSE;
+    }
+    
+    if(bCanSendEmail)
+    {
+        [self displayMailComposerSheet];
+    }
+    else 
+    {
+        [FooBarUtils showAlertMessage:@"Check Your Email Configuration"];
+    }	
+}
+
+- (void)displayMailComposerSheet
+{	
+    //Create a string with HTML formatting for the email body
+    NSMutableString *emailBody = [[[NSMutableString alloc] initWithString:@"<html><body>"] retain];
+    //Add some text to it however you want
+    //[emailBody appendString:@"<p>Check out this FooBar photo...</p>"];
+    //Pick an image to insert
+    //This example would come from the main bundle, but your source can be elsewhere
+    UIImage *emailImage = imageView.image;
+    //Convert the image into data
+    NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation(emailImage)];
+    //Create a base64 string representation of the data using NSData+Base64
+    NSString *base64String = [imageData base64EncodedString];
+    //Add the encoded string to the emailBody string
+    //Don't forget the "<b>" tags are required, the "<p>" tags are optional
+    [emailBody appendString:[NSString stringWithFormat:@"<p><b><img src='data:image/png;base64,%@'></b></p>",base64String]];
+    //You could repeat here with more text or images, otherwise
+    //close the HTML formatting
+    [emailBody appendString:@"</body></html>"];
+    NSLog(@"%@",emailBody);
+    
+    MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+    controller.mailComposeDelegate = self;
+    controller.navigationBar.tintColor=[UIColor blackColor];
+    [controller setSubject:@"Check out this FooBar photo..."];
+    //NSString* shareBody =[NSString stringWithFormat:@"Check out this FooBar photo %@", feedObject.foobarPhoto.url];
+    [controller setMessageBody:emailBody isHTML:YES]; 
+    if (controller) [self presentModalViewController:controller animated:YES];
+    [controller release];
+}
+
+#pragma mark -
+#pragma mark MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{	
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            break;
+        case MFMailComposeResultSaved:
+            break;
+        case MFMailComposeResultSent:
+        {
+            [FooBarUtils showAlertMessage:@"Your Email is sent successfully"];
+        }
+            break;
+        case MFMailComposeResultFailed:
+        {
+            [FooBarUtils showAlertMessage:@"Error sending Email.. Try Again"];
+        }
+            break;
+        default:
+            break;
+    }
+    
+    [controller dismissModalViewControllerAnimated:YES];
+}
+
+
 #pragma mark - ConnectionManager delegate functions
 
 -(void)httpRequestFailed:(ASIHTTPRequest *)request
 {
-	NSError *error= [request error];
-	NSLog(@"%@",[error localizedDescription]);
+    NSError *error= [request error];
+    NSLog(@"%@",[error localizedDescription]);
 }
 
 -(void)httpRequestFinished:(ASIHTTPRequest *)request
 {
-	NSString *responseJSON = [[request responseString] retain];
-	NSString *urlString= [[request url] absoluteString];
+    NSString *responseJSON = [[request responseString] retain];
+    NSString *urlString= [[request url] absoluteString];
     int statusCode = [request responseStatusCode];
     NSString *statusMessage = [request responseStatusMessage];
     
@@ -358,6 +514,7 @@
 
 - (void)dealloc 
 {
+    imageView.delegate = nil;
     [feedObject release];
     [commentsHeightArray release];
     [imageView release];

@@ -1,5 +1,7 @@
 #import "SocialUser.h"
 #import "FooBarConstants.h"
+#import "EndPoints.h"
+#import "EndPointsKeys.h"
 
 @implementation SocialUser
 

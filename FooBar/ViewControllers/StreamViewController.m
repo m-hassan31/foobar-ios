@@ -111,14 +111,7 @@
     
     PhotoDetailsViewController *photoDetailsVC = [[PhotoDetailsViewController alloc] initWithNibName:@"PhotoDetailsViewController" bundle:nil];
     photoDetailsVC.feedObject = feedObject;
-
-    CATransition* transition = [CATransition animation];
-    transition.duration = 0.3;
-    transition.type = kCATransitionFade;
-    transition.subtype = kCATransitionFromRight;
-    
-    [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
-    [self.navigationController pushViewController:photoDetailsVC animated:NO];
+    [self.navigationController pushViewController:photoDetailsVC animated:YES];
     [photoDetailsVC release];
     
     /*FeedView *fView = (FeedView*)[quiltView cellAtIndexPath:indexPath];

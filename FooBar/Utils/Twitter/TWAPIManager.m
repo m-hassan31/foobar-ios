@@ -6,6 +6,15 @@
 
 typedef void(^TWAPIHandler)(NSData *data, NSError *error);
 
+@interface TWAPIManager()
+
+- (void)_step1WithCompletion:(TWAPIHandler)completion;
+- (void)_step2WithAccount:(ACAccount *)account
+                signature:(NSString *)signedReverseAuthSignature
+               andHandler:(TWAPIHandler)completion;
+
+@end
+
 @implementation TWAPIManager
 
 /**

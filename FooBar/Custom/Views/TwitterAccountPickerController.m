@@ -200,7 +200,7 @@
             if([delegate respondsToSelector:@selector(twitterAccountSelected)])
             {
                 TwitterUtil* twUtil = (TwitterUtil*)[[TwitterUtil alloc] initWithDelegate:nil];
-                [twUtil setTwitterEnabled:YES];
+                [twUtil setTwitterConfigured:YES];
                 [twUtil setTwitterUsername:phoneTwitterAccount.username];
                 [twUtil release];
                 [delegate twitterAccountSelected];
@@ -222,7 +222,7 @@
     
     if(delegate && [delegate respondsToSelector:@selector(twitterPickerCancelled)])
     {
-        [delegate twitterAccountCancelled];
+        [delegate twitterPickerCancelled];
     }
     [self hide];
 }

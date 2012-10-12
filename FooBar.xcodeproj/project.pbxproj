@@ -42,6 +42,9 @@
 		8459885C15F22C5E00A5486C /* EditImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8459885A15F22C5E00A5486C /* EditImageViewController.xib */; };
 		8459885D15F22C5E00A5486C /* EditImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8459885B15F22C5E00A5486C /* EditImageViewController.m */; };
 		8459886F15F26DDA00A5486C /* CustomTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8459886E15F26DDA00A5486C /* CustomTabBarController.m */; };
+		845D643F1627E92F00D9110F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 845D643E1627E92F00D9110F /* MessageUI.framework */; };
+		845D64441627EE1C00D9110F /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845D64421627EE1B00D9110F /* ShareViewController.m */; };
+		845D64451627EE1C00D9110F /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 845D64431627EE1C00D9110F /* ShareViewController.xib */; };
 		846B5910160AF82B00AB3721 /* UIImage+RemoteSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 846B590F160AF82B00AB3721 /* UIImage+RemoteSize.m */; };
 		846B591B160B244F00AB3721 /* CustomCellBGView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846B5918160B244F00AB3721 /* CustomCellBGView.m */; };
 		846B591C160B244F00AB3721 /* RoundRect.m in Sources */ = {isa = PBXBuildFile; fileRef = 846B591A160B244F00AB3721 /* RoundRect.m */; };
@@ -55,8 +58,6 @@
 		8497630115F4D89000391813 /* PhotoDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 849762FF15F4D89000391813 /* PhotoDetailsViewController.xib */; };
 		849AFE0E16257153006A5AD9 /* UploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849AFE0C16257152006A5AD9 /* UploadViewController.m */; };
 		849AFE0F16257153006A5AD9 /* UploadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 849AFE0D16257153006A5AD9 /* UploadViewController.xib */; };
-		849AFE171625739E006A5AD9 /* Upload.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AFE151625739E006A5AD9 /* Upload.png */; };
-		849AFE181625739E006A5AD9 /* Upload@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AFE161625739E006A5AD9 /* Upload@2x.png */; };
 		849AFE261625A30F006A5AD9 /* FooBarProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 849AFE251625A30F006A5AD9 /* FooBarProduct.m */; };
 		849BDB7A1622B74900C272B9 /* FooBarPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 849BDB791622B74900C272B9 /* FooBarPhoto.m */; };
 		849BDB871622E43800C272B9 /* FooBarUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 849BDB861622E43800C272B9 /* FooBarUser.m */; };
@@ -69,6 +70,9 @@
 		84A36C0015F510B80040A9EE /* ImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A36BFC15F510B80040A9EE /* ImageDownloader.m */; };
 		84A36C0415F510EA0040A9EE /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A36C0315F510EA0040A9EE /* TTTAttributedLabel.m */; };
 		84A36C0615F512110040A9EE /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A36C0515F512110040A9EE /* CoreText.framework */; };
+		84A4D62A1628195A00ED5160 /* PlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A4D6291628195A00ED5160 /* PlaceHolderTextView.m */; };
+		84A4D62E16281FC400ED5160 /* RedButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A4D62C16281FC400ED5160 /* RedButton.png */; };
+		84A4D62F16281FC400ED5160 /* RedButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A4D62D16281FC400ED5160 /* RedButton@2x.png */; };
 		84B5110F1622B31B008CD03E /* Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B5110E1622B31B008CD03E /* Parser.m */; };
 		84B511131622B38E008CD03E /* FeedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B511121622B38E008CD03E /* FeedObject.m */; };
 		84BBD72815F1F7BF007D1F9D /* Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BBD71A15F1F7BF007D1F9D /* Back.png */; };
@@ -206,6 +210,10 @@
 		8459885B15F22C5E00A5486C /* EditImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditImageViewController.m; sourceTree = "<group>"; };
 		8459886D15F26DDA00A5486C /* CustomTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTabBarController.h; sourceTree = "<group>"; };
 		8459886E15F26DDA00A5486C /* CustomTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTabBarController.m; sourceTree = "<group>"; };
+		845D643E1627E92F00D9110F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		845D64411627EE1B00D9110F /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
+		845D64421627EE1B00D9110F /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
+		845D64431627EE1C00D9110F /* ShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareViewController.xib; sourceTree = "<group>"; };
 		846B590E160AF82B00AB3721 /* UIImage+RemoteSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RemoteSize.h"; sourceTree = "<group>"; };
 		846B590F160AF82B00AB3721 /* UIImage+RemoteSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RemoteSize.m"; sourceTree = "<group>"; };
 		846B5917160B244F00AB3721 /* CustomCellBGView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellBGView.h; sourceTree = "<group>"; };
@@ -226,8 +234,6 @@
 		849AFE0B16257152006A5AD9 /* UploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadViewController.h; sourceTree = "<group>"; };
 		849AFE0C16257152006A5AD9 /* UploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadViewController.m; sourceTree = "<group>"; };
 		849AFE0D16257153006A5AD9 /* UploadViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadViewController.xib; sourceTree = "<group>"; };
-		849AFE151625739E006A5AD9 /* Upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Upload.png; sourceTree = "<group>"; };
-		849AFE161625739E006A5AD9 /* Upload@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Upload@2x.png"; sourceTree = "<group>"; };
 		849AFE241625A30F006A5AD9 /* FooBarProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooBarProduct.h; sourceTree = "<group>"; };
 		849AFE251625A30F006A5AD9 /* FooBarProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooBarProduct.m; sourceTree = "<group>"; };
 		849BDB781622B74900C272B9 /* FooBarPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooBarPhoto.h; sourceTree = "<group>"; };
@@ -250,6 +256,10 @@
 		84A36C0215F510EA0040A9EE /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
 		84A36C0315F510EA0040A9EE /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		84A36C0515F512110040A9EE /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		84A4D6281628195A00ED5160 /* PlaceHolderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceHolderTextView.h; sourceTree = "<group>"; };
+		84A4D6291628195A00ED5160 /* PlaceHolderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceHolderTextView.m; sourceTree = "<group>"; };
+		84A4D62C16281FC400ED5160 /* RedButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RedButton.png; sourceTree = "<group>"; };
+		84A4D62D16281FC400ED5160 /* RedButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RedButton@2x.png"; sourceTree = "<group>"; };
 		84B5110D1622B31B008CD03E /* Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
 		84B5110E1622B31B008CD03E /* Parser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Parser.m; sourceTree = "<group>"; };
 		84B511111622B38E008CD03E /* FeedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedObject.h; sourceTree = "<group>"; };
@@ -351,6 +361,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				845D643F1627E92F00D9110F /* MessageUI.framework in Frameworks */,
 				84EA282B15F5CB6A009A107E /* Accounts.framework in Frameworks */,
 				84EA282015F5C870009A107E /* Twitter.framework in Frameworks */,
 				8401DAA215F0CF7500659482 /* libz.dylib in Frameworks */,
@@ -519,6 +530,7 @@
 		849762F115F4A9B800391813 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				84A4D6271628195A00ED5160 /* PlaceHolderTextView */,
 				841BB48A1626F7C500365D39 /* ODRefreshControl */,
 				84EA282515F5C8FD009A107E /* TwitterAccountPickerController.h */,
 				84EA282715F5C8FD009A107E /* TwitterAccountPickerController.m */,
@@ -574,6 +586,15 @@
 			path = TTTAttributedLabel;
 			sourceTree = "<group>";
 		};
+		84A4D6271628195A00ED5160 /* PlaceHolderTextView */ = {
+			isa = PBXGroup;
+			children = (
+				84A4D6281628195A00ED5160 /* PlaceHolderTextView.h */,
+				84A4D6291628195A00ED5160 /* PlaceHolderTextView.m */,
+			);
+			path = PlaceHolderTextView;
+			sourceTree = "<group>";
+		};
 		84D6137415EFDA72000B0CE5 = {
 			isa = PBXGroup;
 			children = (
@@ -609,6 +630,7 @@
 				84850FBF15F2120D00324031 /* AVFoundation.framework */,
 				8459882615F21BEB00A5486C /* ImageIO.framework */,
 				84EA281F15F5C870009A107E /* Twitter.framework */,
+				845D643E1627E92F00D9110F /* MessageUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -681,10 +703,10 @@
 				84BBD71B15F1F7BF007D1F9D /* Back@2x.png */,
 				840D4EB3162448C30010B987 /* Front.png */,
 				840D4EB4162448C30010B987 /* Front@2x.png */,
-				849AFE151625739E006A5AD9 /* Upload.png */,
-				849AFE161625739E006A5AD9 /* Upload@2x.png */,
 				84BBD71C15F1F7BF007D1F9D /* Camera.png */,
 				84BBD71D15F1F7BF007D1F9D /* Camera@2x.png */,
+				84A4D62C16281FC400ED5160 /* RedButton.png */,
+				84A4D62D16281FC400ED5160 /* RedButton@2x.png */,
 				84BBD71E15F1F7BF007D1F9D /* CancelCapture.png */,
 				84BBD71F15F1F7BF007D1F9D /* CancelCapture@2x.png */,
 				84BBD72215F1F7BF007D1F9D /* Gallery.png */,
@@ -780,6 +802,9 @@
 				8C5B59971627435500325A39 /* ImageZoomingViewController.h */,
 				8C5B59981627435500325A39 /* ImageZoomingViewController.m */,
 				8C5B59991627435500325A39 /* ImageZoomingViewController.xib */,
+				845D64411627EE1B00D9110F /* ShareViewController.h */,
+				845D64421627EE1B00D9110F /* ShareViewController.m */,
+				845D64431627EE1C00D9110F /* ShareViewController.xib */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -946,8 +971,9 @@
 				840D4EB5162448C30010B987 /* Front.png in Resources */,
 				840D4EB6162448C30010B987 /* Front@2x.png in Resources */,
 				849AFE0F16257153006A5AD9 /* UploadViewController.xib in Resources */,
-				849AFE171625739E006A5AD9 /* Upload.png in Resources */,
-				849AFE181625739E006A5AD9 /* Upload@2x.png in Resources */,
+				845D64451627EE1C00D9110F /* ShareViewController.xib in Resources */,
+				84A4D62E16281FC400ED5160 /* RedButton.png in Resources */,
+				84A4D62F16281FC400ED5160 /* RedButton@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1021,6 +1047,8 @@
 				849AFE0E16257153006A5AD9 /* UploadViewController.m in Sources */,
 				849AFE261625A30F006A5AD9 /* FooBarProduct.m in Sources */,
 				841BB48D1626F7C500365D39 /* ODRefreshControl.m in Sources */,
+				845D64441627EE1C00D9110F /* ShareViewController.m in Sources */,
+				84A4D62A1628195A00ED5160 /* PlaceHolderTextView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
