@@ -9,7 +9,12 @@
 #import "Parser.h"
 #import "FeedObject.h"
 
-@interface StreamViewController ()
+@interface StreamViewController()
+{
+    NSUInteger feedsPage;
+    BOOL bReloadingFeeds;
+}
+
 @end
 
 @implementation StreamViewController
@@ -47,35 +52,42 @@
 {
     [super viewDidLoad];
     
+    feedsPage = 1;
+    
+    self.feedsArray = [[NSMutableArray alloc] init];
+    
     quiltView = [[TMQuiltView alloc] initWithFrame:CGRectMake(0, 0, 320, 326)];
     quiltView.delegate = self;
     quiltView.dataSource = self;
     quiltView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    [self.view addSubview:quiltView];    
-    [quiltView release];       
+    [self.view addSubview:quiltView];
+    [quiltView release];
     
     refreshControl = [[ODRefreshControl alloc] initInScrollView:quiltView];
     refreshControl.tintColor = [UIColor colorWithRed:182.0/255.0 green:49.0/255.0 blue:37.0/255.0 alpha:1.0];
     [refreshControl addTarget:self action:@selector(dropViewDidBeginRefreshing:) forControlEvents:UIControlEventValueChanged];
+    
+    pullToRefreshManager_ = [[MNMBottomPullToRefreshManager alloc] initWithPullToRefreshViewHeight:60.0f scrollView:quiltView withClient:self];
     
     manager = [[ConnectionManager alloc] init];
     manager.delegate = self;
     [manager getFeedsAtPage:1 count:10];
 }
 
-- (void)dropViewDidBeginRefreshing:(ODRefreshControl *)refreshControl
+- (void)dropViewDidBeginRefreshing:(ODRefreshControl *)_refreshControl
 {
+    bReloadingFeeds = YES;
     [manager getFeedsAtPage:1 count:10];
 }
 
 #pragma mark - QuiltViewControllerDataSource
 
-- (NSInteger)quiltViewNumberOfCells:(TMQuiltView *)_quiltView 
+- (NSInteger)quiltViewNumberOfCells:(TMQuiltView *)_quiltView
 {
     return feedsArray.count;
 }
 
-- (TMQuiltViewCell *)quiltView:(TMQuiltView *)_quiltView cellAtIndexPath:(NSIndexPath *)indexPath 
+- (TMQuiltViewCell *)quiltView:(TMQuiltView *)_quiltView cellAtIndexPath:(NSIndexPath *)indexPath
 {
     FeedView *aFeed = (FeedView *)[_quiltView dequeueReusableCellWithReuseIdentifier:@"FeedElement"];
     if (!aFeed) {
@@ -115,21 +127,21 @@
     [photoDetailsVC release];
     
     /*FeedView *fView = (FeedView*)[quiltView cellAtIndexPath:indexPath];
-    
-    
-    ImageZoomingViewController* imageZoomingViewController = [[ImageZoomingViewController alloc] initWithImage:fView.photoView.image];
-    imageZoomingViewController.animateFrame= CGRectOffset(fView.photoView.frame,0,44);
-    [self.navigationController pushViewController:imageZoomingViewController animated:NO];
-    [imageZoomingViewController release];*/
+     
+     
+     ImageZoomingViewController* imageZoomingViewController = [[ImageZoomingViewController alloc] initWithImage:fView.photoView.image];
+     imageZoomingViewController.animateFrame= CGRectOffset(fView.photoView.frame,0,44);
+     [self.navigationController pushViewController:imageZoomingViewController animated:NO];
+     [imageZoomingViewController release];*/
 }
 
-- (NSInteger)quiltViewNumberOfColumns:(TMQuiltView *)_quiltView 
-{    
+- (NSInteger)quiltViewNumberOfColumns:(TMQuiltView *)_quiltView
+{
     return 2;
 }
 
-- (CGFloat)quiltView:(TMQuiltView *)_quiltView heightForCellAtIndexPath:(NSIndexPath *)indexPath 
-{    
+- (CGFloat)quiltView:(TMQuiltView *)_quiltView heightForCellAtIndexPath:(NSIndexPath *)indexPath
+{
     FeedObject *feedObject = [feedsArray objectAtIndex:indexPath.row];
     
     CGFloat imageWidth = feedObject.foobarPhoto.width;
@@ -143,6 +155,46 @@
     }
     
     return height+40.0f; // include height of user name bar
+}
+
+#pragma mark -
+#pragma mark MNMBottomPullToRefreshManagerClient
+
+/**
+ * This is the same delegate method as UIScrollView but requiered on MNMBottomPullToRefreshManagerClient protocol
+ * to warn about its implementation. Here you have to call [MNMBottomPullToRefreshManager tableViewScrolled]
+ *
+ * Tells the delegate when the user scrolls the content view within the receiver.
+ *
+ * @param scrollView: The scroll-view object in which the scrolling occurred.
+ */
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [pullToRefreshManager_ scrollViewScrolled];
+}
+
+/**
+ * This is the same delegate method as UIScrollView but requiered on MNMBottomPullToRefreshClient protocol
+ * to warn about its implementation. Here you have to call [MNMBottomPullToRefreshManager tableViewReleased]
+ *
+ * Tells the delegate when dragging ended in the scroll view.
+ *
+ * @param scrollView: The scroll-view object that finished scrolling the content view.
+ * @param decelerate: YES if the scrolling movement will continue, but decelerate, after a touch-up gesture during a dragging operation.
+ */
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    [pullToRefreshManager_ scrollViewReleased];
+}
+
+/**
+ * Tells client that can reload table.
+ * After reloading is completed must call [pullToRefreshMediator_ tableViewReloadFinished]
+ */
+- (void)MNMBottomPullToRefreshManagerClientReloadTable {
+    
+    // Test loading
+    bReloadingFeeds = NO;
+    [manager getFeedsAtPage:feedsPage count:10];
+    [pullToRefreshManager_ scrollViewReloadFinished];
 }
 
 #pragma mark - ConnectionManager delegate functions
@@ -170,9 +222,28 @@
             NSArray *parsedFeedsArray = [Parser parseFeedsResponse:responseJSON];
             if(parsedFeedsArray)
             {
-                self.feedsArray = [parsedFeedsArray mutableCopy];
-                [quiltView reloadData];
+                if(bReloadingFeeds)
+                {
+                    if(parsedFeedsArray.count > 0)
+                    {
+                        [self.feedsArray removeAllObjects];
+                        [self.feedsArray addObjectsFromArray:parsedFeedsArray];
+                        feedsPage = 2;
+                        [quiltView reloadData];
+                    }
+                }
+                else
+                {
+                    if(parsedFeedsArray.count > 0)
+                    {
+                        [self.feedsArray addObjectsFromArray:parsedFeedsArray];
+                        feedsPage++;
+                        [quiltView reloadData];
+                    }
+                }
+                
                 [refreshControl endRefreshing];
+                [pullToRefreshManager_ scrollViewReloadFinished];
             }
             else
             {
@@ -180,7 +251,7 @@
             }
         }
         else if(statusCode == 403)
-        {   
+        {
             
         }
     }
@@ -191,9 +262,12 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-
+    
     manager.delegate = nil;
     [manager release];
+    
+    [pullToRefreshManager_ release];
+    pullToRefreshManager_ = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -202,11 +276,15 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void)dealloc 
+- (void)dealloc
 {
     manager.delegate = nil;
     [manager release];
     [feedsArray release];
+    
+    [pullToRefreshManager_ release];
+    pullToRefreshManager_ = nil;
+    
     [super dealloc];
 }
 

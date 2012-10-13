@@ -133,6 +133,11 @@
 		8C4005961603AFF500F11091 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C4005941603AFF400F11091 /* Logo.png */; };
 		8C4005971603AFF500F11091 /* Logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C4005951603AFF500F11091 /* Logo@2x.png */; };
 		8C5B599B162744C600325A39 /* ImageZoomingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B59981627435500325A39 /* ImageZoomingViewController.m */; };
+		8C6361FA1629BE45005855D0 /* MNMBottomPullToRefresh.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C6361F31629BE45005855D0 /* MNMBottomPullToRefresh.strings */; };
+		8C6361FB1629BE45005855D0 /* MNMBottomPullToRefreshArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C6361F41629BE45005855D0 /* MNMBottomPullToRefreshArrow.png */; };
+		8C6361FC1629BE45005855D0 /* MNMBottomPullToRefreshArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C6361F51629BE45005855D0 /* MNMBottomPullToRefreshArrow@2x.png */; };
+		8C6361FD1629BE45005855D0 /* MNMBottomPullToRefreshManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C6361F71629BE45005855D0 /* MNMBottomPullToRefreshManager.m */; };
+		8C6361FE1629BE45005855D0 /* MNMBottomPullToRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C6361F91629BE45005855D0 /* MNMBottomPullToRefreshView.m */; };
 		8CB4D4191620BF2A00A42B78 /* FacebookUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4D40A1620BF2A00A42B78 /* FacebookUtil.m */; };
 		8CB4D41A1620BF2A00A42B78 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4D40E1620BF2A00A42B78 /* NSData+Base64.m */; };
 		8CB4D41B1620BF2A00A42B78 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4D4101620BF2A00A42B78 /* OAuth+Additions.m */; };
@@ -340,6 +345,13 @@
 		8C5B59971627435500325A39 /* ImageZoomingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageZoomingViewController.h; sourceTree = "<group>"; };
 		8C5B59981627435500325A39 /* ImageZoomingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageZoomingViewController.m; sourceTree = "<group>"; };
 		8C5B59991627435500325A39 /* ImageZoomingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageZoomingViewController.xib; sourceTree = "<group>"; };
+		8C6361F31629BE45005855D0 /* MNMBottomPullToRefresh.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = MNMBottomPullToRefresh.strings; sourceTree = "<group>"; };
+		8C6361F41629BE45005855D0 /* MNMBottomPullToRefreshArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MNMBottomPullToRefreshArrow.png; sourceTree = "<group>"; };
+		8C6361F51629BE45005855D0 /* MNMBottomPullToRefreshArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MNMBottomPullToRefreshArrow@2x.png"; sourceTree = "<group>"; };
+		8C6361F61629BE45005855D0 /* MNMBottomPullToRefreshManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MNMBottomPullToRefreshManager.h; sourceTree = "<group>"; };
+		8C6361F71629BE45005855D0 /* MNMBottomPullToRefreshManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MNMBottomPullToRefreshManager.m; sourceTree = "<group>"; };
+		8C6361F81629BE45005855D0 /* MNMBottomPullToRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MNMBottomPullToRefreshView.h; sourceTree = "<group>"; };
+		8C6361F91629BE45005855D0 /* MNMBottomPullToRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MNMBottomPullToRefreshView.m; sourceTree = "<group>"; };
 		8CB4D4091620BF2A00A42B78 /* FacebookUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookUtil.h; sourceTree = "<group>"; };
 		8CB4D40A1620BF2A00A42B78 /* FacebookUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookUtil.m; sourceTree = "<group>"; };
 		8CB4D40D1620BF2A00A42B78 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -530,6 +542,7 @@
 		849762F115F4A9B800391813 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8C6361F21629BE45005855D0 /* MNMBottomPullToRefresh */,
 				84A4D6271628195A00ED5160 /* PlaceHolderTextView */,
 				841BB48A1626F7C500365D39 /* ODRefreshControl */,
 				84EA282515F5C8FD009A107E /* TwitterAccountPickerController.h */,
@@ -836,6 +849,20 @@
 			path = Others;
 			sourceTree = "<group>";
 		};
+		8C6361F21629BE45005855D0 /* MNMBottomPullToRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				8C6361F31629BE45005855D0 /* MNMBottomPullToRefresh.strings */,
+				8C6361F41629BE45005855D0 /* MNMBottomPullToRefreshArrow.png */,
+				8C6361F51629BE45005855D0 /* MNMBottomPullToRefreshArrow@2x.png */,
+				8C6361F61629BE45005855D0 /* MNMBottomPullToRefreshManager.h */,
+				8C6361F71629BE45005855D0 /* MNMBottomPullToRefreshManager.m */,
+				8C6361F81629BE45005855D0 /* MNMBottomPullToRefreshView.h */,
+				8C6361F91629BE45005855D0 /* MNMBottomPullToRefreshView.m */,
+			);
+			path = MNMBottomPullToRefresh;
+			sourceTree = "<group>";
+		};
 		8CB4D4081620BF2A00A42B78 /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
@@ -974,6 +1001,9 @@
 				845D64451627EE1C00D9110F /* ShareViewController.xib in Resources */,
 				84A4D62E16281FC400ED5160 /* RedButton.png in Resources */,
 				84A4D62F16281FC400ED5160 /* RedButton@2x.png in Resources */,
+				8C6361FA1629BE45005855D0 /* MNMBottomPullToRefresh.strings in Resources */,
+				8C6361FB1629BE45005855D0 /* MNMBottomPullToRefreshArrow.png in Resources */,
+				8C6361FC1629BE45005855D0 /* MNMBottomPullToRefreshArrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1049,6 +1079,8 @@
 				841BB48D1626F7C500365D39 /* ODRefreshControl.m in Sources */,
 				845D64441627EE1C00D9110F /* ShareViewController.m in Sources */,
 				84A4D62A1628195A00ED5160 /* PlaceHolderTextView.m in Sources */,
+				8C6361FD1629BE45005855D0 /* MNMBottomPullToRefreshManager.m in Sources */,
+				8C6361FE1629BE45005855D0 /* MNMBottomPullToRefreshView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
