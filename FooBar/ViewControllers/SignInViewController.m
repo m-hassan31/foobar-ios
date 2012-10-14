@@ -133,7 +133,7 @@
         [self showHUDwithText:@"Getting Twitter Info"];
         NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
         [twitterUtil getTwitterInfo:[defaults objectForKey:kTwitterUsername]];
-    }    
+    }
 }
 
 -(void)twitterPickerCancelled
@@ -239,8 +239,6 @@
     
     NSLog(@"Status Code - %d\nStatus Message - %@\nResponse:\n%@", statusCode, statusMessage, responseJSON);
     
-    [responseJSON release];
-    
     if([urlString hasPrefix:UsersUrl])
     {
         if(statusCode == 200)
@@ -257,6 +255,7 @@
             
         }
     }
+    [responseJSON release];
 }
 
 #pragma mark - Memory Management

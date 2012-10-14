@@ -29,6 +29,12 @@
     return self;
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
 - (void)didReceiveMemoryWarning
 {
     // Releases the view if it doesn't have a superview.
@@ -56,6 +62,7 @@
     
     self.feedsArray = [[NSMutableArray alloc] init];
     
+    // pinterest like feeds view
     quiltView = [[TMQuiltView alloc] initWithFrame:CGRectMake(0, 0, 320, 326)];
     quiltView.delegate = self;
     quiltView.dataSource = self;
@@ -63,11 +70,13 @@
     [self.view addSubview:quiltView];
     [quiltView release];
     
+    // top pull to refresh control - for reloading feeds
     refreshControl = [[ODRefreshControl alloc] initInScrollView:quiltView];
     refreshControl.tintColor = [UIColor colorWithRed:182.0/255.0 green:49.0/255.0 blue:37.0/255.0 alpha:1.0];
     [refreshControl addTarget:self action:@selector(dropViewDidBeginRefreshing:) forControlEvents:UIControlEventValueChanged];
     
-    pullToRefreshManager_ = [[MNMBottomPullToRefreshManager alloc] initWithPullToRefreshViewHeight:60.0f scrollView:quiltView withClient:self];
+    // bottom pull to refresh control - for loading more feeds
+    pullToRefreshManager_ = [[MNMBottomPullToRefreshManager alloc] initWithPullToRefreshViewHeight:50.0f scrollView:quiltView withClient:self];
     
     manager = [[ConnectionManager alloc] init];
     manager.delegate = self;
@@ -204,6 +213,7 @@
 	NSError *error= [request error];
 	NSLog(@"%@",[error localizedDescription]);
     [refreshControl endRefreshing];
+    [pullToRefreshManager_ scrollViewReloadFinished];
 }
 
 -(void)httpRequestFinished:(ASIHTTPRequest *)request
@@ -241,9 +251,6 @@
                         [quiltView reloadData];
                     }
                 }
-                
-                [refreshControl endRefreshing];
-                [pullToRefreshManager_ scrollViewReloadFinished];
             }
             else
             {
@@ -254,10 +261,14 @@
         {
             
         }
+        [refreshControl endRefreshing];
+        [pullToRefreshManager_ scrollViewReloadFinished];
     }
     
     [responseJSON release];
 }
+
+#pragma mark - Memory Management
 
 - (void)viewDidUnload
 {
@@ -268,12 +279,6 @@
     
     [pullToRefreshManager_ release];
     pullToRefreshManager_ = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 - (void)dealloc

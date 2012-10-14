@@ -72,8 +72,8 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(IBAction)uploadButtonPressed:(id)sender 
-{    
+-(IBAction)uploadButtonPressed:(id)sender
+{
     [self showHUDwithText:@"Uploading.."];
 #warning TODO - Confirm from Foobar team - if Foobar products are not available what should be the action?
     NSString *productId = (selectedFooBarProductIndex != -1)?[NSString stringWithFormat:@"%d",(arc4random()%5)+1]:@"";
@@ -99,7 +99,7 @@
     {
         UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
         
-        //Caption text View         
+        //Caption text View
         PlaceHolderTextView *captionTextView = [[PlaceHolderTextView alloc] initWithFrame:CGRectMake(10, 5, 280, 65)];
         captionTextView.backgroundColor = [UIColor clearColor];
         captionTextView.layer.cornerRadius = 7.0f;
@@ -121,7 +121,7 @@
         
     }
     else
-    {        
+    {
         UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
         
         UILabel *foobarProductLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 9, 190, 27)];
@@ -201,7 +201,7 @@
 #pragma mark -
 #pragma mark UIPickerView delegate functions
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{	
+{
     FooBarProduct *product = [foobarProductsArray objectAtIndex:row];
 	return product.name;
 }
@@ -211,7 +211,7 @@
 	if(foobarProductsArray && foobarProductsArray.count > 0)
     {
         selectedFooBarProductIndex = row;
-        NSIndexPath *path = [NSIndexPath indexPathForRow:1 inSection:0];                
+        NSIndexPath *path = [NSIndexPath indexPathForRow:1 inSection:0];
         NSArray *indexArray = [NSArray arrayWithObjects:path,nil];
         [uploadTableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationFade];
         
@@ -230,7 +230,7 @@
 #pragma mark UITextView delegate functions
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if([text isEqualToString:@"\n"]) 
+    if([text isEqualToString:@"\n"])
     {
         [textView resignFirstResponder];
         return NO;
@@ -278,8 +278,6 @@
     
     NSLog(@"Status Code - %d\nStatus Message - %@\nResponse:\n%@", statusCode, statusMessage, responseJSON);
     
-    [responseJSON release];
-    
     if([urlString hasPrefix:PhotosUrl])
     {
         if(statusCode == 200)
@@ -287,7 +285,7 @@
             if([request.requestMethod isEqualToString:@"POST"])
             {
                 FeedObject *feedObject = [Parser parseUploadResponse:responseJSON];
-                [manager updatePost:feedObject.feedId withCaption:self.captionText];                
+                [manager updatePost:feedObject.feedId withCaption:self.captionText];
             }
             else if([request.requestMethod isEqualToString:@"PUT"])
             {
@@ -321,6 +319,8 @@
             }
         }
     }
+    
+    [responseJSON release];
 }
 
 #pragma mark -
