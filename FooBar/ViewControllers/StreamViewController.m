@@ -2,6 +2,7 @@
 #import "FeedView.h"
 #import "CaptureViewController.h"
 #import "FooBarUtils.h"
+#import "FooBarConstants.h"
 #import "PhotoDetailsViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIImage+RemoteSize.h"
@@ -58,6 +59,8 @@
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFeeds:) name:kUpdateFeedsOnUpload object:nil];
+    
     feedsPage = 1;
     
     self.feedsArray = [[NSMutableArray alloc] init];
@@ -87,6 +90,17 @@
 {
     bReloadingFeeds = YES;
     [manager getFeedsAtPage:1 count:10];
+}
+
+-(void)updateFeeds:(NSNotification*)notification
+{
+    id anObject = notification.object;
+    if(anObject && ![anObject isKindOfClass:[NSNull class]] && [anObject isKindOfClass:[FeedObject class]])
+    {
+        FeedObject *uploadedFeedObject = (FeedObject*)anObject;
+        [self.feedsArray insertObject:uploadedFeedObject atIndex:0];
+        [quiltView reloadData];
+    }
 }
 
 #pragma mark - QuiltViewControllerDataSource

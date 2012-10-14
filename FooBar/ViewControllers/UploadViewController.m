@@ -291,6 +291,9 @@
             {
                 if(hud)
                     [hud hide:YES];
+                
+                FeedObject *feedObject = [Parser parseUploadResponse:responseJSON];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateFeedsOnUpload object:feedObject];
                 CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;
                 [customTabBar selectTab:STREAM_TAB];
                 [self.navigationController popToRootViewControllerAnimated:NO];
@@ -300,6 +303,7 @@
         {
             if(hud)
                 [hud hide:YES];
+
             [FooBarUtils showAlertMessage:@"Sorry! Upload Failed."];
             [self.navigationController popToRootViewControllerAnimated:NO];
             CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;

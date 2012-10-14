@@ -17,6 +17,7 @@
 #define kEmail                                      @"email"
 #define kIsSignedIn                                 @"is_signed_in"
 #define kAccessToken                                @"access_token"
+#define kUpdateFeedsOnUpload                        @"UpdateFeedsOnUpload"
 
 #define	kIsFacebookConfigured					    @"facebookConfiguration"
 #define	kIsTwitterConfigured					    @"twitterConfiguration"
