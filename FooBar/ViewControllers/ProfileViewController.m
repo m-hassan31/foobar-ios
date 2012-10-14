@@ -5,6 +5,7 @@
 #import "SocialUser.h"
 #import "EndPoints.h"
 #import "Parser.h"
+#import "InviteFriendsViewController.h"
 
 @interface ProfileViewController()
 
@@ -183,6 +184,12 @@
         signOutActionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
         [signOutActionSheet showInView:self.view];
         [signOutActionSheet release];
+    }
+    else if(indexPath.section == 1 && indexPath.row == 0)
+    {
+        InviteFriendsViewController *inviteFriendsVC = [[InviteFriendsViewController alloc] initWithNibName:@"InviteFriendsViewController" bundle:nil];
+        [self.navigationController pushViewController:inviteFriendsVC animated:YES];
+        [inviteFriendsVC release];
     }
 }
 

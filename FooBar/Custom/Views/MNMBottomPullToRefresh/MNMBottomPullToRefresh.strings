@@ -21,6 +21,6 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
  */
 
-"MNM_BOTTOM_PTR_PULL_TEXT" = "Pull to load more...";
-"MNM_BOTTOM_PTR_RELEASE_TEXT" = "Release now!";
-"MNM_BOTTOM_PTR_LOADING_TEXT" = "Loading...";
+"MNM_BOTTOM_PTR_PULL_TEXT" = "Pull to load more feeds..";
+"MNM_BOTTOM_PTR_RELEASE_TEXT" = "Release to load more feeds..";
+"MNM_BOTTOM_PTR_LOADING_TEXT" = "Loading..";

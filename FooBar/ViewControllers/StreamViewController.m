@@ -79,7 +79,7 @@
     [refreshControl addTarget:self action:@selector(dropViewDidBeginRefreshing:) forControlEvents:UIControlEventValueChanged];
     
     // bottom pull to refresh control - for loading more feeds
-    pullToRefreshManager_ = [[MNMBottomPullToRefreshManager alloc] initWithPullToRefreshViewHeight:50.0f scrollView:quiltView withClient:self];
+    pullToRefreshManager_ = [[MNMBottomPullToRefreshManager alloc] initWithPullToRefreshViewHeight:80.0f scrollView:quiltView withClient:self];
     
     manager = [[ConnectionManager alloc] init];
     manager.delegate = self;
@@ -148,14 +148,6 @@
     photoDetailsVC.feedObject = feedObject;
     [self.navigationController pushViewController:photoDetailsVC animated:YES];
     [photoDetailsVC release];
-    
-    /*FeedView *fView = (FeedView*)[quiltView cellAtIndexPath:indexPath];
-     
-     
-     ImageZoomingViewController* imageZoomingViewController = [[ImageZoomingViewController alloc] initWithImage:fView.photoView.image];
-     imageZoomingViewController.animateFrame= CGRectOffset(fView.photoView.frame,0,44);
-     [self.navigationController pushViewController:imageZoomingViewController animated:NO];
-     [imageZoomingViewController release];*/
 }
 
 - (NSInteger)quiltViewNumberOfColumns:(TMQuiltView *)_quiltView
