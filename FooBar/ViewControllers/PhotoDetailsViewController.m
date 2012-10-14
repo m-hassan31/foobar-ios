@@ -473,19 +473,27 @@
                                      [commentsTableView insertRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationBottom];
                                  }];
             }
+            else
+            {
+                [FooBarUtils showAlertMessage:@"Can't comment now. Try again."];
+            }
         }
         else if(statusCode == 403)
         {   
-            
+            [FooBarUtils showAlertMessage:@"Can't comment now. Try again."];
         }
     }
-    else if([urlString hasPrefix:CommentsUrl])
+    else if([urlString hasPrefix:LikesUrl])
     {
         if(statusCode == 200)
         {
             feedObject.likesCount++;
         }
-    } 
+        else if(statusCode == 403)
+        {
+            [FooBarUtils showAlertMessage:@"You can 'like' a post only once."];
+        }
+    }
     
     [responseJSON release];
 }

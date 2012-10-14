@@ -1,5 +1,6 @@
 #import "FeedView.h"
 #import "FooBarUtils.h"
+#import <QuartzCore/QuartzCore.h>
 
 const CGFloat kFeedViewMargin = 0;
 
@@ -10,16 +11,6 @@ const CGFloat kFeedViewMargin = 0;
 @synthesize likesCountLabel = _likesCountLabel;
 @synthesize profilePicView = _profilePicView;
 @synthesize usernameLabel = _usernameLabel;
-
-- (void)dealloc {
-    [_photoView release], _photoView = nil;
-    [_heart release], _heart = nil;
-    [_likesCountLabel release], _likesCountLabel = nil;
-    [_profilePicView release], _profilePicView = nil;
-    [_usernameLabel release], _usernameLabel = nil;
-    
-    [super dealloc];
-}
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithReuseIdentifier:reuseIdentifier];
@@ -32,8 +23,8 @@ const CGFloat kFeedViewMargin = 0;
 - (AsyncImageView *)photoView {
     if (!_photoView) {
         _photoView = [[AsyncImageView alloc] init];
+        _photoView.delegate = self;
         _photoView.contentMode = UIViewContentModeScaleAspectFit;
-        _photoView.clipsToBounds = YES;
         [self addSubview:_photoView];
     }
     return _photoView;
@@ -44,7 +35,6 @@ const CGFloat kFeedViewMargin = 0;
         _heart = [[UIImageView alloc] init];
         _heart.image = [UIImage imageNamed:@"Heart.png"];
         _heart.contentMode = UIViewContentModeScaleAspectFill;
-        _heart.clipsToBounds = YES;
         [self addSubview:_heart];
     }
     return _heart;
@@ -66,7 +56,6 @@ const CGFloat kFeedViewMargin = 0;
     if (!_profilePicView) {
         _profilePicView = [[AsyncImageView alloc] init];
         _profilePicView.contentMode = UIViewContentModeScaleAspectFit;
-        _profilePicView.clipsToBounds = YES;
         [self addSubview:_profilePicView];
     }
     return _profilePicView;
@@ -99,6 +88,33 @@ const CGFloat kFeedViewMargin = 0;
     self.profilePicView.frame = CGRectMake(5.0f, photoFrame.size.height+6.0f, 28.0f, 28.0f);
     
     self.usernameLabel.frame = CGRectMake(38.0f, photoFrame.size.height+6.0f, photoFrame.size.width-43.0f, 28.0f);
+}
+
+#pragma mark - AsyncImageDelegate
+
+-(void)didFinishLoadingImage:(UIImage *)image fromCache:(BOOL)cache
+{
+    [self.layer removeAnimationForKey:@"AsyncImageAnim"];
+    
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.2f;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    transition.type = kCATransitionFade;
+    transition.removedOnCompletion = YES;
+    [self.photoView.layer addAnimation:transition forKey:@"AsyncImageAnim"];
+}
+
+#pragma mark - Memory Management
+
+- (void)dealloc
+{
+    [_photoView setDelegate:nil], [_photoView release], _photoView = nil;
+    [_heart release], _heart = nil;
+    [_likesCountLabel release], _likesCountLabel = nil;
+    [_profilePicView release], _profilePicView = nil;
+    [_usernameLabel release], _usernameLabel = nil;
+    
+    [super dealloc];
 }
 
 @end

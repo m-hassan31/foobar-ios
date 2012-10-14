@@ -6,8 +6,6 @@
 {
     NSString *imageUrl;
     id<AsyncImageDelegate> delegate;
-    BOOL shouldAnimate;
-    NSString *Id;
 
 @private
     ImageDownloader *imageDownloader;
@@ -19,11 +17,8 @@
  */
 @property(nonatomic,retain)NSString *imageUrl;
 @property(nonatomic,assign) id<AsyncImageDelegate> delegate;
-@property(nonatomic) BOOL shouldAnimate;
-@property(nonatomic, retain) NSString *Id;
 
 -(void)setImageUrl:(NSString *)imageUrl_ useCache:(BOOL)useCache;
--(AsyncImageView *) initWithFrame:(CGRect) frame withId:(NSString *)ID touches:(BOOL)allowsTouches withDelegate:(id) _delegate hasBorder:(BOOL) hasBorder;
 
 @end
 
@@ -31,6 +26,5 @@
 
 @optional
 -(void) didFinishLoadingImage:(UIImage *)image fromCache:(BOOL)cache;
-//-(void) handleTapWithId:(NSString*)ID;
 -(void) handleTap;
 @end

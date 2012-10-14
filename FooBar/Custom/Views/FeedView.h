@@ -2,7 +2,7 @@
 #import "TMQuiltViewCell.h"
 #import "AsyncImageView.h"
 
-@interface FeedView : TMQuiltViewCell
+@interface FeedView : TMQuiltViewCell<AsyncImageDelegate>
 
 @property (nonatomic, retain) AsyncImageView *photoView;
 @property (nonatomic, retain) UIImageView *heart;

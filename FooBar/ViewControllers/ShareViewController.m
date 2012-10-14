@@ -554,11 +554,6 @@
     return TRUE;
 }
 
--(BOOL)textViewShouldBeginEditing:(UITextView *)textView
-{
-    return YES;
-}
-
 -(void)textViewDidEndEditing:(UITextView *)textView
 {
     self.captionText = textView.text;
