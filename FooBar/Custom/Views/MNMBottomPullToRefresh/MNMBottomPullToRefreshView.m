@@ -86,7 +86,7 @@
         
         [self addSubview:arrowImageView_];
         
-        loadingActivityIndicator_ = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        loadingActivityIndicator_ = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         loadingActivityIndicator_.center = arrowImageView_.center;
         loadingActivityIndicator_.hidesWhenStopped = YES;
         
@@ -94,6 +94,9 @@
         
         messageLabel_ = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(arrowImageView_.frame) + 20.0f, 10.0f, CGRectGetWidth(frame) - CGRectGetMaxX(arrowImageView_.frame) - 40.0f, CGRectGetHeight(frame) - 20.0f)];
         messageLabel_.backgroundColor = [UIColor clearColor];
+        messageLabel_.font = [UIFont boldSystemFontOfSize:15.0f];
+        messageLabel_.shadowColor = [UIColor darkGrayColor];
+        messageLabel_.shadowOffset = CGSizeMake(0, 1.0);
         messageLabel_.textColor = [UIColor colorWithRed:182.0/255.0 green:49.0/255.0 blue:37.0/255.0 alpha:1.0];
         
         [self addSubview:messageLabel_];
