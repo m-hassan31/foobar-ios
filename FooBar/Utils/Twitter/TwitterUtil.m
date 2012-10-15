@@ -11,6 +11,7 @@
 @synthesize _delegate;
 @synthesize twitterFollowersCurrentPageIndex;
 @synthesize twitterFollowersPagesCount;
+@synthesize followerIdsArray;
 
 #ifdef __IPHONE_5_0
 
@@ -416,7 +417,7 @@
                 // now get all the ids and pass as parameter to look up api call
                 if(_idsArray != nil)
                 {
-                    followerIdsArray = [[NSMutableArray alloc] init];
+                    self.followerIdsArray = [[NSMutableArray alloc] init];
                     [followerIdsArray addObjectsFromArray:[self formCommaSeperatedIds:_idsArray]];
                     [self getTwitterFollowersInfo];
                 }
@@ -477,7 +478,14 @@
 
 - (void)getTwitterFollowersInfo
 {
-    [self requestForFollowersDetails:[followerIdsArray objectAtIndex:twitterFollowersCurrentPageIndex]];
+    if(twitterFollowersCurrentPageIndex < followerIdsArray.count)
+    {
+        [self requestForFollowersDetails:[followerIdsArray objectAtIndex:twitterFollowersCurrentPageIndex]];
+    }
+    else
+    {
+        [self performSelectorOnMainThread:@selector(notifyDelegateWithSuccessData:) withObject:nil waitUntilDone:NO];
+    }
 }
 
 - (void)requestForFollowersDetails:(NSString*)idsString

@@ -28,12 +28,13 @@
         inviteButton =  [UIButton buttonWithType:UIButtonTypeCustom];
         inviteButton.frame = CGRectMake (235, 6, 75, 26);
         [inviteButton addTarget:self action:@selector(invitePressed) forControlEvents:UIControlEventTouchUpInside];
-        [inviteButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [inviteButton.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0f]];
-        [inviteButton setTitle:@"Invite" forState:UIControlStateNormal];
         [inviteButton setBackgroundImage:[UIImage imageNamed:@"Invite.png"] forState:UIControlStateNormal];
-        [inviteButton setTitle:@"Invited" forState:UIControlStateDisabled];
+        [inviteButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [inviteButton setTitle:@"Invite" forState:UIControlStateNormal];
         [inviteButton setBackgroundImage:[UIImage imageNamed:@"Invited.png"] forState:UIControlStateDisabled];
+        [inviteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
+        [inviteButton setTitle:@"Invited" forState:UIControlStateDisabled];
         [self.contentView addSubview:inviteButton];
     }
     

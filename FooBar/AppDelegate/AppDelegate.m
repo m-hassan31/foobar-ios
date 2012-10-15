@@ -109,7 +109,6 @@
     self.signInNavController = navController;
     [navController release];
     
-    //self.window.rootViewController = signInViewController;
     [self.window addSubview:self.signInNavController.view];
     
     [self removeTabBarController];
@@ -125,7 +124,6 @@
 -(void)addTabBarController
 {
     CustomTabBarController *customTabBarController = [[CustomTabBarController alloc] init];    
-    
     UIImage *navBarBG = [UIImage imageNamed:@"TopBar.png"];
     
     ProfileViewController *profileViewController  = [[ProfileViewController alloc]init];

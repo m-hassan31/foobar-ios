@@ -46,6 +46,13 @@
 
 #pragma mark - View lifecycle
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [self.navigationController setNavigationBarHidden:NO];
+}
+
 - (void)viewDidLoad
 {
     NSLog(@"FriendsListViewController : viewDidLoad");
@@ -154,6 +161,12 @@
     {
         // error getting followers
         [FooBarUtils showAlertMessage:kTwitterFollowersErrorMessage];
+        twitterUtil.twitterFollowersCurrentPageIndex--;
+        if(friendsArray.count > 0)
+        {
+            NSIndexPath *path = [NSIndexPath indexPathForRow:friendsArray.count inSection:0];
+            [friendsTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationNone];
+        }
     }
 }
 
@@ -236,10 +249,10 @@
         NSIndexPath *path = [NSIndexPath indexPathForRow:currentInvitationIndex inSection:0];
         [friendsTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationNone];
     }
-     else
-     {
-         [FooBarUtils showAlertMessage:@"Facebook is not responding."];
-     }
+    else
+    {
+        [FooBarUtils showAlertMessage:@"Facebook is not responding."];
+    }
 }
 
 #pragma mark -

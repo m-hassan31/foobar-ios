@@ -21,13 +21,13 @@ typedef enum TWITTER_REQUEST_TYPE
 	TWRequestType requestType;
     NSUInteger twitterFollowersCurrentPageIndex;
     NSUInteger twitterFollowersPagesCount;
-    NSMutableArray *followerIdsArray;
     
     ACAccount* phoneTwitterAccount;
 }
 
 @property(nonatomic,assign,getter = delegate,setter = setDelegate:)id<TwitterDelegate> _delegate;
 @property(nonatomic,retain) ACAccount* phoneTwitterAccount;
+@property(nonatomic, retain)NSMutableArray *followerIdsArray;
 @property(nonatomic, assign) NSUInteger twitterFollowersCurrentPageIndex;
 @property(nonatomic, assign) NSUInteger twitterFollowersPagesCount;
 
