@@ -259,15 +259,15 @@ const static NSString* kFacebookAppId = @"157363651053951";
 	NSString* request = [NSString stringWithFormat:@"%@/feed",userId];
 	NSString* reqKey = [NSString stringWithFormat:@"https://graph.facebook.com/%@",request];
 	[userIdMapping setObject:userId forKey:reqKey];
-	/*[sharedFacebookUtil.facebook requestWithGraphPath:request 
+	[sharedFacebookUtil.facebook requestWithGraphPath:request 
 											andParams:[NSMutableDictionary dictionaryWithObjectsAndKeys:
-													   kFriendInviteBody, @"message",
-													   kInviteTitle,@"name",
-													   kFontliURL, @"link",
-													   kFontliIconURL, @"picture",
+													   @"You should check out FooBar photo collections.", @"message",
+													   @"FooBar Invitation",@"name",
+													   @"www.google.com", @"link",
+													   @"", @"picture",
 													   nil]
 										andHttpMethod:@"POST"
-										  andDelegate:self];*/
+										  andDelegate:self];
 }
 
 - (NSDictionary *)parseFacebookProfile:(FBRequest *) request result:(id)result

@@ -7,13 +7,14 @@
 #import "Parser.h"
 #import "FriendInfo.h"
 
-#define VIEW_HEIGHT                 460
-#define RESULTS_TABLE_FRAME         CGRectMake(0, 44, 320, 371)
 #define SECTION_HEADER_HEIGHT       35
 #define TITLE_MORE                  @"More"
 #define TITLE_COMPLETED             @"Completed!"
 
 @interface FriendsListViewController()
+{
+    NSUInteger currentInvitationIndex;
+}
 
 -(void)hideHud;
 -(void)showHUDwithText:(NSString *)text;
@@ -61,6 +62,7 @@
     facebookUtil = [FacebookUtil getSharedFacebookUtil];
     twitterUtil = (TwitterUtil*)[[TwitterUtil alloc] initWithDelegate:self];
     
+    [self showHUDwithText:@"Loading"];
     if(network == INVITE_FB)
     {
         [facebookUtil getFacebookFriendsWithDelegate:self];
@@ -95,30 +97,40 @@
 
 - (void)inviteFriendAtIndex:(NSInteger)index
 {
+    currentInvitationIndex = index;
+    
     NSLog(@"FriendsListViewController : inviteFriendAtIndex");
     
     FriendInfo *data = [friendsArray objectAtIndex:index];
     
-    if(network == INVITE_TW)
-    {
-        [self inviteTwitterFriendWithId:data.identifier];
-    }
-    else if(network == INVITE_FB)
+    if(network == INVITE_FB)
     {
         [self inviteFacebookFriendWithId:data.identifier];
     }
+    else if(network == INVITE_TW)
+    {
+        [self inviteTwitterFriendWithId:data.identifier];
+    }
 }
 
-#pragma mark -
-#pragma mark TwitterUtil response
+- (void)inviteFacebookFriendWithId:(NSString*)extuid
+{
+	NSLog(@"FriendsListViewController : inviteFacebookFriendWithId");
+    
+    [self showHUDwithText:@"Inviting"];
+    [facebookUtil inviteUser:extuid fromDelegate:self];
+}
 
 - (void)inviteTwitterFriendWithId:(NSString*)extuid
 {
 	NSLog(@"FriendsListViewController : inviteSelectedTwitterFriends");
     
     [self showHUDwithText:@"Inviting"];
-    [twitterUtil sendDirectMessage:@"Check out FooBar!" to:extuid];
+    [twitterUtil sendDirectMessage:@"Check out #FooBar" to:extuid];
 }
+
+#pragma mark -
+#pragma mark TwitterUtil response
 
 - (void)onTwitterFriendsReceived:(NSArray *)friendsInfoArray
 {
@@ -159,53 +171,23 @@
 
 - (void)onTwitterInvitationResponse:(BOOL)status identifier:(NSString*)userId
 {
-	/*NSLog(@"FriendsListViewController : onTwitterInvitationResponse");
-     
-     if(status)
-     {
-     FriendInfo *fDetail;
-     
-     if(bInSearchMode)
-     {
-     fDetail = [searchResults objectForKey:[NSString stringWithFormat:@"%d", selectedIndex]];
-     fDetail.invitationStatus = STATUS_INVITED;
-     [searchResults setObject:fDetail forKey:[NSString stringWithFormat:@"%d",selectedIndex]];
-     }
-     else
-     {
-     fDetail = [friendsArray objectAtIndex:selectedIndex];
-     fDetail.invitationStatus = STATUS_INVITED;
-     [friendsArray replaceObjectAtIndex:selectedIndex withObject:fDetail];
-     }
-     
-     NSIndexPath *path = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
-     [friendsTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationNone];
-     
-     NSMutableDictionary *dictionary = [[[NSMutableDictionary alloc]init] autorelease];
-     [dictionary setObject:fDetail.name forKey:kNSingupSocialFullName];
-     [dictionary setObject:fDetail.identifier forKey:kNSignupSocialIdGETValue];
-     [dictionary setObject:kSignupAccountTypeTwitter forKey:kNSignupSocialAccountType];
-     [manager inviteFriends:dictionary];
-     }
-     else
-     {
-     if([FooBarUtils isDeviceOS5])
-     [self hideHud];
-     
-     [FooBarUtils showAlertMessage:@"Twitter is daydreaming. Let's try after sometime."];
-     }*/
+    [self hideHud];
+    
+    if(status)
+    {
+        FriendInfo *friendInfo = [friendsArray objectAtIndex:currentInvitationIndex];
+        friendInfo.bInvited = YES;
+        NSIndexPath *path = [NSIndexPath indexPathForRow:currentInvitationIndex inSection:0];
+        [friendsTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationNone];
+    }
+    else
+    {
+        [FooBarUtils showAlertMessage:@"Twitter is not responding."];
+    }
 }
 
 #pragma mark -
 #pragma mark FacebookUtil response
-
-- (void)inviteFacebookFriendWithId:(NSString*)extuid
-{
-	NSLog(@"FriendsListViewController : inviteFacebookFriendWithId");
-    
-    [self showHUDwithText:@"Inviting"];
-    [facebookUtil inviteUser:extuid fromDelegate:self];
-}
 
 - (void)onFacebookFriendsReceived:(NSDictionary *)friendsDictionary status:(BOOL)status
 {
@@ -247,38 +229,19 @@
 
 - (void)onFacebookInvitationResponse:(BOOL)status identifier:(NSString*)userId
 {
-    /*NSLog(@"FriendsListViewController : onFacebookInvitationResponse");
-     
-     if(status)
-     {
-     FriendInfo *fDetail;
-     
-     if(bInSearchMode)
-     {
-     fDetail = [searchResults objectForKey:[NSString stringWithFormat:@"%d", selectedIndex]];
-     fDetail.invitationStatus = STATUS_INVITED;
-     [searchResults setObject:fDetail forKey:[NSString stringWithFormat:@"%d", selectedIndex]];
-     }
+    [self hideHud];
+    
+    if(status)
+    {
+        FriendInfo *friendInfo = [friendsArray objectAtIndex:currentInvitationIndex];
+        friendInfo.bInvited = YES;
+        NSIndexPath *path = [NSIndexPath indexPathForRow:currentInvitationIndex inSection:0];
+        [friendsTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationNone];
+    }
      else
      {
-     fDetail = [friendsArray objectAtIndex:selectedIndex];
-     fDetail.invitationStatus = STATUS_INVITED;
-     [friendsArray replaceObjectAtIndex:selectedIndex withObject:fDetail];
+         [FooBarUtils showAlertMessage:@"Facebook is not responding."];
      }
-     
-     NSIndexPath *path = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
-     [friendsTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationNone];
-     NSMutableDictionary *dictionary = [[[NSMutableDictionary alloc]init] autorelease];
-     [dictionary setObject:fDetail.name forKey:kNSingupSocialFullName];
-     [dictionary setObject:fDetail.identifier forKey:kNSignupSocialIdGETValue];
-     [dictionary setObject:kSignupAccountTypeFB forKey:kNSignupSocialAccountType];
-     [manager inviteFriends:dictionary];
-     }
-     else
-     {
-     [self hideHud];
-     [FooBarUtils showAlertMessage:@"Facebook is daydreaming. Let's try again after sometime."];
-     }*/
 }
 
 #pragma mark -
@@ -342,7 +305,7 @@
     }
     
     FriendInfo *friendInfo = [friendsArray objectAtIndex:indexPath.row];
-    friendInfo.bInvited = ((indexPath.row%2)==0)?YES:NO;
+//    friendInfo.bInvited = ((indexPath.row%2)==0)?NO:YES;
     [cell setRowForIndex:indexPath.row withFriendInfo:friendInfo];
     cell.delegate = self;
     return cell;
