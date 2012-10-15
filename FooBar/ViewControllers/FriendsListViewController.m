@@ -38,6 +38,11 @@
     return self;
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
 
 #pragma mark - View lifecycle
 
@@ -82,14 +87,8 @@
 {
     [self showHUDwithText:@"Loading"];
     [sender setTitle:@"Loading..." forState:UIControlStateNormal];
-    ++twitterUtil.twitterFollowersCurrentPageIndex;
+    twitterUtil.twitterFollowersCurrentPageIndex++;
     [twitterUtil getTwitterFollowersInfo];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark -
@@ -149,14 +148,13 @@
             [friendsArray addObject:friendInfo];
             [friendInfo release];
         }
+        [friendsTableView reloadData];
     }
     else
     {
         // error getting followers
         [FooBarUtils showAlertMessage:kTwitterFollowersErrorMessage];
     }
-    
-    [friendsTableView reloadData];
 }
 
 - (void)onTwitterFriendsFailedWithErrorMessage:(NSString*)message
@@ -255,7 +253,7 @@
     }
     else if(network == INVITE_TW)
     {
-        return friendsArray.count+1;
+        return friendsArray.count==0?0:friendsArray.count+1;
     }
     else
     {
@@ -265,30 +263,18 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    FriendsListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if(cell == nil)
-        cell = [[[FriendsListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
     if([indexPath row] == [friendsArray count])
     {
-        CGRect frame = CGRectMake(110, 7, 100, 30);
         UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         UIButton *loadMore = [UIButton buttonWithType:UIButtonTypeCustom];
         [loadMore setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
         [loadMore setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-        loadMore.frame = frame;
+        loadMore.frame = CGRectMake(110, 7, 100, 30);
         [loadMore setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
         loadMore.titleLabel.font = [UIFont boldSystemFontOfSize:14];
         [loadMore addTarget:self action:@selector(loadMorePressed:) forControlEvents:UIControlEventTouchUpInside];
-        UIImage *bgimage=[UIImage imageNamed:@"headerbubble.png"];
-        bgimage=[bgimage stretchableImageWithLeftCapWidth:bgimage.size.width/2 topCapHeight:bgimage.size.height/2];
-        [loadMore setBackgroundImage:bgimage forState:UIControlStateNormal];
         [cell.contentView addSubview:loadMore];
         
         if(twitterUtil.twitterFollowersCurrentPageIndex == twitterUtil.twitterFollowersPagesCount)
@@ -303,12 +289,22 @@
         
         return cell;
     }
-    
-    FriendInfo *friendInfo = [friendsArray objectAtIndex:indexPath.row];
-//    friendInfo.bInvited = ((indexPath.row%2)==0)?NO:YES;
-    [cell setRowForIndex:indexPath.row withFriendInfo:friendInfo];
-    cell.delegate = self;
-    return cell;
+    else
+    {
+        static NSString *CellIdentifier = @"Cell";
+        FriendsListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if(cell == nil)
+            cell = [[[FriendsListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        FriendInfo *friendInfo = [friendsArray objectAtIndex:indexPath.row];
+        [cell setRowForIndex:indexPath.row withFriendInfo:friendInfo];
+        
+        cell.delegate = self;
+        return cell;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

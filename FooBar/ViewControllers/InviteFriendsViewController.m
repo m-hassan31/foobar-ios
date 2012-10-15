@@ -153,11 +153,11 @@
             {
                 if([facebookUtil isFacebookConfigured])
                 {
-                    UIActionSheet *fbActionSheet = [[UIActionSheet alloc] initWithTitle:@"Unlink your Facebook account?"
+                    UIActionSheet *fbActionSheet = [[UIActionSheet alloc] initWithTitle:@""
                                                                                delegate:self
                                                                       cancelButtonTitle:@"Cancel"
-                                                                 destructiveButtonTitle:@"Unlink"
-                                                                      otherButtonTitles:@"Show Friends", nil];
+                                                                 destructiveButtonTitle:@"Unlink Facebook account"
+                                                                      otherButtonTitles:@"Show friends", nil];
                     fbActionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
                     fbActionSheet.tag = FB_ACTION_SHEET;
                     [fbActionSheet showInView:self.view];
@@ -185,11 +185,11 @@
             {
                 if([twitterUtil isTwitterConfigured] && socialUser.socialAccountType != TwitterAccount)
                 {
-                    UIActionSheet *fbActionSheet = [[UIActionSheet alloc] initWithTitle:@"Unlink your Twitter account?"
+                    UIActionSheet *fbActionSheet = [[UIActionSheet alloc] initWithTitle:@""
                                                                                delegate:self
                                                                       cancelButtonTitle:@"Cancel"
-                                                                 destructiveButtonTitle:@"Unlink"
-                                                                      otherButtonTitles:@"Show Friends", nil];
+                                                                 destructiveButtonTitle:@"Unlink Twitter account"
+                                                                      otherButtonTitles:@"Show friends", nil];
                     fbActionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
                     fbActionSheet.tag = TW_ACTION_SHEET;
                     [fbActionSheet showInView:self.view];
