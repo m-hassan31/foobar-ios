@@ -7,4 +7,6 @@
 @property (nonatomic, retain) NSString *identifier;
 @property (nonatomic, assign) BOOL bInvited;
 
+- (NSComparisonResult) compareContactNameWith:(FriendInfo*)otherFriendInfo;
+
 @end

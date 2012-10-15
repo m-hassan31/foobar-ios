@@ -4,6 +4,11 @@
 
 @synthesize name, photoUrl, identifier, bInvited;
 
+- (NSComparisonResult) compareContactNameWith:(FriendInfo*)otherFriendInfo
+{
+	return [self.name caseInsensitiveCompare: otherFriendInfo.name];
+}
+
 -(void) dealloc
 {
     NSLog(@"FriendInfo : dealloc");
@@ -14,6 +19,5 @@
     
 	[super dealloc];
 }
-
 
 @end

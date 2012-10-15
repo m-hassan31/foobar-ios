@@ -230,10 +230,18 @@
                 [friendsArray addObject:friendInfo];
                 [friendInfo release];
             }
+            
+            if(friendsArray.count > 1)
+            {
+                NSArray *tempArr=[friendsArray sortedArrayUsingSelector:@selector(compareContactNameWith:)];
+                [friendsArray removeAllObjects];
+                [friendsArray addObjectsFromArray:tempArr];
+            }
+            
+            [friendsTableView reloadData];
         }
 	}
-	
-    [friendsTableView reloadData];
+    
     [self hideHud];
 }
 

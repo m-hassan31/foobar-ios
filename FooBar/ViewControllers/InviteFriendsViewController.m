@@ -92,7 +92,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     
     cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0];
-
+    
     UILabel *configureLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 0, 190, 44)];
     configureLabel.font = [UIFont systemFontOfSize:16.0f];
     configureLabel.backgroundColor = [UIColor clearColor];
@@ -102,46 +102,31 @@
     [cell.contentView addSubview:configureLabel];
     [configureLabel release];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
-    SocialUser *socialUser = [SocialUser currentUser];
-    
+        
     switch([indexPath row])
     {
         case 0:
         {
             cell.textLabel.text = @"Facebook";
             configureLabel.text = [facebookUtil isFacebookConfigured]?@"":@"Configure";
-            
-            if(socialUser.socialAccountType == FacebookAccount)
-            {
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            }
         }
             break;
         case 1:
         {
             cell.textLabel.text = @"Twitter";
             configureLabel.text = [twitterUtil isTwitterConfigured]?@"":@"Configure";
-            
-            if(socialUser.socialAccountType == TwitterAccount)
-            {
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            }
         }
             break;
         default:
             break;
     }
     
-    if(cell.selectionStyle != UITableViewCellSelectionStyleNone)
-    {
-        CustomCellBGView *cellSelectionView =
-        [[[CustomCellBGView alloc] initSelected:YES grouped:YES] autorelease];
-        cell.selectedBackgroundView = cellSelectionView;
-        
-        CustomCellGroupPosition position = [CustomCellBGView positionForIndexPath:indexPath inTableView:inviteTableView];
-        ((CustomCellBGView *)cell.selectedBackgroundView).position = position;
-    }
+    CustomCellBGView *cellSelectionView =
+    [[[CustomCellBGView alloc] initSelected:YES grouped:YES] autorelease];
+    cell.selectedBackgroundView = cellSelectionView;
+    
+    CustomCellGroupPosition position = [CustomCellBGView positionForIndexPath:indexPath inTableView:inviteTableView];
+    ((CustomCellBGView *)cell.selectedBackgroundView).position = position;
     
     return cell;
 }
