@@ -94,13 +94,11 @@ const CGFloat kFeedViewMargin = 0;
 
 -(void)didFinishLoadingImage:(UIImage *)image fromCache:(BOOL)cache
 {
-    [self.layer removeAnimationForKey:@"AsyncImageAnim"];
-    
+    [self.layer removeAnimationForKey:@"AsyncImageAnim"];    
     CATransition *transition = [CATransition animation];
     transition.duration = 0.2f;
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     transition.type = kCATransitionFade;
-    transition.removedOnCompletion = YES;
     [self.photoView.layer addAnimation:transition forKey:@"AsyncImageAnim"];
 }
 

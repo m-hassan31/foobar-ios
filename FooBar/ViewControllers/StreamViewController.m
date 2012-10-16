@@ -4,7 +4,6 @@
 #import "FooBarUtils.h"
 #import "FooBarConstants.h"
 #import "PhotoDetailsViewController.h"
-#import <QuartzCore/QuartzCore.h>
 #import "UIImage+RemoteSize.h"
 #import "EndPoints.h"
 #import "Parser.h"
@@ -100,6 +99,7 @@
         FeedObject *uploadedFeedObject = (FeedObject*)anObject;
         [self.feedsArray insertObject:uploadedFeedObject atIndex:0];
         [quiltView reloadData];
+        [pullToRefreshManager_ relocatePullToRefreshView];
     }
 }
 
@@ -125,10 +125,9 @@
     // set user image
     aFeed.profilePicView.image = nil;
     NSString* imageUrl = feedObject.foobarUser.photoUrl;
+    [aFeed.profilePicView setImage:[UIImage imageNamed:@"DefaultUser.png"]];
     if (imageUrl && ![imageUrl isEqualToString:@""])
         [aFeed.profilePicView setImageUrl:imageUrl];
-    else
-        [aFeed.profilePicView setImage:[UIImage imageNamed:@"DefaultUser.png"]];//defaultContactImage
     
     if(feedObject.foobarUser.username && ![feedObject.foobarUser.username isEqualToString:@""])
         aFeed.usernameLabel.text = feedObject.foobarUser.firstname;
@@ -256,6 +255,16 @@
                         feedsPage++;
                         [quiltView reloadData];
                     }
+                }
+                
+                // no more feeds available
+                if(parsedFeedsArray.count < 10)
+                {
+                    [pullToRefreshManager_ setPullToRefreshViewVisible:NO];
+                }
+                else
+                {
+                    [pullToRefreshManager_ setPullToRefreshViewVisible:YES];
                 }
             }
             else

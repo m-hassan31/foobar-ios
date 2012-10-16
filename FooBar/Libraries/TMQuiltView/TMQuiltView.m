@@ -19,7 +19,6 @@
 
 #import "TMQuiltView.h"
 #import "TMQuiltViewCell.h"
-#import <QuartzCore/QuartzCore.h>
 
 const NSInteger kTMQuiltViewDefaultColumns = 2;
 const CGFloat kTMQuiltViewDefaultMargin = 10.0f;
@@ -428,10 +427,6 @@ NSString *const kDefaultReusableIdentifier = @"kTMQuiltViewDefaultReusableIdenti
                 
                 TMQuiltViewCell *newCell = [self.dataSource quiltView:self cellAtIndexPath:indexPath];
                 newCell.frame = [self rectForCellAtIndex:0 column:i];
-                /*newCell.layer.shadowOffset = CGSizeMake(0, 0);
-                 newCell.layer.shadowRadius = 7.5;
-                 newCell.layer.shadowOpacity = 0.5;
-                 newCell.layer.shadowPath = [UIBezierPath bezierPathWithRect:newCell.bounds].CGPath;*/
                 [self.indexPathToViewByColumn[i] setObject:newCell forKey:indexPath];
                 [self addSubview:newCell];
                 [[self reusableViewsWithReuseIdentifier:newCell.reuseIdentifier] removeObject:newCell];
@@ -445,10 +440,6 @@ NSString *const kDefaultReusableIdentifier = @"kTMQuiltViewDefaultReusableIdenti
         for(int j = *top; j <= *bottom; j++) {
             TMQuiltViewCell *visibleCell = (TMQuiltViewCell *)[indexPathToView objectForKey:[indexPaths objectAtIndex:j]];
             visibleCell.frame = [self rectForCellAtIndex:j column:i];
-            /*visibleCell.layer.shadowOffset = CGSizeMake(0, 0);
-             visibleCell.layer.shadowRadius = 7.5;
-             visibleCell.layer.shadowOpacity = 0.5;
-             visibleCell.layer.shadowPath = [UIBezierPath bezierPathWithRect:visibleCell.bounds].CGPath;*/
         }
         
         // Add a new cell to the bottom if our bottom cell is above the bottom of the visible area (and not the last cell)
@@ -459,10 +450,6 @@ NSString *const kDefaultReusableIdentifier = @"kTMQuiltViewDefaultReusableIdenti
                 UIView* newCell = [self.dataSource quiltView:self cellAtIndexPath:newIndexPath];
                 [self addSubview:newCell];
                 newCell.frame = [self rectForCellAtIndex:*bottom + 1 column:i];
-                /*newCell.layer.shadowOffset = CGSizeMake(0, 0);
-                 newCell.layer.shadowRadius = 7.5;
-                 newCell.layer.shadowOpacity = 0.5;
-                 newCell.layer.shadowPath = [UIBezierPath bezierPathWithRect:newCell.bounds].CGPath;*/
                 [indexPathToView setObject:newCell forKey:newIndexPath];
             }
             (*bottom)++;
@@ -475,10 +462,6 @@ NSString *const kDefaultReusableIdentifier = @"kTMQuiltViewDefaultReusableIdenti
                 NSIndexPath *newIndexPath = [indexPaths objectAtIndex:*top - 1];
                 TMQuiltViewCell* newCell = [self.dataSource quiltView:self cellAtIndexPath:newIndexPath];
                 newCell.frame = [self rectForCellAtIndex:*top - 1 column:i];
-                /*newCell.layer.shadowOffset = CGSizeMake(0, 0);
-                 newCell.layer.shadowRadius = 7.5;
-                 newCell.layer.shadowOpacity = 0.5;
-                 newCell.layer.shadowPath = [UIBezierPath bezierPathWithRect:newCell.bounds].CGPath;*/
                 [indexPathToView setObject:newCell forKey:newIndexPath];
                 [self addSubview:newCell];
             }
