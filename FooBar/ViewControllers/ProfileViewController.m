@@ -105,12 +105,9 @@
             fullName.text = [NSString stringWithFormat:@"%@ %@", foobarUser.firstname, foobarUser.lastname?foobarUser.lastname:@""];
             
             // set user image
-            profilePic.image = nil;
             NSString* imageUrl = foobarUser.photoUrl;
             if (imageUrl && ![imageUrl isEqualToString:@""])
                 [profilePic setImageUrl:imageUrl];
-            else
-                [profilePic setImage:[UIImage imageNamed:@"DefaultUser.png"]];//defaultContactImage
         }
         
         cell.accessoryType = UITableViewCellAccessoryNone;

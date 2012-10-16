@@ -119,7 +119,7 @@
     userInfoHolderView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     userInfoHolderView.layer.borderWidth = 1.0;
     
-    commentsCountLabel.text = [NSString stringWithFormat:@"    %d Comments", feedObject.commentsCount];
+    commentsCountLabel.text = [NSString stringWithFormat:@"    %d Comment%@", feedObject.commentsCount, (feedObject.commentsArray.count==1)?@"":@"s"];
     commentsCountLabel.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height, 320.0f, 30.0f);
     
     NSMutableArray *heightsArray = [[NSMutableArray alloc] init];
@@ -191,6 +191,8 @@
 -(void)postComment
 {
     [manager comment:commentField.text onPost:feedObject.feedId];
+    CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+    [self.scrollView setContentOffset:bottomOffset animated:YES];
 }
 
 -(IBAction)likeButtonPressed:(id)sender
@@ -235,7 +237,7 @@
             [UIPasteboard generalPasteboard].string = feedObject.foobarPhoto.url;
         }
             break;
-        
+            
         default:
             break;
     }
@@ -455,7 +457,7 @@
                 feedObject.commentsCount = feedObject.commentsArray.count;
                 CGFloat height = [CommentsViewCell heightForCellWithText:commentObject.commentText];
                 [commentsHeightArray addObject:[NSNumber numberWithFloat:height]];
-                commentsCountLabel.text = [NSString stringWithFormat:@"    %d Comments", feedObject.commentsCount];
+                commentsCountLabel.text = [NSString stringWithFormat:@"    %d Comment%@", feedObject.commentsCount, (feedObject.commentsArray.count==1)?@"":@"s"];
                 [UIView animateWithDuration:0.2 
                                  animations:^{
                                      commentsTableView.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height, 320.0f, commentsTableView.frame.size.height+height);
@@ -468,7 +470,7 @@
                                      [self.scrollView setContentOffset:bottomOffset animated:YES];
                                  }
                                  completion:^(BOOL finished) {
-                                     NSIndexPath *path = [NSIndexPath indexPathForRow:feedObject.commentsArray.count-1 inSection:0];                
+                                    NSIndexPath *path = [NSIndexPath indexPathForRow:feedObject.commentsArray.count-1 inSection:0];                
                                      NSArray *indexArray = [NSArray arrayWithObjects:path,nil];
                                      [commentsTableView insertRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationBottom];
                                  }];
