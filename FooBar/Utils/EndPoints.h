@@ -6,7 +6,7 @@
 #define Server              @"http://foobarnode.cloudfoundry.com/"
 
 #define UsersUrl            Server @"users/"
-#define MyProfileUrl        UsersUrl @"me"
+#define MyProfileUrl        UsersUrl @"me/"
 #define FeedsUrl            Server @"feeds/"
 #define PhotosUrl           Server @"photoposts/"
 #define CommentsUrl         Server @"comments/"
