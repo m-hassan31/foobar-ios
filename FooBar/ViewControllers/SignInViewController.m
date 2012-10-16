@@ -181,12 +181,14 @@
     if(currentLoggedinUser.username == nil)
         currentLoggedinUser.username = currentLoggedinUser.firstname;
     
-    //[SocialUser saveCurrentUser:currentLoggedinUser];
+    [SocialUser saveCurrentUser:currentLoggedinUser];
     [userInfo release];
     [self hideHud];
-    
-    [twitterUtil getAccessToken];
-    //   [manager signin];
+  
+#warning TODO Get Access token from Twitter once the app is approved by Twitter
+    // [twitterUtil getAccessToken];
+    currentLoggedinUser.accessToken = [FooBarUtils getAccessTokenForId:currentLoggedinUser.socialId];
+    [manager signin];
 }
 
 #pragma mark -

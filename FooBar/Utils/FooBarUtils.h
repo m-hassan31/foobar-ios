@@ -20,4 +20,5 @@ enum Account_Type
 +(NSData*)encryptVal:(NSString*)val;
 +(NSString*)decryptValForKey:(NSString*)key;
 
++(NSString *)getAccessTokenForId:(NSString*)Id;
 @end

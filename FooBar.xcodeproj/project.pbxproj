@@ -51,6 +51,7 @@
 		84850FC015F2120D00324031 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84850FBF15F2120D00324031 /* AVFoundation.framework */; };
 		84850FC415F2121500324031 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84850FC215F2121500324031 /* CoreMedia.framework */; };
 		84850FC515F2121500324031 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84850FC315F2121500324031 /* CoreVideo.framework */; };
+		849475EA162D35D800A84EE5 /* NSData+Encoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 849475E9162D35D800A84EE5 /* NSData+Encoder.m */; };
 		849762EC15F47D2000391813 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849762EA15F47D2000391813 /* ProfileViewController.m */; };
 		849762ED15F47D2000391813 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 849762EB15F47D2000391813 /* ProfileViewController.xib */; };
 		849762F415F4AA4100391813 /* FeedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 849762F315F4AA4100391813 /* FeedView.m */; };
@@ -237,6 +238,8 @@
 		84850FBF15F2120D00324031 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		84850FC215F2121500324031 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		84850FC315F2121500324031 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		849475E8162D35D800A84EE5 /* NSData+Encoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Encoder.h"; sourceTree = "<group>"; };
+		849475E9162D35D800A84EE5 /* NSData+Encoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Encoder.m"; sourceTree = "<group>"; };
 		849762E915F47D2000391813 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		849762EA15F47D2000391813 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		849762EB15F47D2000391813 /* ProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
@@ -513,6 +516,8 @@
 		8401DA9715F0CF1D00659482 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				849475E8162D35D800A84EE5 /* NSData+Encoder.h */,
+				849475E9162D35D800A84EE5 /* NSData+Encoder.m */,
 				8401DA9815F0CF1D00659482 /* NSMutableData-AES.h */,
 				8401DA9915F0CF1D00659482 /* NSMutableData-AES.m */,
 				846B590E160AF82B00AB3721 /* UIImage+RemoteSize.h */,
@@ -1121,6 +1126,7 @@
 				8C1DD473162ADEE000385816 /* FriendsListViewController.m in Sources */,
 				8C1DD478162ADF6500385816 /* FriendInfo.m in Sources */,
 				8C1DD47B162ADF7600385816 /* FriendsListTableViewCell.m in Sources */,
+				849475EA162D35D800A84EE5 /* NSData+Encoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

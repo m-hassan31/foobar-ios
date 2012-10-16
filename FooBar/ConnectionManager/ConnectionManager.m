@@ -35,6 +35,9 @@
 -(ASIHTTPRequest*)getRequestWithAuthHeader:(NSURL*)url
 {
     SocialUser *socialUser = [SocialUser currentUser];
+    if(!socialUser)
+        return nil;
+    
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     [request addRequestHeader:@"X-foobar-username" value:socialUser.socialId];
     [request addRequestHeader:@"X-foobar-access-token" value:socialUser.accessToken];
@@ -47,6 +50,10 @@
     // Instantiate an HTTP request.
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",UsersUrl]];
     ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];
+    
+    if(!request)
+        return;
+
     [request setRequestMethod:@"POST"];
 	[request addRequestHeader:@"Content-Type" value:@"application/json"];
     
