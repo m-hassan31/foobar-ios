@@ -91,7 +91,7 @@
     currentLoggedinUser.socialId = (NSString*)[userInfo objectForKey:kFBUserIdField];
 	currentLoggedinUser.username = (NSString*)[userInfo objectForKey:kFBUsernameField];
 	currentLoggedinUser.firstname = (NSString*)[userInfo objectForKey:kFBFirstNameField];
-    currentLoggedinUser.photoUrl = (NSString*)[userInfo objectForKey:kFBProfilePictureURL];
+    currentLoggedinUser.photoUrl = (NSString*)[userInfo objectForKey:kFBProfilePictureField];
     
     if(currentLoggedinUser.username == nil)
         currentLoggedinUser.username = currentLoggedinUser.firstname;
@@ -242,18 +242,30 @@
     
     if([urlString hasPrefix:UsersUrl])
     {
-        if(statusCode == 200)
+        if([request.requestMethod isEqualToString:@"POST"])
         {
-            // user created
-            AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-            [appDelegate addTabBarController];
+            if(statusCode == 200)
+            {
+                // user created
+                AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+                [appDelegate addTabBarController];
+            }
+            else if(statusCode == 403)
+            {
+                // user already existing
+                // [manager updateAccessToken];
+                AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+                [appDelegate addTabBarController];
+            }
         }
-        else if(statusCode == 403)
+        else if([request.requestMethod isEqualToString:@"PUT"])
         {
-            // user already existing
-            AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-            [appDelegate addTabBarController];
-            
+            if(statusCode == 200)
+            {
+                // user updated
+                AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+                [appDelegate addTabBarController];
+            }
         }
     }
     [responseJSON release];

@@ -19,6 +19,7 @@
 -(ASIHTTPRequest*)getRequestWithAuthHeader:(NSURL*)url;
 
 -(void)signin;
+-(void)updateAccessToken;
 -(void)getProfile;
 -(void)getFeedsAtPage:(NSUInteger)_pageNum count:(NSUInteger)_count;
 -(void)getFooBarProducts;

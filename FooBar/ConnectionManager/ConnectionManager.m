@@ -70,6 +70,34 @@
     [request startAsynchronous];
 }
 
+-(void)updateAccessToken
+{
+    [self showHUDwithText:@"Signing in"];
+    // Instantiate an HTTP request.
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", UsersUrl]];
+    ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];
+    
+    if(!request)
+        return;
+    
+    SocialUser *socialUser = [SocialUser currentUser];
+    
+    [request setRequestMethod:@"PUT"];
+    [request addRequestHeader:@"Content-Type" value:@"application/json"];
+    [request addRequestHeader:@"X-foobar-access-token-new" value:socialUser.accessToken];
+    
+    NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:
+                            (socialUser.socialAccountType==FacebookAccount)?@"facebook":@"twitter", @"account_type",
+                            socialUser.firstname, @"first_name",
+                            socialUser.photoUrl, @"photo_url", nil];
+    [request appendPostData:[FooBarUtils jsonFromDictionary:params]];
+    [params release];
+    
+    request.delegate = self;
+    // Send the request.
+    [request startAsynchronous]; 
+}
+
 -(void)getProfile
 {
     [self showHUDwithText:@"Getting Info"];
