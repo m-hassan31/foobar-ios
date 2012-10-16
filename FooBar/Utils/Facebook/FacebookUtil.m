@@ -19,7 +19,7 @@
 #define kFBProfilePictureURL					   @"https://graph.facebook.com/me/picture?type=large&access_token=%@"
 
 static FacebookUtil *sharedFacebookUtil = nil;
-const static NSString* kFacebookAppId = @"157363651053951";
+const static NSString* kFacebookAppId = @"102542526573212";
 
 @interface FacebookUtil(PRIVATE)
 
