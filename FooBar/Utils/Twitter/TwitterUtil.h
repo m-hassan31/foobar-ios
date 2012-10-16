@@ -35,8 +35,6 @@ typedef enum TWITTER_REQUEST_TYPE
 -(BOOL) isAuthorized;
 -(BOOL) isTwitterConfigured;
 -(void) setTwitterConfigured:(BOOL)config;
--(void) setTwitterEnabled:(BOOL)state;
--(BOOL) isTwitterEnabled;
 -(void) setTwitterUsername:(NSString*)username;
 -(NSString*) getTwitterUsername;
 

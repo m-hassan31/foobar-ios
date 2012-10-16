@@ -41,9 +41,7 @@
 #define kProductsName                       @"name"
 #define kProductsDescription                @"desc"
 
-
-#pragma mark -
-#pragma mark Social Network Constants
+#pragma mark - Social Network Constants
 
 //Facebook action constants
 #define	kFBUsernameField						   @"username"

@@ -34,6 +34,7 @@ char *NewBase64Encode(
 	bool separateLines,
 	size_t *outputLength);
 
+
 @interface NSData (Encoder)
 
 + (NSData *)dataFromBase64String:(NSString *)aString;

@@ -91,8 +91,7 @@
     currentLoggedinUser.socialId = (NSString*)[userInfo objectForKey:kFBUserIdField];
 	currentLoggedinUser.username = (NSString*)[userInfo objectForKey:kFBUsernameField];
 	currentLoggedinUser.firstname = (NSString*)[userInfo objectForKey:kFBFirstNameField];
-    
-    currentLoggedinUser.photoUrl = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", currentLoggedinUser.socialId];
+    currentLoggedinUser.photoUrl = (NSString*)[userInfo objectForKey:kFBProfilePictureURL];
     
     if(currentLoggedinUser.username == nil)
         currentLoggedinUser.username = currentLoggedinUser.firstname;
@@ -157,37 +156,37 @@
     if(!currentLoggedinUser)
         currentLoggedinUser = [[SocialUser alloc] init];
     
-    currentLoggedinUser.accessToken = facebookUtil.facebook.accessToken;
     currentLoggedinUser.socialAccountType = TwitterAccount;
     
-    id _socialId = [userInfo objectForKey:kNSignupSocialIdGETValue];
+    id _socialId = [userInfo objectForKey:kTWitterIdStr];
     if(![_socialId isKindOfClass:[NSNull class]])
-        currentLoggedinUser.socialId = [userInfo objectForKey:kNSignupSocialIdGETValue];
+        currentLoggedinUser.socialId = (NSString*)_socialId;
     
     NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
     currentLoggedinUser.username = [defaults objectForKey:kTwitterUsername];
     
-    id _firstname = [userInfo objectForKey:kNSignupUserNameGETValue];
+    id _firstname = [userInfo objectForKey:kTwitterName];
     if(![_firstname isKindOfClass:[NSNull class]])
-        currentLoggedinUser.firstname = [userInfo objectForKey:kNSignupUserNameGETValue];
+        currentLoggedinUser.firstname = (NSString*)_firstname;
     
-    id _photoUrl = [userInfo objectForKey:kNSignupProfilePicGETValue];
+    id _photoUrl = [userInfo objectForKey:kTwitterProfileImgURL];
     if(![_photoUrl isKindOfClass:[NSNull class]])
     {
-        NSString *profilePicUrl = [userInfo objectForKey:kNSignupProfilePicGETValue];
+        NSString *profilePicUrl = (NSString*)_photoUrl;
         currentLoggedinUser.photoUrl = [profilePicUrl stringByReplacingOccurrencesOfString:@"_normal." withString:@"_bigger."];;
     }
     
     if(currentLoggedinUser.username == nil)
         currentLoggedinUser.username = currentLoggedinUser.firstname;
-    
+
+#warning TODO Get Access token from Twitter once the app is approved by Twitter
+    // [twitterUtil getAccessToken];
+    currentLoggedinUser.accessToken = [FooBarUtils getAccessTokenForId:currentLoggedinUser.socialId];
+
     [SocialUser saveCurrentUser:currentLoggedinUser];
     [userInfo release];
     [self hideHud];
   
-#warning TODO Get Access token from Twitter once the app is approved by Twitter
-    // [twitterUtil getAccessToken];
-    currentLoggedinUser.accessToken = [FooBarUtils getAccessTokenForId:currentLoggedinUser.socialId];
     [manager signin];
 }
 

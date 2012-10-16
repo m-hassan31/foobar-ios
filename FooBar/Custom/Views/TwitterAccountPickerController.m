@@ -131,7 +131,6 @@
 		if ([delegate respondsToSelector:@selector(twitterAccountSelected)])
         {
 			TwitterUtil* twUtil = (TwitterUtil*)[[TwitterUtil alloc] initWithDelegate:nil];
-			[twUtil setTwitterEnabled:YES];
             [twUtil setTwitterUsername:pickedAccount.username];
 			[twUtil release];
 			[delegate twitterAccountSelected];

@@ -112,20 +112,6 @@
     return username;
 }
 
--(BOOL)isTwitterEnabled
-{
-	NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
-	BOOL isFacebookEnabled= [defaults boolForKey:kIsTwitterEnabled];
-	return isFacebookEnabled;
-}
-
--(void)setTwitterEnabled:(BOOL)state
-{
-    NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
-	[defaults setBool:state forKey:kIsTwitterEnabled];
-	[defaults synchronize];
-}
-
 -(id)checkTwitterResponse:(NSData*)responseData error:(NSError*)error
 {
     if(error != nil)
@@ -280,41 +266,9 @@
         {
             id profileData = [self checkTwitterResponse:responseData error:error];
             
-            if(profileData != nil)
+            if(profileData && [profileData isKindOfClass:[NSDictionary class]])
             {
-                NSString *socialId = [profileData objectForKey:kTWitterIdStr];
-                NSString *userName=[profileData objectForKey:kTwitterName];
-                NSString *profileImageUrl=[profileData objectForKey:kTwitterProfileImgURL];
-                NSString *websiteURL = [profileData objectForKey:kTwitterWebsiteURL];
-                NSString *bio = [profileData objectForKey:kTwitterBio];
-                
-                NSMutableDictionary *responseDict = [[[NSMutableDictionary alloc]initWithCapacity:5] autorelease];
-                
-                if(userName)
-                    [responseDict setObject:userName forKey:kNSignupUserNameGETValue];
-                else
-                    [responseDict setObject:[NSNull null] forKey:kNSignupUserNameGETValue];
-                
-                if(profileImageUrl)
-                    [responseDict setObject:profileImageUrl forKey:kNSignupProfilePicGETValue];
-                else
-                    [responseDict setObject:[NSNull null] forKey:kNSignupProfilePicGETValue];
-                
-                if(socialId)
-                    [responseDict setObject:socialId forKey:kNSignupSocialIdGETValue];
-                else
-                    [responseDict setObject:[NSNull null] forKey:kNSignupSocialIdGETValue];
-                
-                if(websiteURL)
-                    [responseDict setObject:websiteURL forKey:kNSignupSocialWebsiteURL];
-                else
-                    [responseDict setObject:[NSNull null] forKey:kNSignupSocialWebsiteURL];
-                
-                if(bio)
-                    [responseDict setObject:bio forKey:kNSignupSocialBio];
-                else
-                    [responseDict setObject:[NSNull null] forKey:kNSignupSocialBio];
-                
+                NSDictionary *responseDict = (NSDictionary*)profileData;
                 [self performSelectorOnMainThread:@selector(notifyDelegateForTwitterProfileInfoWithSuccess:)
                                        withObject:responseDict waitUntilDone:NO];
             }

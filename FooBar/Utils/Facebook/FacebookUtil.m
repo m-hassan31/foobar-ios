@@ -2,21 +2,11 @@
 #import "NSObject+SBJSON.h"
 #import "NSString+SBJSON.h"
 #import "NSMutableData-AES.h"
+#import "FooBarConstants.h"
+#import "EndPointsKeys.h"
 
 #define kFB_ACCESS_TOKEN_KEY            @"FB_ACCESS_TOKEN_KEY"
 #define kFB_EXPIRATION_DATE_KEY         @"FB_EXPIRATION_DATE_KEY"
-#define	kIsFacebookConfigured			@"facebookConfiguration"
-#define kFBUsername                     @"fbUsername"
-#define kIsFacebookEnabled				@"facebookEnabled"
-#define kEncryptionKey                  @"6b2c8762aedjkee0bce1485da86530dc0*2-01dn102)-1-~~`%$#@#"
-
-#define	kFBUsernameField						   @"username"
-#define	kFBUserIdField							   @"id"
-#define	kFBEmailField							   @"email"
-#define	kFBAccessTokenField						   @"access_token"
-#define	kFBFirstNameField						   @"first_name"
-#define	kFBProfilePictureField					   @"profile_pic"
-#define kFBProfilePictureURL					   @"https://graph.facebook.com/me/picture?type=large&access_token=%@"
 
 static FacebookUtil *sharedFacebookUtil = nil;
 const static NSString* kFacebookAppId = @"102542526573212";
@@ -184,20 +174,6 @@ const static NSString* kFacebookAppId = @"102542526573212";
 	[defaults synchronize];
 }
 
-- (BOOL)isFacebookEnabled
-{	
-    NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];	
-    BOOL isFacebookEnabled= [defaults boolForKey:kIsFacebookEnabled];
-    return isFacebookEnabled;
-}
-
--(void)setFacebookEnabled:(BOOL)state
-{
-    NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
-	[defaults setBool:state forKey:kIsFacebookEnabled];
-	[defaults synchronize];    
-}
-
 - (void)logout:(id)utilDelegate
 {
     self.delegate=utilDelegate;
@@ -272,9 +248,9 @@ const static NSString* kFacebookAppId = @"102542526573212";
 
 - (NSDictionary *)parseFacebookProfile:(FBRequest *) request result:(id)result
 {
-	NSString *jsonStringParams = (NSString *)[request.params JSONRepresentation];
-	//NSDictionary *userDict = (NSDictionary *)[jsonStringParams JSONValue];
-	//NSString *accessToken = ((NSString*)[userDict objectForKey:kFBAccessTokenField]);
+	/*NSString *jsonStringParams = (NSString *)[request.params JSONRepresentation];
+	NSDictionary *userDict = (NSDictionary *)[jsonStringParams JSONValue];
+	NSString *accessToken = ((NSString*)[userDict objectForKey:kFBAccessTokenField]);*/
 	NSDictionary *userInfo=result;
 	NSMutableDictionary *facebookProfileDict=[[[NSMutableDictionary alloc] init] autorelease];
     
@@ -288,7 +264,10 @@ const static NSString* kFacebookAppId = @"102542526573212";
         [facebookProfileDict setObject:[userInfo objectForKey:kFBEmailField] forKey:kFBEmailField];	
     
 	if([userInfo  objectForKey:kFBFirstNameField])
-        [facebookProfileDict setObject:[userInfo objectForKey:kFBFirstNameField] forKey:kFBFirstNameField];	
+        [facebookProfileDict setObject:[userInfo objectForKey:kFBFirstNameField] forKey:kFBFirstNameField];
+	
+    NSString* profilePicUrl = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", [userInfo  objectForKey:kFBUserIdField]];
+    [facebookProfileDict setObject:profilePicUrl forKey:kFBProfilePictureField];
 	
 	/*NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:kFBProfilePictureURL, accessToken]];
 	NSData *data = [NSData dataWithContentsOfURL:url];
@@ -323,9 +302,7 @@ const static NSString* kFacebookAppId = @"102542526573212";
 	
 	NSLog(@"fb accessToken: %@", sharedFacebookUtil.facebook.accessToken);
 	NSLog(@"fb expiration date: %@", sharedFacebookUtil.facebook.expirationDate);
-	
-    [self setFacebookEnabled:YES];
-	
+		
 	if([delegate respondsToSelector:@selector(onFacebookAuthorized:)])
         [delegate onFacebookAuthorized:YES];
 }

@@ -21,6 +21,7 @@
 //     distribution.
 //
 
+#import "NSData+Encoder.h"
 #import "NSData+Base64.h"
 
 //
@@ -150,7 +151,6 @@ void *NewBase64Decode(
 //
 // returns the encoded buffer. Must be free'd by caller. Length is given by
 //	outputLength.
-//
 char *NewBase64Encode(
 	const void *buffer,
 	size_t length,

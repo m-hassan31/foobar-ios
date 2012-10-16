@@ -447,7 +447,6 @@
             {
                 [facebookUtil logout:self];
                 [facebookUtil setFacebookConfigured:NO];
-                [facebookUtil setFacebookEnabled:NO];
                 NSIndexPath *path = [NSIndexPath indexPathForRow:1 inSection:0];
                 [shareTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationNone];
             }
@@ -458,7 +457,6 @@
             if(buttonIndex == 0) // unlink
             {
                 [twitterUtil setTwitterConfigured:NO];
-                [twitterUtil setTwitterEnabled:NO];
                 NSIndexPath *path = [NSIndexPath indexPathForRow:2 inSection:0];
                 [shareTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationNone];
             }

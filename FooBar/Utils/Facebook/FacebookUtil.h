@@ -34,10 +34,8 @@ enum CurrentFacebookAction
 -(void) clearFacebookCredentials;
 -(BOOL) isFacebookConfigured;
 -(BOOL) isFacebookSessionValid;
--(BOOL) isFacebookEnabled;
 -(NSString *) getFacebookAuthToken;
 -(void) setFacebookConfigured:(BOOL)config;
--(void) setFacebookEnabled:(BOOL)state;
 -(void) getMyFacebookProfile:(id) utilDelegate;
 -(void) getMyFacebookProfilePic:(id) utilDelegate;
 

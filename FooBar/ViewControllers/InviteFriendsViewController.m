@@ -253,7 +253,6 @@
             {
                 [facebookUtil logout:self];
                 [facebookUtil setFacebookConfigured:NO];
-                [facebookUtil setFacebookEnabled:NO];
                 NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0];
                 [inviteTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationNone];
             }
@@ -272,7 +271,6 @@
             if(buttonIndex == 0) // unlink
             {
                 [twitterUtil setTwitterConfigured:NO];
-                [twitterUtil setTwitterEnabled:NO];
                 NSIndexPath *path = [NSIndexPath indexPathForRow:1 inSection:0];
                 [inviteTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationNone];
             }
