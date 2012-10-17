@@ -7,9 +7,16 @@
 #define FOOBAR_IMAGE_WIDTH  243
 #define FOOBAR_IMAGE_HEIGHT 128
 
+@interface EditImageViewController()
+{
+    CGFloat lastScale;
+	CGFloat lastRotation;
+}
+@end
+
 @implementation EditImageViewController
 
-@synthesize image;
+@synthesize imageView, image;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -64,20 +71,23 @@
     CGFloat imageWidth = image.size.width;
     CGFloat imageHeight = image.size.height;
     
+    // fit the image in center.
     if(imageWidth>320)
     {
-        CGFloat height = (imageHeight*320)/imageWidth ;
+        CGFloat height = (imageHeight*320)/imageWidth;
         imageView.frame = CGRectMake(0, (436-height)/2, 320, height);
+    }
+    else if(imageHeight>436)
+    {
+        CGFloat width = (imageWidth*436)/imageHeight;
+        imageView.frame = CGRectMake((320-width)/2, 0, width, 436);        
     }
     else
     {
         imageView.frame = CGRectMake((320-imageWidth)/2, (436-imageHeight)/2, imageWidth, imageHeight);        
     }
-    
+    imageView.center = CGPointMake(320/2, 436/2);
     UIImage *foobarImage = [UIImage imageNamed:@"Logo.png"];
-    
-    maxX = imageView.frame.size.width - FOOBAR_IMAGE_WIDTH/4;
-    maxY = imageView.frame.size.height - FOOBAR_IMAGE_HEIGHT/4;
     
     UIView *holderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, foobarImage.size.width/2, foobarImage.size.height/2)];
 	UIImageView *foobarImageview = [[UIImageView alloc] initWithFrame:[holderView frame]];
@@ -103,15 +113,13 @@
 	[tapRecognizer setNumberOfTapsRequired:1];
 	[tapRecognizer setDelegate:self];
 	[holderView addGestureRecognizer:tapRecognizer];
-	
 	[imageView addSubview:holderView];
+    holderView.center = CGPointMake(imageView.frame.size.width/2, imageView.frame.size.height/2);
     [holderView release];
-    
-    manager = [[ConnectionManager alloc] init];
-    manager.delegate = self;
 }
 
--(void)backButtonPressed:(id)sender {
+-(void)backButtonPressed:(id)sender 
+{
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -130,8 +138,8 @@
     [uploadVC release];
 }
 
--(void)scale:(id)sender {
-	
+-(void)scale:(id)sender 
+{	
 	[self.view bringSubviewToFront:[(UIPinchGestureRecognizer*)sender view]];
 	
 	if([(UIPinchGestureRecognizer*)sender state] == UIGestureRecognizerStateEnded) {
@@ -150,8 +158,8 @@
 	lastScale = [(UIPinchGestureRecognizer*)sender scale];
 }
 
--(void)rotate:(id)sender {
-	
+-(void)rotate:(id)sender 
+{	
 	[self.view bringSubviewToFront:[(UIRotationGestureRecognizer*)sender view]];
 	
 	if([(UIRotationGestureRecognizer*)sender state] == UIGestureRecognizerStateEnded) {
@@ -170,133 +178,42 @@
 	lastRotation = [(UIRotationGestureRecognizer*)sender rotation];
 }
 
--(void)move:(id)sender {
-	
-	[[[(UITapGestureRecognizer*)sender view] layer] removeAllAnimations];
-	
-	[self.view bringSubviewToFront:[(UIPanGestureRecognizer*)sender view]];
-	CGPoint translatedPoint = [(UIPanGestureRecognizer*)sender translationInView:self.view];
-	
-	if([(UIPanGestureRecognizer*)sender state] == UIGestureRecognizerStateBegan) {
-		
-		firstX = [[sender view] center].x;
-		firstY = [[sender view] center].y;
-	}
-	
-	translatedPoint = CGPointMake(firstX+translatedPoint.x, firstY+translatedPoint.y);
-	
-	[[sender view] setCenter:translatedPoint];
-	
-	if([(UIPanGestureRecognizer*)sender state] == UIGestureRecognizerStateEnded) {
-		
-		CGFloat finalX = translatedPoint.x + (.35*[(UIPanGestureRecognizer*)sender velocityInView:self.view].x);
-		CGFloat finalY = translatedPoint.y + (.35*[(UIPanGestureRecognizer*)sender velocityInView:self.view].y);
-		
-		if(UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
-			
-			if(finalX < FOOBAR_IMAGE_WIDTH/4) 
-            {				
-				finalX = FOOBAR_IMAGE_WIDTH/4;
-			}			
-			else if(finalX > maxX) 
-            {				
-				finalX = maxX;
-			}
-			
-			if(finalY < FOOBAR_IMAGE_HEIGHT/4) 
-            {				
-				finalY = FOOBAR_IMAGE_HEIGHT/4;
-			}			
-			else if(finalY > maxY) 
-            {
-				finalY = maxY;
-			}
-		}		
-		else 
-        {
-			if(finalX < FOOBAR_IMAGE_WIDTH/4) 
-            {	
-				finalX = FOOBAR_IMAGE_WIDTH/4;
-			}			
-			else if(finalX > maxY) 
-            {	
-				finalX = maxX;
-			}
-			
-			if(finalY < FOOBAR_IMAGE_HEIGHT/4) 
-            {	
-				finalY = FOOBAR_IMAGE_HEIGHT/4;
-			}			
-			else if(finalY > maxX) 
-            {	
-				finalY = maxY;
-			}
-		}
-		
-		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:.35];
-		[UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-		[[sender view] setCenter:CGPointMake(finalX, finalY)];
-		[UIView commitAnimations];
-	}
-}
-
--(void)tapped:(id)sender {
-	
-	[[[(UITapGestureRecognizer*)sender view] layer] removeAllAnimations];
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-	
-	return ![gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]];
-}
-
-#pragma mark - ConnectionManager delegate functions
-
--(void)httpRequestFailed:(ASIHTTPRequest *)request
-{
-	NSError *error= [request error];
-	NSLog(@"%@",[error localizedDescription]);
-}
-
--(void)httpRequestFinished:(ASIHTTPRequest *)request
-{
-	NSString *responseJSON = [[request responseString] retain];
-	NSString *urlString= [[request url] absoluteString];
-    int statusCode = [request responseStatusCode];
-    NSString *statusMessage = [request responseStatusMessage];
-    
-    NSLog(@"Status Code - %d\nStatus Message - %@\nResponse:\n%@", statusCode, statusMessage, responseJSON);
-    
-    [responseJSON release];
-    
-    if([urlString hasPrefix:PhotosUrl])
+-(void)move:(id)sender 
+{	
+    UIPanGestureRecognizer *pgr = (UIPanGestureRecognizer*)sender;
+    if (pgr.state == UIGestureRecognizerStateChanged) 
     {
-        if(statusCode == 200)
+        UIView *logoView = pgr.view;
+        CGPoint center = logoView.center;
+        CGPoint translation = [pgr translationInView:logoView];
+        center = CGPointMake(center.x + translation.x, 
+                             center.y + translation.y);
+        
+        if(CGRectContainsPoint(imageView.bounds, center))
         {
-            
-        }
-        else if(statusCode == 403)
-        {
-            
+            logoView.center = center;
+            [pgr setTranslation:CGPointZero inView:pgr.view];
         }
     }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer 
+shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer 
+{
+	return ![gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]];
 }
 
 #pragma mark - Memory Management
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-
-    manager.delegate = nil;
-    [manager release];
+    self.imageView = nil;
 }
 
 -(void)dealloc {
     imageView.image = nil;
+    [imageView release];
     [image release];
-    manager.delegate = nil;
-    [manager release];
 
     [super dealloc];
 }

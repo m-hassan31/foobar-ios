@@ -1,23 +1,9 @@
 #import <UIKit/UIKit.h>
 #import "ConnectionManager.h"
 
-@interface EditImageViewController : UIViewController
-<UIGestureRecognizerDelegate, ConnectionManagerDelegate> 
-{
-	CGFloat lastScale;
-	CGFloat lastRotation;
-	
-	CGFloat firstX;
-	CGFloat firstY;	
+@interface EditImageViewController : UIViewController<UIGestureRecognizerDelegate> 
 
-    CGFloat maxX;
-    CGFloat maxY;
-    
-    IBOutlet UIImageView* imageView;
-    
-    ConnectionManager *manager;
-}
-
+@property(nonatomic, retain) IBOutlet UIImageView* imageView;
 @property(nonatomic, retain) UIImage *image;
 
 @end
