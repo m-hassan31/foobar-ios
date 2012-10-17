@@ -100,7 +100,13 @@
 
 -(void)getProfile
 {
-    [self showHUDwithText:@"Getting Info"];
+    [self getProfile:NO];
+}
+
+-(void)getProfile:(BOOL)showHud
+{
+    if(showHud)
+        [self showHUDwithText:@"Getting Info"];
     // Instantiate an HTTP request.
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", MyProfileUrl]];
     ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];    

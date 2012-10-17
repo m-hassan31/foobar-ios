@@ -83,6 +83,13 @@
     manager = [[ConnectionManager alloc] init];
     manager.delegate = self;
     [manager getFeedsAtPage:1 count:10];
+    
+    
+    FooBarUser *defaultsFoobarUser = [FooBarUser currentUser];
+    if(!defaultsFoobarUser)
+    {
+        [manager getProfile];        
+    }
 }
 
 - (void)dropViewDidBeginRefreshing:(ODRefreshControl *)_refreshControl
@@ -263,6 +270,18 @@
         }
         [refreshControl endRefreshing];
         [pullToRefreshManager_ scrollViewReloadFinished];
+    }
+    else if([urlString hasPrefix:MyProfileUrl])
+    {
+        if(statusCode == 200)
+        {
+            FooBarUser *currentLoggedInUser = [Parser parseUserResponse:responseJSON];
+            if(currentLoggedInUser)
+            {
+                FooBarUser *foobarUser = currentLoggedInUser;
+                [FooBarUser saveCurrentUser:foobarUser];
+            }
+        }
     }
     
     [responseJSON release];

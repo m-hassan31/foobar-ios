@@ -21,6 +21,7 @@
 -(void)signin;
 -(void)updateAccessToken;
 -(void)getProfile;
+-(void)getProfile:(BOOL)showHud;
 -(void)getFeedsAtPage:(NSUInteger)_pageNum count:(NSUInteger)_count;
 -(void)getFooBarProducts;
 -(void)uploadPhoto:(UIImage*)image withProductId:(NSString*)productId;

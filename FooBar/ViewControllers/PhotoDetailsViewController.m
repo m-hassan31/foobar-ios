@@ -145,6 +145,12 @@
     
     manager = [[ConnectionManager alloc] init];
     manager.delegate = self;
+    
+    FooBarUser *defaultsFoobarUser = [FooBarUser currentUser];
+    if(!defaultsFoobarUser)
+    {
+        [manager getProfile];        
+    }
 }
 
 #pragma mark - Other Actions
@@ -558,6 +564,18 @@
         else if(statusCode == 403)
         {
             [FooBarUtils showAlertMessage:@"You can 'like' a post only once."];
+        }
+    }
+    else if([urlString hasPrefix:MyProfileUrl])
+    {
+        if(statusCode == 200)
+        {
+            FooBarUser *currentLoggedInUser = [Parser parseUserResponse:responseJSON];
+            if(currentLoggedInUser)
+            {
+                FooBarUser *foobarUser = currentLoggedInUser;
+                [FooBarUser saveCurrentUser:foobarUser];
+            }
         }
     }
     
