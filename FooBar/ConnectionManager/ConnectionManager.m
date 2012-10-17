@@ -189,6 +189,19 @@
     [request startAsynchronous];
 }
 
+-(void)deleteComment:(NSString*)commentId
+{
+    [self showHUDwithText:@"Deleting"];
+    // Instantiate an HTTP request.
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",CommentsUrl, commentId]];
+    ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];
+    [request setRequestMethod:@"DELETE"];
+    request.delegate = self;
+    
+    // Send the request.
+    [request startAsynchronous];
+}
+
 -(void)likePost:(NSString*)postId
 {
     // Instantiate an HTTP request.

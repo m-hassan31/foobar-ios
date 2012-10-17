@@ -12,7 +12,6 @@
 @property(nonatomic, retain) NSString *photoCaption;
 @property(nonatomic, retain) FooBarPhoto *foobarPhoto;
 @property(nonatomic, retain) NSMutableArray *commentsArray;
-@property(nonatomic, assign) NSUInteger commentsCount;
 @property(nonatomic, assign) NSUInteger likesCount;
 
 @end

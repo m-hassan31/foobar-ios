@@ -9,6 +9,9 @@
 #import "ShareViewController.h"
 
 @interface PhotoDetailsViewController()
+{
+    NSInteger deleteCommentIndex;
+}
 
 -(void)beginComment;
 -(void)dismissComment;
@@ -90,6 +93,7 @@
     self.navigationItem.leftBarButtonItem = customLeftBarButtonItem;
     [customLeftBarButtonItem release];
     
+    deleteCommentIndex = -1; // default
     scrollView.frame = CGRectMake(0, -49, 320, 367);
     
     imageView.delegate = self;
@@ -118,8 +122,8 @@
     userInfoHolderView.frame = CGRectMake(0, imageView.frame.size.height, 320.0f, 48.0f);
     userInfoHolderView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     userInfoHolderView.layer.borderWidth = 1.0;
-    
-    commentsCountLabel.text = [NSString stringWithFormat:@"    %d Comment%@", feedObject.commentsCount, (feedObject.commentsArray.count==1)?@"":@"s"];
+    NSUInteger commentsCount = feedObject.commentsArray.count;
+    commentsCountLabel.text = [NSString stringWithFormat:@"    %d Comment%@", commentsCount , commentsCount==1?@"":@"s"];
     commentsCountLabel.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height, 320.0f, 30.0f);
     
     NSMutableArray *heightsArray = [[NSMutableArray alloc] init];
@@ -277,10 +281,31 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+// Override to support conditional editing of the table view.
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+    FooBarUser *foobarUser = [FooBarUser currentUser];
+    CommentObject *commentObject = (CommentObject*)[feedObject.commentsArray objectAtIndex:indexPath.row];
+    NSLog(@"User - %@ ---- CommentUser - %@",foobarUser.username, commentObject.foobarUser.username);
+    if([commentObject.foobarUser.userId isEqualToString:foobarUser.userId]) //only owned comments can be deleted
+        return YES;
     
+    return NO;
 }
+
+// Override to support editing the table view.
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(editingStyle == UITableViewCellEditingStyleDelete) 
+    {
+        CommentObject *commentObject = (CommentObject*)[feedObject.commentsArray objectAtIndex:indexPath.row];
+        [manager deleteComment:commentObject.commentId];
+        deleteCommentIndex = indexPath.row;
+    }    
+}
+
 
 #pragma mark - TextField delegates
 
@@ -447,42 +472,82 @@
     
     if([urlString hasPrefix:CommentsUrl])
     {
-        if(statusCode == 200)
+        if([request.requestMethod isEqualToString:@"POST"])
         {
-            CommentObject *commentObject = [Parser parseCommentResponse:responseJSON];
-            if(commentObject)
+            if(statusCode == 200)
             {
-                [commentField setText:@""];
-                [feedObject.commentsArray addObject:commentObject];
-                feedObject.commentsCount = feedObject.commentsArray.count;
-                CGFloat height = [CommentsViewCell heightForCellWithText:commentObject.commentText];
-                [commentsHeightArray addObject:[NSNumber numberWithFloat:height]];
-                commentsCountLabel.text = [NSString stringWithFormat:@"    %d Comment%@", feedObject.commentsCount, (feedObject.commentsArray.count==1)?@"":@"s"];
-                [UIView animateWithDuration:0.2 
-                                 animations:^{
-                                     commentsTableView.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height, 320.0f, commentsTableView.frame.size.height+height);
-                                     
-                                     commentFieldHolder.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height+commentsTableView.frame.size.height, 320.0f, 44.0f);
-                                     
-                                     self.scrollView.contentSize = CGSizeMake(320, commentFieldHolder.frame.origin.y + commentFieldHolder.frame.size.height);
-                                     
-                                     CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
-                                     [self.scrollView setContentOffset:bottomOffset animated:YES];
-                                 }
-                                 completion:^(BOOL finished) {
-                                    NSIndexPath *path = [NSIndexPath indexPathForRow:feedObject.commentsArray.count-1 inSection:0];                
-                                     NSArray *indexArray = [NSArray arrayWithObjects:path,nil];
-                                     [commentsTableView insertRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationBottom];
-                                 }];
+                CommentObject *commentObject = [Parser parseCommentResponse:responseJSON];
+                if(commentObject)
+                {
+                    [commentField setText:@""];
+                    [feedObject.commentsArray addObject:commentObject];
+                    CGFloat height = [CommentsViewCell heightForCellWithText:commentObject.commentText];
+                    [commentsHeightArray addObject:[NSNumber numberWithFloat:height]];
+                    NSUInteger commentsCount = feedObject.commentsArray.count;
+                    commentsCountLabel.text = [NSString stringWithFormat:@"    %d Comment%@", commentsCount , commentsCount==1?@"":@"s"];
+                    [UIView animateWithDuration:0.2 
+                                     animations:^{
+                                         commentsTableView.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height, 320.0f, commentsTableView.frame.size.height+height);
+                                         
+                                         commentFieldHolder.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height+commentsTableView.frame.size.height, 320.0f, 44.0f);
+                                         
+                                         self.scrollView.contentSize = CGSizeMake(320, commentFieldHolder.frame.origin.y + commentFieldHolder.frame.size.height);
+                                         
+                                         CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+                                         [self.scrollView setContentOffset:bottomOffset animated:YES];
+                                     }
+                                     completion:^(BOOL finished) {
+                                         NSIndexPath *path = [NSIndexPath indexPathForRow:feedObject.commentsArray.count-1 inSection:0];                
+                                         NSArray *indexArray = [NSArray arrayWithObjects:path,nil];
+                                         [commentsTableView insertRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationBottom];
+                                     }];
+                }
+                else
+                {
+                    [FooBarUtils showAlertMessage:@"Can't comment now. Try again."];
+                }
             }
-            else
-            {
+            else if(statusCode == 403)
+            {   
                 [FooBarUtils showAlertMessage:@"Can't comment now. Try again."];
             }
         }
-        else if(statusCode == 403)
-        {   
-            [FooBarUtils showAlertMessage:@"Can't comment now. Try again."];
+        else
+        {
+            if(statusCode == 200)
+            {
+                if(deleteCommentIndex != -1)
+                {
+                    [feedObject.commentsArray removeObjectAtIndex:deleteCommentIndex];
+                    CGFloat height = [[commentsHeightArray objectAtIndex:deleteCommentIndex] floatValue];
+                    [commentsHeightArray removeObjectAtIndex:deleteCommentIndex];
+                    NSUInteger commentsCount = feedObject.commentsArray.count;
+                    commentsCountLabel.text = [NSString stringWithFormat:@"    %d Comment%@", commentsCount , commentsCount==1?@"":@"s"];
+                    
+                    NSIndexPath *path = [NSIndexPath indexPathForRow:deleteCommentIndex inSection:0];
+                    [commentsTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationLeft];
+                    
+                    [UIView animateWithDuration:0.2 
+                                     animations:^{
+                                         commentsTableView.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height, 320.0f, commentsTableView.frame.size.height-height);
+                                         
+                                         commentFieldHolder.frame = CGRectMake(0, imageView.frame.size.height+userInfoHolderView.frame.size.height+commentsCountLabel.frame.size.height+commentsTableView.frame.size.height, 320.0f, 44.0f);
+                                         
+                                         self.scrollView.contentSize = CGSizeMake(320, commentFieldHolder.frame.origin.y + commentFieldHolder.frame.size.height);
+                                         
+                                         CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+                                         [self.scrollView setContentOffset:bottomOffset animated:YES];
+                                     }
+                                     completion:^(BOOL finished) {
+                                     }];
+                }
+            }
+            else
+            {   
+                [FooBarUtils showAlertMessage:@"Can't delete comment now."];
+            }
+            
+            deleteCommentIndex = -1;
         }
     }
     else if([urlString hasPrefix:LikesUrl])

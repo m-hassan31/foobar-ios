@@ -26,6 +26,7 @@
 -(void)uploadPhoto:(UIImage*)image withProductId:(NSString*)productId;
 -(void)updatePost:(NSString*)postId withCaption:(NSString*)caption;
 -(void)comment:(NSString*)text onPost:(NSString*)postId;
+-(void)deleteComment:(NSString*)commentId;
 -(void)likePost:(NSString*)postId;
 
 @end

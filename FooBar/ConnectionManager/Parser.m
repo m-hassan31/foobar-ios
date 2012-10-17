@@ -13,7 +13,16 @@
     if(responseData && ![responseData isKindOfClass:[NSNull class]] && [responseData isKindOfClass:[NSDictionary class]])
     {
         // used while feeds parsing
-        userDict = (NSDictionary*)responseData;                            
+        NSDictionary *parsedDict = (NSDictionary*)responseData;
+        id creatorData = [parsedDict objectForKey:kCreator];
+        if(creatorData && ![creatorData isKindOfClass:[NSNull class]] && [creatorData isKindOfClass:[NSDictionary class]])
+        {
+            userDict = (NSDictionary*)creatorData;
+        }
+        else
+        {
+            return nil;
+        }
     }
     else if(responseData && ![responseData isKindOfClass:[NSNull class]] && [responseData isKindOfClass:[NSString class]])
     {
@@ -130,7 +139,6 @@
                 feedObject.updated_dt = (NSString*)[parsedDict objectForKey:kUpdatedDate];
                 feedObject.productId = (NSString*)[parsedDict objectForKey:kFeeds_ProductId];
                 feedObject.photoCaption = (NSString*)[parsedDict objectForKey:kFeeds_PhotoCaption];
-                feedObject.commentsCount = [(NSString*)[parsedDict objectForKey:kFeeds_CommentsCount] integerValue];
                 feedObject.likesCount = [(NSString*)[parsedDict objectForKey:kFeeds_LikesCount] integerValue];
                 
                 // Parse Photo info
@@ -220,7 +228,6 @@
         feedObject.updated_dt = (NSString*)[parsedDict objectForKey:kUpdatedDate];
         feedObject.productId = (NSString*)[parsedDict objectForKey:kFeeds_ProductId];
         feedObject.photoCaption = (NSString*)[parsedDict objectForKey:kFeeds_PhotoCaption];
-        feedObject.commentsCount = [(NSString*)[parsedDict objectForKey:kFeeds_CommentsCount] integerValue];
         feedObject.likesCount = [(NSString*)[parsedDict objectForKey:kFeeds_LikesCount] integerValue];
         
         // Parse Photo info
