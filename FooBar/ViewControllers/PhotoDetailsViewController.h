@@ -2,11 +2,12 @@
 #import "AsyncImageView.h"
 #import "FeedObject.h"
 #import "ConnectionManager.h"
+#import "CommentsViewCell.h"
 #import <MessageUI/MessageUI.h>
 
 @interface PhotoDetailsViewController : UIViewController
 <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, ConnectionManagerDelegate, 
-AsyncImageDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
+AsyncImageDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, CommentsViewCellDelegate>
 {
     ConnectionManager *manager;
 }

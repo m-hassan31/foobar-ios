@@ -37,6 +37,8 @@
 		840D4EB5162448C30010B987 /* Front.png in Resources */ = {isa = PBXBuildFile; fileRef = 840D4EB3162448C30010B987 /* Front.png */; };
 		840D4EB6162448C30010B987 /* Front@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 840D4EB4162448C30010B987 /* Front@2x.png */; };
 		841BB48D1626F7C500365D39 /* ODRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 841BB48C1626F7C500365D39 /* ODRefreshControl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		844256A4162EDDEE0079BC06 /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 844256A2162EDDED0079BC06 /* UserProfileViewController.m */; };
+		844256A5162EDDEE0079BC06 /* UserProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 844256A3162EDDEE0079BC06 /* UserProfileViewController.xib */; };
 		8459882415F21A3D00A5486C /* CaptureSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8459882315F21A3D00A5486C /* CaptureSessionManager.m */; };
 		8459882715F21BEB00A5486C /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8459882615F21BEB00A5486C /* ImageIO.framework */; };
 		8459885C15F22C5E00A5486C /* EditImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8459885A15F22C5E00A5486C /* EditImageViewController.xib */; };
@@ -217,6 +219,9 @@
 		840D4EB4162448C30010B987 /* Front@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Front@2x.png"; sourceTree = "<group>"; };
 		841BB48B1626F7C500365D39 /* ODRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODRefreshControl.h; sourceTree = "<group>"; };
 		841BB48C1626F7C500365D39 /* ODRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRefreshControl.m; sourceTree = "<group>"; };
+		844256A1162EDDED0079BC06 /* UserProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfileViewController.h; sourceTree = "<group>"; };
+		844256A2162EDDED0079BC06 /* UserProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileViewController.m; sourceTree = "<group>"; };
+		844256A3162EDDEE0079BC06 /* UserProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileViewController.xib; sourceTree = "<group>"; };
 		8459882215F21A3D00A5486C /* CaptureSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaptureSessionManager.h; sourceTree = "<group>"; };
 		8459882315F21A3D00A5486C /* CaptureSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaptureSessionManager.m; sourceTree = "<group>"; };
 		8459882615F21BEB00A5486C /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -854,6 +859,9 @@
 				8C1DD470162ADEE000385816 /* FriendsListViewController.h */,
 				8C1DD471162ADEE000385816 /* FriendsListViewController.m */,
 				8C1DD472162ADEE000385816 /* FriendsListViewController.xib */,
+				844256A1162EDDED0079BC06 /* UserProfileViewController.h */,
+				844256A2162EDDED0079BC06 /* UserProfileViewController.m */,
+				844256A3162EDDEE0079BC06 /* UserProfileViewController.xib */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -1046,6 +1054,7 @@
 				8CD46135162B191500F6DD10 /* Invite@2x.png in Resources */,
 				8CD46139162B1AC900F6DD10 /* Invited.png in Resources */,
 				8CD4613A162B1AC900F6DD10 /* Invited@2x.png in Resources */,
+				844256A5162EDDEE0079BC06 /* UserProfileViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1127,6 +1136,7 @@
 				8C1DD478162ADF6500385816 /* FriendInfo.m in Sources */,
 				8C1DD47B162ADF7600385816 /* FriendsListTableViewCell.m in Sources */,
 				849475EA162D35D800A84EE5 /* NSData+Encoder.m in Sources */,
+				844256A4162EDDEE0079BC06 /* UserProfileViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

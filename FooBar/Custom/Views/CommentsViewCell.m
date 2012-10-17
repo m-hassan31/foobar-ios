@@ -83,19 +83,7 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
 {
     if(delegate && [delegate respondsToSelector:@selector(goToProfile:)])
     {
-        [delegate goToProfile:nil];
-    }
-}
-
-- (void)handleUserNameLongPress:(UILongPressGestureRecognizer *)gestureRecognizer 
-{
-    if([gestureRecognizer state] != UIGestureRecognizerStateBegan)
-        return;
-    
-    if(delegate)
-    {  
-        if([delegate respondsToSelector:@selector(longPressAction:)])
-            [delegate longPressAction:commentObject.foobarUser.username];
+        [delegate goToProfile:commentObject.foobarUser.userId];
     }
 }
 

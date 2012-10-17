@@ -115,6 +115,17 @@
     [request startAsynchronous];
 }
 
+-(void)getUserProfile:(NSString*)profileId
+{
+    [self showHUDwithText:@"Getting Info"];
+    // Instantiate an HTTP request.
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", UsersUrl, profileId]];
+    ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];    
+    request.delegate = self;
+    // Send the request.
+    [request startAsynchronous];
+}
+
 -(void)getFeedsAtPage:(NSUInteger)_pageNum count:(NSUInteger)_count
 {
     [self showHUDwithText:@"Getting Feeds"];

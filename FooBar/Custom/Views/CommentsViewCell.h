@@ -7,8 +7,7 @@
 
 @optional
 
--(void)goToProfile:(NSString*)profileId;
--(void)longPressAction:(NSString*)text;
+-(void)goToProfile:(NSString*)userId;
 
 @end
 

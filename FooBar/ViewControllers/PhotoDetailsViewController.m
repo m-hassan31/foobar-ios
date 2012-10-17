@@ -7,6 +7,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "NSData+Base64.h"
 #import "ShareViewController.h"
+#import "UserProfileViewController.h"
 
 @interface PhotoDetailsViewController()
 {
@@ -280,6 +281,7 @@
     if(cell == nil) 
         cell = [[[CommentsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CommentsCellIdentifier] autorelease];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    [cell setDelegate:self];
     
     CommentObject *commentObject = (CommentObject*)[feedObject.commentsArray objectAtIndex:indexPath.row];
     NSNumber *height = [commentsHeightArray objectAtIndex:indexPath.row];
@@ -310,6 +312,19 @@
         [manager deleteComment:commentObject.commentId];
         deleteCommentIndex = indexPath.row;
     }    
+}
+
+#pragma mark - CommentsViewCell delegates
+
+-(void)goToProfile:(NSString*)userId
+{
+    if(userId && ![userId isEqualToString:@""])
+    {
+        UserProfileViewController *userProfileVC = [[UserProfileViewController alloc] initWithNibName:@"UserProfileViewController" bundle:nil];
+        userProfileVC.userId = userId;
+        [self.navigationController pushViewController:userProfileVC animated:YES];
+        [userProfileVC release];
+    }
 }
 
 #pragma mark - TextField delegates

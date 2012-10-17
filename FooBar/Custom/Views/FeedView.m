@@ -6,7 +6,10 @@ const CGFloat kFeedViewMargin = 0;
 
 @implementation FeedView
 
-- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier {
+@synthesize delegate, feedObject;
+
+- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier 
+{
     self = [super initWithReuseIdentifier:reuseIdentifier];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
@@ -35,15 +38,25 @@ const CGFloat kFeedViewMargin = 0;
         [self addSubview:profilePicView];
         [profilePicView release];
         
-        usernameLabel = [[UILabel alloc] init];
-        usernameLabel.backgroundColor = [UIColor clearColor];
-        usernameLabel.textColor = [UIColor colorWithRed:51.0f/255.0f green:51.0f/255.0f blue:51.0f/255.0f alpha:1.0f];
-        usernameLabel.textAlignment = UITextAlignmentLeft;
-        usernameLabel.font = [UIFont boldSystemFontOfSize:12.0f];
-        [self addSubview:usernameLabel];
-        [usernameLabel release];
+        userNameButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        userNameButton.frame = CGRectMake(53, 11, 200, 15);
+        [userNameButton setTitleColor:[UIColor colorWithRed:51.0f/255.0f green:51.0f/255.0f blue:51.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+        [userNameButton setTitleColor:[UIColor colorWithRed:51.0f/255.0f green:51.0f/255.0f blue:51.0f/255.0f alpha:0.5f] forState:UIControlStateHighlighted];
+        userNameButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
+        userNameButton.titleLabel.textAlignment = UITextAlignmentLeft;
+        [userNameButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+        [userNameButton addTarget:self action:@selector(goToProfile) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:userNameButton];
     }
     return self;
+}
+
+-(void) goToProfile
+{
+    if(delegate && [delegate respondsToSelector:@selector(goToProfile:)])
+    {
+        [delegate goToProfile:feedObject.foobarUser.userId];
+    }
 }
 
 - (void)layoutSubviews 
@@ -61,11 +74,12 @@ const CGFloat kFeedViewMargin = 0;
     
     profilePicView.frame = CGRectMake(5.0f, photoFrame.size.height+6.0f, 28.0f, 28.0f);
     
-    usernameLabel.frame = CGRectMake(38.0f, photoFrame.size.height+6.0f, photoFrame.size.width-43.0f, 28.0f);
+    userNameButton.frame = CGRectMake(38.0f, photoFrame.size.height+6.0f, photoFrame.size.width-43.0f, 28.0f);
 }
 
--(void)updateWithfeedObject:(FeedObject*)feedObject
+-(void)updateWithfeedObject:(FeedObject*)aFeedObject
 {
+    self.feedObject = aFeedObject;
     photoView.image = nil;
     photoView.imageUrl = feedObject.foobarPhoto.url;
     likesCountLabel.text = [NSString stringWithFormat:@"      %d", feedObject.likesCount];
@@ -77,7 +91,7 @@ const CGFloat kFeedViewMargin = 0;
         [profilePicView setImageUrl:imageUrl];
     
     if(feedObject.foobarUser.username && ![feedObject.foobarUser.username isEqualToString:@""])
-        usernameLabel.text = feedObject.foobarUser.username;
+        [userNameButton setTitle:feedObject.foobarUser.username forState:UIControlStateNormal];
 }
 
 #pragma mark - AsyncImageDelegate
@@ -100,6 +114,8 @@ const CGFloat kFeedViewMargin = 0;
 
 - (void)dealloc
 {
+    [feedObject release];
+    self.delegate = nil;
     [photoView setDelegate:nil];    
     [super dealloc];
 }

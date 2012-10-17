@@ -3,9 +3,10 @@
 #import "TMQuiltView.h"
 #import "ODRefreshControl.h"
 #import "MNMBottomPullToRefreshManager.h"
+#import "FeedView.h"
 
 @interface StreamViewController : UIViewController
-<ConnectionManagerDelegate, TMQuiltViewDataSource, TMQuiltViewDelegate, MNMBottomPullToRefreshManagerClient, UIScrollViewDelegate>
+<ConnectionManagerDelegate, TMQuiltViewDataSource, TMQuiltViewDelegate, MNMBottomPullToRefreshManagerClient, UIScrollViewDelegate, FeedViewDelegate>
 {
     TMQuiltView *quiltView;
     ConnectionManager *manager;

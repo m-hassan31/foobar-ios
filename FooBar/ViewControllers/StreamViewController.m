@@ -1,6 +1,5 @@
 #import "StreamViewController.h"
-#import "FeedView.h"
-#import "CaptureViewController.h"
+#import "UserProfileViewController.h"
 #import "FooBarUtils.h"
 #import "FooBarConstants.h"
 #import "PhotoDetailsViewController.h"
@@ -123,7 +122,7 @@
     if (!aFeed) {
         aFeed = [[[FeedView alloc] initWithReuseIdentifier:@"FeedElement"] autorelease];
     }
-    
+    aFeed.delegate =self;
     FeedObject *feedObject = [feedsArray objectAtIndex:indexPath.row];
     [aFeed updateWithfeedObject:feedObject];
     return aFeed;
@@ -161,6 +160,19 @@
     }
     
     return height+40.0f; // include height of user name bar
+}
+
+#pragma mark - FeedView delegates
+
+-(void)goToProfile:(NSString*)userId
+{
+    if(userId && ![userId isEqualToString:@""])
+    {
+        UserProfileViewController *userProfileVC = [[UserProfileViewController alloc] initWithNibName:@"UserProfileViewController" bundle:nil];
+        userProfileVC.userId = userId;
+        [self.navigationController pushViewController:userProfileVC animated:YES];
+        [userProfileVC release];
+    }
 }
 
 #pragma mark -

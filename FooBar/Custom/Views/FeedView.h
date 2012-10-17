@@ -3,15 +3,28 @@
 #import "AsyncImageView.h"
 #import "FeedObject.h"
 
+@protocol FeedViewDelegate <NSObject>
+
+@optional
+
+-(void)goToProfile:(NSString*)userId;
+
+@end
+
 @interface FeedView : TMQuiltViewCell<AsyncImageDelegate>
 {
     AsyncImageView *photoView;
     UIImageView *heart;
     UILabel *likesCountLabel;
     AsyncImageView *profilePicView;
-    UILabel *usernameLabel;
+    UIButton *userNameButton;
+    
+    id<FeedViewDelegate> delegate;
 }
 
--(void)updateWithfeedObject:(FeedObject*)feedObject;
+@property(nonatomic, assign) id<FeedViewDelegate> delegate;
+@property(nonatomic, retain) FeedObject *feedObject;
+
+-(void)updateWithfeedObject:(FeedObject*)aFeedObject;
 
 @end
