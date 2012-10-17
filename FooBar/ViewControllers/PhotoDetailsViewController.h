@@ -17,7 +17,7 @@ AsyncImageDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, 
 @property (retain, nonatomic) IBOutlet AsyncImageView *imageView;
 @property (retain, nonatomic) IBOutlet UIView *userInfoHolderView;
 @property (retain, nonatomic) IBOutlet AsyncImageView *profilePicView;
-@property (retain, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (retain, nonatomic) IBOutlet UIButton *usernameButton;
 @property (retain, nonatomic) IBOutlet UILabel *commentsCountLabel;
 @property (retain, nonatomic) IBOutlet UITableView *commentsTableView;
 @property (retain, nonatomic) IBOutlet UIView *commentFieldHolder;

@@ -26,7 +26,7 @@
 @implementation PhotoDetailsViewController
 @synthesize userInfoHolderView;
 @synthesize profilePicView;
-@synthesize usernameLabel;
+@synthesize usernameButton;
 @synthesize commentsCountLabel;
 @synthesize commentsTableView;
 @synthesize commentFieldHolder;
@@ -116,7 +116,7 @@
     profilePicView.imageUrl = feedObject.foobarUser.photoUrl;
     commentProfilePicView.imageUrl = feedObject.foobarUser.photoUrl;
     
-    usernameLabel.text = feedObject.foobarUser.username;
+    [usernameButton setTitle:feedObject.foobarUser.username forState:UIControlStateNormal];
     
     likeHolderView.frame = CGRectMake(0, imageView.frame.size.height-likeHolderView.frame.size.height, 320.0f, 40.0f);
     
@@ -209,6 +209,14 @@
 -(IBAction)likeButtonPressed:(id)sender
 {
     [manager likePost:feedObject.feedId];
+}
+
+-(IBAction)usernameButtonPressed:(id)sender
+{
+    UserProfileViewController *userProfileVC = [[UserProfileViewController alloc] initWithNibName:@"UserProfileViewController" bundle:nil];
+    userProfileVC.userId = feedObject.foobarUser.userId;
+    [self.navigationController pushViewController:userProfileVC animated:YES];
+    [userProfileVC release];
 }
 
 #pragma mark - AsynImageDelegate
@@ -612,7 +620,7 @@
     [self setLikeHolderView:nil];
     [self setUserInfoHolderView:nil];
     [self setProfilePicView:nil];
-    [self setUsernameLabel:nil];
+    [self setUsernameButton:nil];
     [self setCommentsTableView:nil];
     
     manager.delegate = nil;
@@ -628,7 +636,7 @@
     [likeHolderView release];
     [userInfoHolderView release];
     [profilePicView release];
-    [usernameLabel release];
+    [usernameButton release];
     [commentsTableView release];
     [commentsCountLabel release];
     [scrollView release];
