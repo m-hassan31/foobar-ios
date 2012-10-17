@@ -98,21 +98,20 @@
 	UIPinchGestureRecognizer *pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scale:)];
 	[pinchRecognizer setDelegate:self];
 	[holderView addGestureRecognizer:pinchRecognizer];
+    [pinchRecognizer release];
 	
 	UIRotationGestureRecognizer *rotationRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];
 	[rotationRecognizer setDelegate:self];
 	[holderView addGestureRecognizer:rotationRecognizer];
+    [rotationRecognizer release];
 	
 	UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
 	[panRecognizer setMinimumNumberOfTouches:1];
 	[panRecognizer setMaximumNumberOfTouches:1];
 	[panRecognizer setDelegate:self];
 	[holderView addGestureRecognizer:panRecognizer];
+    [panRecognizer release];
 	
-	UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
-	[tapRecognizer setNumberOfTapsRequired:1];
-	[tapRecognizer setDelegate:self];
-	[holderView addGestureRecognizer:tapRecognizer];
 	[imageView addSubview:holderView];
     holderView.center = CGPointMake(imageView.frame.size.width/2, imageView.frame.size.height/2);
     [holderView release];
@@ -185,7 +184,7 @@
     {
         UIView *logoView = pgr.view;
         CGPoint center = logoView.center;
-        CGPoint translation = [pgr translationInView:logoView];
+        CGPoint translation = [pgr translationInView:imageView];
         center = CGPointMake(center.x + translation.x, 
                              center.y + translation.y);
         
