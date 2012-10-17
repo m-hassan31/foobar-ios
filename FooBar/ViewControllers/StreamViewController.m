@@ -164,6 +164,14 @@
 
 #pragma mark - FeedView delegates
 
+-(void)openFeed:(FeedObject *)aFeed
+{
+    PhotoDetailsViewController *photoDetailsVC = [[PhotoDetailsViewController alloc] initWithNibName:@"PhotoDetailsViewController" bundle:nil];
+    photoDetailsVC.feedObject = aFeed;
+    [self.navigationController pushViewController:photoDetailsVC animated:YES];
+    [photoDetailsVC release];
+}
+
 -(void)goToProfile:(NSString*)userId
 {
     if(userId && ![userId isEqualToString:@""])

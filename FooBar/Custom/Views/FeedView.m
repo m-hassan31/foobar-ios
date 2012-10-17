@@ -15,6 +15,7 @@ const CGFloat kFeedViewMargin = 0;
         self.backgroundColor = [UIColor whiteColor];
         
         photoView = [[AsyncImageView alloc] init];
+        photoView.userInteractionEnabled = YES;
         photoView.delegate = self;
         photoView.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:photoView];
@@ -107,6 +108,17 @@ const CGFloat kFeedViewMargin = 0;
         transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
         transition.type = kCATransitionFade;
         [photoView.layer addAnimation:transition forKey:@"AsyncImageAnim"];
+    }
+}
+
+-(void)handleTap
+{
+    if(self.feedObject)
+    {
+        if(delegate && [delegate respondsToSelector:@selector(openFeed:)])
+        {
+            [delegate openFeed:self.feedObject];
+        }
     }
 }
 

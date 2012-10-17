@@ -116,7 +116,7 @@
     profilePicView.imageUrl = feedObject.foobarUser.photoUrl;
     commentProfilePicView.imageUrl = feedObject.foobarUser.photoUrl;
     
-    usernameLabel.text = feedObject.foobarUser.firstname;
+    usernameLabel.text = feedObject.foobarUser.username;
     
     likeHolderView.frame = CGRectMake(0, imageView.frame.size.height-likeHolderView.frame.size.height, 320.0f, 40.0f);
     

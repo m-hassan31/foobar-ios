@@ -7,6 +7,7 @@
 
 @optional
 
+-(void)openFeed:(FeedObject*)aFeed;
 -(void)goToProfile:(NSString*)userId;
 
 @end

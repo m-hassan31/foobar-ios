@@ -128,7 +128,8 @@ NSString *const kDefaultReusableIdentifier = @"kTMQuiltViewDefaultReusableIdenti
     self = [super initWithFrame:frame];
     if (self) {
         super.alwaysBounceVertical = YES;
-        [self addGestureRecognizer:self.tapGestureRecognizer];
+        // commeting this as we need other actions to be detected on the feed items
+        //[self addGestureRecognizer:self.tapGestureRecognizer];
         _numberOfColumms = kTMQuiltViewDefaultColumns;
     }
     return self;
