@@ -32,7 +32,6 @@ const CGFloat kFeedViewMargin = 0;
         [likesCountLabel release];
         
         profilePicView = [[AsyncImageView alloc] init];
-        profilePicView.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:profilePicView];
         [profilePicView release];
         
@@ -46,59 +45,6 @@ const CGFloat kFeedViewMargin = 0;
     }
     return self;
 }
-
-/*- (AsyncImageView *)photoView {
-    if (!photoView) {
-        photoView = [[AsyncImageView alloc] init];
-        photoView.delegate = self;
-        photoView.contentMode = UIViewContentModeScaleAspectFit;
-        [self addSubview:photoView];
-    }
-    return photoView;
-}
-
-- (UIImageView *)heart {
-    if (!heart) {
-        heart = [[UIImageView alloc] init];
-        heart.image = [UIImage imageNamed:@"Heart.png"];
-        heart.contentMode = UIViewContentModeScaleAspectFill;
-        [self addSubview:heart];
-    }
-    return heart;
-}
-
-- (UILabel *)likesCountLabel {
-    if (!likesCountLabel) {
-        likesCountLabel = [[UILabel alloc] init];
-        likesCountLabel.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
-        likesCountLabel.textColor = [UIColor whiteColor];
-        likesCountLabel.textAlignment = UITextAlignmentLeft;
-        likesCountLabel.font = [UIFont boldSystemFontOfSize:14.0f];
-        [self addSubview:likesCountLabel];
-    }
-    return likesCountLabel;
-}
-
-- (AsyncImageView *)profilePicView {
-    if (!profilePicView) {
-        profilePicView = [[AsyncImageView alloc] init];
-        profilePicView.contentMode = UIViewContentModeScaleAspectFit;
-        [self addSubview:profilePicView];
-    }
-    return profilePicView;
-}
-
-- (UILabel *)usernameLabel {
-    if (!usernameLabel) {
-        usernameLabel = [[UILabel alloc] init];
-        usernameLabel.backgroundColor = [UIColor clearColor];
-        usernameLabel.textColor = [UIColor colorWithRed:51.0f/255.0f green:51.0f/255.0f blue:51.0f/255.0f alpha:1.0f];
-        usernameLabel.textAlignment = UITextAlignmentLeft;
-        usernameLabel.font = [UIFont boldSystemFontOfSize:12.0f];
-        [self addSubview:usernameLabel];
-    }
-    return usernameLabel;
-}*/
 
 - (void)layoutSubviews 
 {
@@ -131,7 +77,7 @@ const CGFloat kFeedViewMargin = 0;
         [profilePicView setImageUrl:imageUrl];
     
     if(feedObject.foobarUser.username && ![feedObject.foobarUser.username isEqualToString:@""])
-        usernameLabel.text = feedObject.foobarUser.firstname;
+        usernameLabel.text = feedObject.foobarUser.username;
 }
 
 #pragma mark - AsyncImageDelegate

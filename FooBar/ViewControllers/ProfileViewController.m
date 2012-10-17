@@ -95,7 +95,6 @@
         [fullName release];
         
         AsyncImageView *profilePic = [[AsyncImageView alloc]initWithFrame:CGRectMake(235, 7, 40, 40)];
-        profilePic.contentMode = UIViewContentModeScaleAspectFit;
         [profilePic setImage:[UIImage imageNamed:@"DefaultUser.png"]];
         [cell.contentView addSubview:profilePic];
         [profilePic release];
