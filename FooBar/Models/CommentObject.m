@@ -4,12 +4,6 @@
 
 @synthesize commentId, commentText, postId, created_dt, updated_dt, foobarUser;
 
--(NSString*)formattedCommentText
-{
-    NSLog(@"%@", self.commentText);
-    return [NSString stringWithFormat:@"%@", self.commentText];
-}
-
 -(void) dealloc
 {
     NSLog(@"CommentObject : dealloc");

@@ -46,8 +46,6 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSLog(@"AsyncImageView : touchesEnded");
-    
     if(delegate && [delegate respondsToSelector:@selector(handleTap)])
         [delegate handleTap];
 }

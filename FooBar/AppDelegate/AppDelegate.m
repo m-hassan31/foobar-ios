@@ -217,9 +217,7 @@
 }
 
 -(BOOL) isValidFBAccessTokenReceived:(NSURL *)url
-{
-    NSLog(@"AppDelegate: isGonnaBeInlineLogin");
-    
+{    
     NSString *query = [url fragment];
     
     // Version 3.2.3 of the Facebook app encodes the parameters in the query but
@@ -253,9 +251,7 @@
 
 -(NSDictionary*)parseURLParams:(NSString *)query
 {
-    NSLog(@"AppDelegate: parseURLParams");
-    
-	NSArray *pairs = [query componentsSeparatedByString:@"&"];
+    NSArray *pairs = [query componentsSeparatedByString:@"&"];
 	NSMutableDictionary *params = [[[NSMutableDictionary alloc] init] autorelease];
     
 	for(NSString *pair in pairs)

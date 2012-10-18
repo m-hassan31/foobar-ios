@@ -10,6 +10,4 @@
 @property(nonatomic, retain) NSString *updated_dt;
 @property(nonatomic, retain) FooBarUser *foobarUser;
 
--(NSString*)formattedCommentText;
-
 @end

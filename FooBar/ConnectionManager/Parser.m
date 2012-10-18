@@ -50,7 +50,6 @@
     foobarUser.userId = (NSString*)[userDict objectForKey:kId];
     foobarUser.username = (NSString*)[userDict objectForKey:kUsername];
     foobarUser.firstname =  (NSString*)[userDict objectForKey:kFirstname];
-    foobarUser.lastname =  (NSString*)[userDict objectForKey:kLastname];
     
     NSString *imageUrl = (NSString*)[userDict objectForKey:kPhotoUrl];
     foobarUser.photoUrl = imageUrl?imageUrl:@"";

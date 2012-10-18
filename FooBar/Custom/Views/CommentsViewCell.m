@@ -37,8 +37,6 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
     if(!self)
         return nil;
     
-    NSLog(@"CommentsViewCell : alloc & initWithStyle");
-    
     userNameButton = [UIButton buttonWithType:UIButtonTypeCustom];
     userNameButton.frame = CGRectMake(53, 11, 200, 15);
     [userNameButton setTitleColor:[UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1.0] forState:UIControlStateNormal];
@@ -101,7 +99,7 @@ static inline NSRegularExpression * SearchTagRegularExpression() {
     [userNameButton setTitle:commentObject.foobarUser.firstname forState:UIControlStateNormal];
         
     //set comment text
-    self.commentText = [commentObject formattedCommentText];
+    self.commentText = commentObject.commentText;
     self.commentLabel.delegate = _delegate;
     
     // adjust frame for comment

@@ -18,7 +18,6 @@
 #define kCreator                            @"creator"
 #define kUsername                           @"username"
 #define kFirstname                          @"first_name"
-#define kLastname                           @"last_name"
 #define kPhotoUrl                           @"photo_url"
 #define kAccountType                        @"account_type"
 

@@ -105,8 +105,6 @@
 {
     currentInvitationIndex = index;
     
-    NSLog(@"FriendsListViewController : inviteFriendAtIndex");
-    
     FriendInfo *data = [friendsArray objectAtIndex:index];
     
     if(network == INVITE_FB)
@@ -120,17 +118,13 @@
 }
 
 - (void)inviteFacebookFriendWithId:(NSString*)extuid
-{
-	NSLog(@"FriendsListViewController : inviteFacebookFriendWithId");
-    
+{    
     [self showHUDwithText:@"Inviting"];
     [facebookUtil inviteUser:extuid fromDelegate:self];
 }
 
 - (void)inviteTwitterFriendWithId:(NSString*)extuid
-{
-	NSLog(@"FriendsListViewController : inviteSelectedTwitterFriends");
-    
+{    
     [self showHUDwithText:@"Inviting"];
     [twitterUtil sendDirectMessage:@"Check out #FooBar" to:extuid];
 }
@@ -139,9 +133,7 @@
 #pragma mark TwitterUtil response
 
 - (void)onTwitterFriendsReceived:(NSArray *)friendsInfoArray
-{
-	NSLog(@"FriendsListViewController : onTwitterFriendsReceived");
-    
+{   
     [self hideHud];
     
     if(friendsInfoArray && [friendsInfoArray isKindOfClass:[NSArray class]])
@@ -171,9 +163,7 @@
 }
 
 - (void)onTwitterFriendsFailedWithErrorMessage:(NSString*)message
-{
-    NSLog(@"FriendsListViewController : onTwitterFollowersFailedWithErrorMessage");
-    
+{   
     [self hideHud];
     
     [FooBarUtils showAlertMessage:message];
@@ -200,9 +190,7 @@
 #pragma mark FacebookUtil response
 
 - (void)onFacebookFriendsReceived:(NSDictionary *)friendsDictionary status:(BOOL)status
-{
-	NSLog(@"FriendsListViewController : onFacebookFriendsReceived");
-    
+{   
 	if(status)
 	{
         if(friendsDictionary != nil)
@@ -348,8 +336,7 @@
 
 - (void)hideHud
 {
-    NSLog(@"FriendsListViewController : hideHud");
-	// Remove HUD from screen when the HUD was hidded
+    // Remove HUD from screen when the HUD was hidded
     
     if(hud)
     {
@@ -361,9 +348,7 @@
 }
 
 -(void)showHUDwithText:(NSString *)text
-{
-    NSLog(@"FriendsListViewController : showHUDwithText");
-    
+{   
 	if(!hud)
     {
 		UIWindow *window = [UIApplication sharedApplication].keyWindow;
@@ -383,9 +368,7 @@
 #pragma mark - Memory Management
 
 - (void)didReceiveMemoryWarning
-{
-    NSLog(@"FriendsListViewController: didReceiveMemoryWarning");
-    
+{   
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     
@@ -393,9 +376,7 @@
 }
 
 - (void)viewDidUnload
-{
-    NSLog(@"FriendsListViewController : viewDidUnload");
-    
+{   
     [super viewDidUnload];
     
     if(twitterUtil)
@@ -411,9 +392,7 @@
 }
 
 -(void) dealloc
-{
-    NSLog(@"FriendsListViewController : dealloc");
-    
+{   
     if(twitterUtil)
     {
         twitterUtil.delegate = nil;

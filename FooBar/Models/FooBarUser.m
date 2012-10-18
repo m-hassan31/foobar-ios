@@ -4,7 +4,7 @@
 
 @implementation FooBarUser
 
-@synthesize userId, username, firstname, lastname, photoUrl, accountType, created_dt, updated_dt;
+@synthesize userId, username, firstname, photoUrl, accountType, created_dt, updated_dt;
 
 +(void)saveCurrentUser:(FooBarUser*)user
 {
@@ -37,10 +37,7 @@
         self.userId = [decoder decodeObjectForKey:kId];
         self.username = [decoder decodeObjectForKey:kUsername];
         self.firstname = [decoder decodeObjectForKey:kFirstname];
-        self.lastname = [decoder decodeObjectForKey:kLastname];
         self.photoUrl = [decoder decodeObjectForKey:kPhotoUrl];
-        self.created_dt = [decoder decodeObjectForKey:kCreatedDate];
-        self.updated_dt = [decoder decodeObjectForKey:kUpdatedDate];
         self.accountType = [[decoder decodeObjectForKey:kAccountType] integerValue];
     }
     return self;
@@ -51,11 +48,9 @@
     //Encode the properties of the object
     [encoder encodeObject:self.userId forKey:kId];
     [encoder encodeObject:self.username forKey:kUsername];
+    if(self.firstname)
     [encoder encodeObject:self.firstname forKey:kFirstname];
-    [encoder encodeObject:self.lastname forKey:kLastname];
     [encoder encodeObject:self.photoUrl forKey:kPhotoUrl];
-    [encoder encodeObject:self.created_dt forKey:kCreatedDate];
-    [encoder encodeObject:self.updated_dt forKey:kUpdatedDate];
     [encoder encodeObject:[NSNumber numberWithUnsignedInt:self.accountType] forKey:kAccountType];
 }
 
@@ -64,11 +59,7 @@
     [userId release];
     [username release];
     [firstname release];
-    [lastname release];
     [photoUrl release];
-    [created_dt release];
-    [updated_dt release];
-    
     [super dealloc];
 }
 

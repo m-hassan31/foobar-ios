@@ -765,6 +765,8 @@ static inline NSAttributedString * NSAttributedStringByScalingFontSize(NSAttribu
                 [self.delegate attributedLabel:self didSelectLinkWithDate:result.date];
             }
             break;
+        default:
+            break;
     }
 }
 
@@ -800,6 +802,8 @@ static inline NSAttributedString * NSAttributedStringByScalingFontSize(NSAttribu
             } else if ([self.delegate respondsToSelector:@selector(attributedLabel:didSelectLinkWithDate:)]) {
                 [self.delegate attributedLabel:self didSelectLinkWithDate:result.date];
             }
+            break;
+        default:
             break;
     }
 }

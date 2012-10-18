@@ -102,7 +102,6 @@
 {
     // title cannot be nil. message can be nil.
     if (!title) {
-        NSLog(@"OLGhostAlertView: title cannot be nil. Your app will now crash.");
         return self;
     }
     

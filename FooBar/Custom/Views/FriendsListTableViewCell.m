@@ -7,8 +7,6 @@
 - (id)initWithStyle:(UITableViewCellStyle)style
     reuseIdentifier:(NSString *)reuseIdentifier
 {
-	NSLog(@"InviteFriendsTableViewCell: initWithStyle:reuseIdentifier");
-	
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     
     if(self)
@@ -43,8 +41,6 @@
 
 -(void)invitePressed
 {
-    NSLog(@"InviteFriendsTableViewCell: invitePressed");
-    
     if(delegate && [delegate respondsToSelector:@selector(inviteFriendAtIndex:)])
         [delegate inviteFriendAtIndex:index];
 }
@@ -88,8 +84,6 @@
 
 - (void)dealloc
 {
-    NSLog(@"InviteFriendsTableViewCell: dealloc");
-    
     self.delegate = nil;
     cellImageView.image = nil;
     cellLabel = nil;

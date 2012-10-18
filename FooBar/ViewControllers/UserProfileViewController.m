@@ -67,11 +67,6 @@
 	NSString *responseJSON = [[request responseString] retain];
 	NSString *urlString= [[request url] absoluteString];
     int statusCode = [request responseStatusCode];
-    NSString *statusMessage = [request responseStatusMessage];
-    
-    NSLog(@"Status Code - %d\nStatus Message - %@\nResponse:\n%@", statusCode, statusMessage, responseJSON);
-    
-    [responseJSON release];
     
     if([urlString hasPrefix:UsersUrl])
     {
@@ -99,6 +94,7 @@
             }
         }
     }
+    [responseJSON release];
 }
 
 #pragma mark - Memory Management

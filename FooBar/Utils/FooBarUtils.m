@@ -113,7 +113,6 @@
 		[commandToSend appendBytes:&whole_byte length:1]; 
 	}
 	
-    NSLog(@"%@", commandToSend);
 	return [commandToSend autorelease];
 }
 

@@ -100,7 +100,7 @@
         
         if(foobarUser)
         {
-            fullName.text = [NSString stringWithFormat:@"%@ %@", foobarUser.firstname, foobarUser.lastname?foobarUser.lastname:@""];
+            fullName.text = foobarUser.firstname;
             
             // set user image
             NSString* imageUrl = foobarUser.photoUrl;
@@ -249,11 +249,6 @@
 	NSString *responseJSON = [[request responseString] retain];
 	NSString *urlString= [[request url] absoluteString];
     int statusCode = [request responseStatusCode];
-    NSString *statusMessage = [request responseStatusMessage];
-    
-    NSLog(@"Status Code - %d\nStatus Message - %@\nResponse:\n%@", statusCode, statusMessage, responseJSON);
-    
-    [responseJSON release];
     
     if([urlString hasPrefix:MyProfileUrl])
     {
@@ -276,6 +271,8 @@
             [FooBarUtils showAlertMessage:@"Profile not available."];
         }
     }
+    
+    [responseJSON release];
 }
 
 #pragma mark -

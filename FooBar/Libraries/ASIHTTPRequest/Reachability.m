@@ -157,21 +157,21 @@ static void logReachabilityFlags_(const char *name, int line, SCNetworkReachabil
 
 static void logNetworkStatus_(const char *name, int line, NetworkStatus status) {
 	
-	NSString *statusString = nil;
+	NSString *statusString = @"";
 	
 	switch (status) {
 		case kNotReachable:
-			statusString = [NSString stringWithString: @"Not Reachable"];
+			statusString = @"Not Reachable";
 			break;
 		case kReachableViaWWAN:
-			statusString = [NSString stringWithString: @"Reachable via WWAN"];
+			statusString = @"Reachable via WWAN";
 			break;
 		case kReachableViaWiFi:
-			statusString = [NSString stringWithString: @"Reachable via WiFi"];
+			statusString = @"Reachable via WiFi";
 			break;
+        default:
+            break;
 	}
-	
-	NSLog(@"%s (%d) \n\tNetwork Status: %@", name, line, statusString);
 	
 } // logNetworkStatus_()
 

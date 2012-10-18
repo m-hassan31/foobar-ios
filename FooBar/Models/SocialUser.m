@@ -51,9 +51,11 @@
     [encoder encodeObject:[NSNumber numberWithUnsignedInt:self.socialAccountType] forKey:@"socialAccountType"];
     [encoder encodeObject:self.socialId forKey:@"socialId"];
     [encoder encodeObject:self.username forKey:kUsername];
-    [encoder encodeObject:self.firstname forKey:@"firstname"];
+    if(self.firstname)
+        [encoder encodeObject:self.firstname forKey:@"firstname"];
     [encoder encodeObject:self.photoUrl forKey:kPhotoUrl];
-    [encoder encodeObject:self.accessToken forKey:kAccessToken];
+    if(self.accessToken)
+        [encoder encodeObject:self.accessToken forKey:kAccessToken];
 }
 
 -(BOOL)authenticated

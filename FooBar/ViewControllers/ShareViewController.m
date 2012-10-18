@@ -478,8 +478,6 @@
 
 - (void)onFacebookPostResponse:(BOOL)status
 {
-    NSLog(@"ShareViewController : onFacebookPostResponse");
-    
     fbShareResposeRecieved = YES;
     [self handleShareResponses];
 }
@@ -504,8 +502,6 @@
 
 - (void)onTweetResponseReceived:(BOOL)status
 {
-    NSLog(@"ShareViewController : onTweetResponseReceived");
-    
     twitterShareResponseReceived = YES;
     [self handleShareResponses];
 }
@@ -514,8 +510,6 @@
 
 - (void)handleShareResponses
 {
-    NSLog(@"PublishViewController : handleShareResponses");
-    
     if(facebookSwitch.isOn && !twitterSwitch.isOn)
     {
         if(fbShareResposeRecieved)

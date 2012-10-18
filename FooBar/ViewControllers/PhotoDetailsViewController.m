@@ -217,12 +217,14 @@ imageView, feedObject, commentsHeightArray;
     }
     else
     {
+        [commentField resignFirstResponder];
         [manager likePost:feedObject.feedId];
     }
 }
 
 -(IBAction)usernameButtonPressed:(id)sender
 {
+    [commentField resignFirstResponder];
     UserProfileViewController *userProfileVC = [[UserProfileViewController alloc] initWithNibName:@"UserProfileViewController" bundle:nil];
     userProfileVC.userId = feedObject.foobarUser.userId;
     [self.navigationController pushViewController:userProfileVC animated:YES];
@@ -233,6 +235,7 @@ imageView, feedObject, commentsHeightArray;
 
 -(void) handleTap
 {
+    [commentField resignFirstResponder];
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                   initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Share", @"Email", @"Save to Album", @"Copy Url", nil];
     actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
@@ -278,6 +281,7 @@ imageView, feedObject, commentsHeightArray;
     {
         if(buttonIndex == actionSheet.destructiveButtonIndex)
         {
+            [commentField resignFirstResponder];
             [manager unlikePost:feedObject.feedId];
         }
     }
@@ -324,7 +328,6 @@ imageView, feedObject, commentsHeightArray;
 {
     FooBarUser *foobarUser = [FooBarUser currentUser];
     CommentObject *commentObject = (CommentObject*)[feedObject.commentsArray objectAtIndex:indexPath.row];
-    NSLog(@"User - %@ ---- CommentUser - %@",foobarUser.username, commentObject.foobarUser.username);
     if([commentObject.foobarUser.userId isEqualToString:foobarUser.userId]) //only owned comments can be deleted
         return YES;
     
@@ -349,6 +352,7 @@ imageView, feedObject, commentsHeightArray;
 {
     if(userId && ![userId isEqualToString:@""])
     {
+        [commentField resignFirstResponder];
         UserProfileViewController *userProfileVC = [[UserProfileViewController alloc] initWithNibName:@"UserProfileViewController" bundle:nil];
         userProfileVC.userId = userId;
         [self.navigationController pushViewController:userProfileVC animated:YES];
@@ -461,7 +465,6 @@ imageView, feedObject, commentsHeightArray;
     //You could repeat here with more text or images, otherwise
     //close the HTML formatting
     [emailBody appendString:@"</body></html>"];
-    NSLog(@"%@",emailBody);
     
     MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
     controller.mailComposeDelegate = self;
