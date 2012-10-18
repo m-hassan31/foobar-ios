@@ -9,7 +9,7 @@
 
 @interface StreamViewController()
 {
-    NSUInteger feedsPage;
+    NSUInteger feedsPageToLoad;
     BOOL bReloadingFeeds;
 }
 
@@ -58,7 +58,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFeeds:) name:kUpdateFeedsOnUpload object:nil];
     
-    feedsPage = 1;
+    feedsPageToLoad = 1;
     
     NSMutableArray *fArray = [[NSMutableArray alloc] init];
     self.feedsArray = fArray;;
@@ -219,7 +219,7 @@
     
     // Test loading
     bReloadingFeeds = NO;
-    [manager getFeedsAtPage:feedsPage count:10];
+    [manager getFeedsAtPage:feedsPageToLoad count:10];
     [pullToRefreshManager_ scrollViewReloadFinished];
 }
 
@@ -255,7 +255,7 @@
                     {
                         [self.feedsArray removeAllObjects];
                         [self.feedsArray addObjectsFromArray:parsedFeedsArray];
-                        feedsPage = 2;
+                        feedsPageToLoad = 2;
                         [quiltView reloadData];
                     }
                 }
@@ -264,7 +264,7 @@
                     if(parsedFeedsArray.count > 0)
                     {
                         [self.feedsArray addObjectsFromArray:parsedFeedsArray];
-                        feedsPage++;
+                        feedsPageToLoad++;
                         [quiltView reloadData];
                     }
                 }
