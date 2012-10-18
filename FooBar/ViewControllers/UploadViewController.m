@@ -74,10 +74,19 @@
 
 -(IBAction)uploadButtonPressed:(id)sender
 {
-    [self showHUDwithText:@"Uploading.."];
 #warning TODO - Confirm from Foobar team - if Foobar products are not available what should be the action?
-    NSString *productId = (selectedFooBarProductIndex != -1)?[NSString stringWithFormat:@"%d",(arc4random()%5)+1]:@"";
-    [manager uploadPhoto:self.image withProductId:productId];
+    
+    if(selectedFooBarProductIndex != -1 && selectedFooBarProductIndex < foobarProductsArray.count)
+    {
+        [self showHUDwithText:@"Uploading.."];
+        FooBarProduct *foobarProduct = [foobarProductsArray objectAtIndex:selectedFooBarProductIndex];
+        NSString *productId = foobarProduct.productId;
+        [manager uploadPhoto:self.image withProductId:productId];
+    }
+    else
+    {
+        [FooBarUtils showAlertMessage:@"Please select a Foobar product"];
+    }
 }
 
 #pragma mark -
