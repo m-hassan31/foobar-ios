@@ -9,7 +9,6 @@
 	UIButton *streamTabButton;
 }
 
--(void) initViewControllers;
 -(void) addCustomElements;
 -(void) selectTab:(int)tabIndex;
 -(void) hideTabBar;

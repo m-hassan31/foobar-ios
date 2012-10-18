@@ -100,11 +100,8 @@
 {
     SignInViewController *signInVC = [[SignInViewController alloc] initWithNibName:@"SignInViewController" bundle:nil];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:signInVC];
-    if([FooBarUtils isDeviceOS5])
-    {
-        [navController.navigationBar setBackgroundImage:[UIImage imageNamed:@"TopBar.png"]
-                                          forBarMetrics:UIBarMetricsDefault];
-    }
+    [navController.navigationBar setBackgroundImage:[UIImage imageNamed:@"TopBar.png"]
+                                      forBarMetrics:UIBarMetricsDefault];
     [signInVC release];
     self.signInNavController = navController;
     [navController release];
@@ -128,32 +125,23 @@
     
     ProfileViewController *profileViewController  = [[ProfileViewController alloc]init];
     UINavigationController *profileNavController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
-    if([FooBarUtils isDeviceOS5])
-    {
-        [profileNavController.navigationBar setBackgroundImage:navBarBG
-                                                 forBarMetrics:UIBarMetricsDefault];
-    }
+    [profileNavController.navigationBar setBackgroundImage:navBarBG
+                                             forBarMetrics:UIBarMetricsDefault];
     profileNavController.navigationBar.barStyle = UIBarStyleBlack;
     [profileViewController release];
     
     CaptureViewController *captureViewController  = [[CaptureViewController alloc]init];
     UINavigationController *captureNavController = [[UINavigationController alloc]initWithRootViewController:captureViewController];
-    if([FooBarUtils isDeviceOS5])
-    {
-        [captureNavController.navigationBar setBackgroundImage:navBarBG
-                                                 forBarMetrics:UIBarMetricsDefault];
-    }
+    [captureNavController.navigationBar setBackgroundImage:navBarBG
+                                             forBarMetrics:UIBarMetricsDefault];
     captureNavController.navigationBarHidden = YES;
     captureNavController.navigationBar.barStyle = UIBarStyleBlack;
     [captureViewController release];
     
     StreamViewController *streamViewController  = [[StreamViewController alloc]init];
     UINavigationController *streamNavController = [[UINavigationController alloc]initWithRootViewController:streamViewController];
-    if([FooBarUtils isDeviceOS5])
-    {
-        [streamNavController.navigationBar setBackgroundImage:navBarBG
-                                                forBarMetrics:UIBarMetricsDefault];
-    }
+    [streamNavController.navigationBar setBackgroundImage:navBarBG
+                                            forBarMetrics:UIBarMetricsDefault];
     streamNavController.navigationBar.barStyle = UIBarStyleBlack;
     [streamViewController release];
     
@@ -176,7 +164,6 @@
     self.tabBarController = customTabBarController;
     [customTabBarController release];
     
-    //self.window.rootViewController = signInViewController;
     [self.window addSubview:self.tabBarController.view];
     
     [self removeSignInViewController];

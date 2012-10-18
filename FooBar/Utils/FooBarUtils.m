@@ -8,13 +8,6 @@
 
 @implementation FooBarUtils
 
-+(BOOL)isDeviceOS5
-{
-    NSString *reqSysVer = @"5.0";
-    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
-    return ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending);
-}
-
 +(BOOL)isConnectedToInternet
 {
     Reachability *reachability = [Reachability reachabilityForInternetConnection];  

@@ -174,8 +174,7 @@
 {
     NSLog(@"FriendsListViewController : onTwitterFollowersFailedWithErrorMessage");
     
-    if([FooBarUtils isDeviceOS5])
-        [self hideHud];
+    [self hideHud];
     
     [FooBarUtils showAlertMessage:message];
 }

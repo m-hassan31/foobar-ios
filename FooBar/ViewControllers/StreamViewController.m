@@ -3,7 +3,6 @@
 #import "FooBarUtils.h"
 #import "FooBarConstants.h"
 #import "PhotoDetailsViewController.h"
-#import "UIImage+RemoteSize.h"
 #import "EndPoints.h"
 #import "Parser.h"
 #import "FeedObject.h"

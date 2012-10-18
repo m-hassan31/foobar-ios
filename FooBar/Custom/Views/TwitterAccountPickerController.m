@@ -50,68 +50,62 @@
 
 -(void)fetchTwitterAccountsAndConfigure
 {
-    if([FooBarUtils isDeviceOS5])
+    // clear previously saved twitter account (if any)
+    NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
+    [defaults setObject:nil forKey:@"PhoneTwitterAccount"];
+    
+    if([TWTweetComposeViewController canSendTweet])
     {
-#ifdef __IPHONE_5_0
-		
-        // clear previously saved twitter account (if any)
-        NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
-        [defaults setObject:nil forKey:@"PhoneTwitterAccount"];
+        store = [[ACAccountStore alloc] init];
+        ACAccountType *twitterType = [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
         
-        if([TWTweetComposeViewController canSendTweet])
-        {
-            store = [[ACAccountStore alloc] init];
-            ACAccountType *twitterType = [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-            
-            //[self showHUDwithText:@""];
-			
-            [store requestAccessToAccountsWithType:twitterType withCompletionHandler:^(BOOL granted, NSError *error)
+        //[self showHUDwithText:@""];
+        
+        [store requestAccessToAccountsWithType:twitterType withCompletionHandler:^(BOOL granted, NSError *error)
+         {
+             BOOL bConfigured = FALSE;
+             
+             if(granted)
              {
-                 BOOL bConfigured = FALSE;
+                 //accessgranted
+                 [self setTwitterAccountsArray : [store accountsWithAccountType:twitterType]];
+                 selectedRow = 0;
                  
-                 if(granted)
+                 if(twitterAccountsArray != nil)
                  {
-                     //accessgranted
-                     [self setTwitterAccountsArray : [store accountsWithAccountType:twitterType]];
-                     selectedRow = 0;
-                     
-                     if(twitterAccountsArray != nil)
+                     if(twitterAccountsArray.count >= 1)
                      {
-                         if(twitterAccountsArray.count >= 1)
-                         {
-                             [self performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:YES];
-                             [twitterAccountPickerView performSelectorOnMainThread:@selector(reloadAllComponents) withObject:nil waitUntilDone:NO];
-							 bConfigured = TRUE;
-                         }
-                         else
-                         {
-                             bConfigured =  FALSE;
-                         }
+                         [self performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:YES];
+                         [twitterAccountPickerView performSelectorOnMainThread:@selector(reloadAllComponents) withObject:nil waitUntilDone:NO];
+                         bConfigured = TRUE;
                      }
                      else
                      {
-                         bConfigured = FALSE;
-                     }
-                     if(!bConfigured)
-                     {
-                         //[[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_ENABLE_ACCOUNTPICKER_CANCEL object:nil];
-                         [FooBarUtils showAlertMessage:@"No Twitter account configured."];
+                         bConfigured =  FALSE;
                      }
                  }
-				 
-             }]; // if(granted)
-            
-            if(hud)
-            {
-                [hud hide:YES];
-            }
-        }
-        else
+                 else
+                 {
+                     bConfigured = FALSE;
+                 }
+                 if(!bConfigured)
+                 {
+                     //[[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_ENABLE_ACCOUNTPICKER_CANCEL object:nil];
+                     [FooBarUtils showAlertMessage:@"No Twitter account configured."];
+                 }
+             }
+             
+         }]; // if(granted)
+        
+        if(hud)
         {
-            //[[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_ENABLE_ACCOUNTPICKER_CANCEL object:nil];
-            [FooBarUtils showAlertMessage:@"No Twitter account configured."];
+            [hud hide:YES];
         }
-#endif
+    }
+    else
+    {
+        //[[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_ENABLE_ACCOUNTPICKER_CANCEL object:nil];
+        [FooBarUtils showAlertMessage:@"No Twitter account configured."];
     }
 }
 

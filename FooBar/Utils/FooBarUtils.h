@@ -9,7 +9,6 @@ enum Account_Type
 
 @interface FooBarUtils : NSObject
 
-+(BOOL)isDeviceOS5;
 +(BOOL)isConnectedToInternet;
 +(void)showAlertMessage:(NSString *)message;
 +(UIButton*)backButton;
