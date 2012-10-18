@@ -9,9 +9,13 @@
 #import "ShareViewController.h"
 #import "UserProfileViewController.h"
 
+#define PHOTO_SHEET     1001
+#define UNLIKE_SHEET    1002
+
 @interface PhotoDetailsViewController()
 {
     NSInteger deleteCommentIndex;
+    BOOL hasLiked;
 }
 
 -(void)beginComment;
@@ -24,19 +28,9 @@
 @end
 
 @implementation PhotoDetailsViewController
-@synthesize userInfoHolderView;
-@synthesize profilePicView;
-@synthesize usernameButton;
-@synthesize commentsCountLabel;
-@synthesize commentsTableView;
-@synthesize commentFieldHolder;
-@synthesize commentProfilePicView;
-@synthesize commentField;
-@synthesize scrollView;
-@synthesize likeHolderView;
-@synthesize imageView;
-@synthesize feedObject;
-@synthesize commentsHeightArray;
+@synthesize userInfoHolderView, profilePicView, usernameButton, commentsCountLabel, commentsTableView, 
+commentFieldHolder, commentProfilePicView, commentField, scrollView, likeHolderView, likeButton,
+imageView, feedObject, commentsHeightArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -117,6 +111,10 @@
     commentProfilePicView.imageUrl = feedObject.foobarUser.photoUrl;
     
     [usernameButton setTitle:feedObject.foobarUser.firstname forState:UIControlStateNormal];
+    
+    FooBarUser *currentUser = [FooBarUser currentUser];
+    hasLiked = [feedObject.likedUsersArray containsObject:currentUser.userId];
+    [likeButton setImage:[UIImage imageNamed:hasLiked?@"Liked.png":@"Like.png"] forState:UIControlStateNormal];
     
     likeHolderView.frame = CGRectMake(0, imageView.frame.size.height-likeHolderView.frame.size.height, 320.0f, 40.0f);
     
@@ -208,7 +206,19 @@
 
 -(IBAction)likeButtonPressed:(id)sender
 {
-    [manager likePost:feedObject.feedId];
+    if(hasLiked)
+    {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                      initWithTitle:@"Are you sure?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Unlike" otherButtonTitles:nil];
+        actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+        [actionSheet showInView:self.view];
+        actionSheet.tag = UNLIKE_SHEET;
+        [actionSheet release];
+    }
+    else
+    {
+        [manager likePost:feedObject.feedId];
+    }
 }
 
 -(IBAction)usernameButtonPressed:(id)sender
@@ -227,6 +237,7 @@
                                   initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Share", @"Email", @"Save to Album", @"Copy Url", nil];
     actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
     [actionSheet showInView:self.view];
+    actionSheet.tag = PHOTO_SHEET;
     [actionSheet release];
 }
 
@@ -234,31 +245,41 @@
 
 -(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    switch (buttonIndex) 
+    if(actionSheet.tag == PHOTO_SHEET)
     {
-        case 0:
+        switch (buttonIndex) 
         {
-            [self shareAction];
+            case 0:
+            {
+                [self shareAction];
+            }
+                break;
+            case 1:
+            {
+                [self sendViaEmail];
+            }
+                break;
+            case 2:
+            {
+                UIImageWriteToSavedPhotosAlbum(imageView.image,nil, nil, nil);
+            }
+                break;
+            case 3:
+            {
+                [UIPasteboard generalPasteboard].string = feedObject.foobarPhoto.url;
+            }
+                break;
+                
+            default:
+                break;
         }
-            break;
-        case 1:
+    }
+    else if(actionSheet.tag == UNLIKE_SHEET)
+    {
+        if(buttonIndex == actionSheet.destructiveButtonIndex)
         {
-            [self sendViaEmail];
+            [manager unlikePost:feedObject.feedId];
         }
-            break;
-        case 2:
-        {
-            UIImageWriteToSavedPhotosAlbum(imageView.image,nil, nil, nil);
-        }
-            break;
-        case 3:
-        {
-            [UIPasteboard generalPasteboard].string = feedObject.foobarPhoto.url;
-        }
-            break;
-            
-        default:
-            break;
     }
 }
 
@@ -578,15 +599,34 @@
             deleteCommentIndex = -1;
         }
     }
+    else if([urlString hasPrefix:UnlikeUrl])
+    {
+        if(statusCode == 200)
+        {
+            feedObject.likesCount--;
+            hasLiked = NO;
+            [likeButton setImage:[UIImage imageNamed:@"Like.png"] forState:UIControlStateNormal];
+            FooBarUser *currentUser = [FooBarUser currentUser];
+            [feedObject.likedUsersArray removeObject:currentUser.userId];
+        }
+        else
+        {
+            [FooBarUtils showAlertMessage:@"Cant unlike photo now."];
+        }
+    }
     else if([urlString hasPrefix:LikesUrl])
     {
         if(statusCode == 200)
         {
             feedObject.likesCount++;
+            hasLiked = YES;
+            [likeButton setImage:[UIImage imageNamed:@"Liked.png"] forState:UIControlStateNormal];
+            FooBarUser *currentUser = [FooBarUser currentUser];
+            [feedObject.likedUsersArray addObject:currentUser.userId];
         }
         else if(statusCode == 403)
         {
-            [FooBarUtils showAlertMessage:@"You can 'like' a post only once."];
+            [FooBarUtils showAlertMessage:@"You've already liked it."];
         }
     }
     else if([urlString hasPrefix:MyProfileUrl])
@@ -618,6 +658,7 @@
     [self setCommentField:nil];
     [self setImageView:nil];
     [self setLikeHolderView:nil];
+    [self setLikeButton:nil];
     [self setUserInfoHolderView:nil];
     [self setProfilePicView:nil];
     [self setUsernameButton:nil];
@@ -634,6 +675,7 @@
     [commentsHeightArray release];
     [imageView release];
     [likeHolderView release];
+    [likeButton release];
     [userInfoHolderView release];
     [profilePicView release];
     [usernameButton release];

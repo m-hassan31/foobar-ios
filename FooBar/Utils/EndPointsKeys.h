@@ -26,6 +26,7 @@
 #define kFeeds_ProductId                    @"product_id"
 #define kFeeds_Comments                     @"comments"
 #define kFeeds_CommentsCount                @"comments_cnt"
+#define kFeeds_LikedBy                      @"liked_by"
 #define kFeeds_LikesCount                   @"likes_cnt"
 #define kFeeds_PhotoCaption                 @"photo_caption"
 #define kFeeds_Photo                        @"photo"

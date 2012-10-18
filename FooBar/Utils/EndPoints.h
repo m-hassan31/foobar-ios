@@ -11,6 +11,7 @@
 #define PhotosUrl           Server @"photoposts/"
 #define CommentsUrl         Server @"comments/"
 #define LikesUrl            Server @"likes/"
+#define UnlikeUrl           Server @"likes/photoposts/"
 #define ProductsUrl         Server @"products/"
 
 #endif

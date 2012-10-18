@@ -30,6 +30,7 @@
 -(void)comment:(NSString*)text onPost:(NSString*)postId;
 -(void)deleteComment:(NSString*)commentId;
 -(void)likePost:(NSString*)postId;
+-(void)unlikePost:(NSString*)postId;
 
 @end
 

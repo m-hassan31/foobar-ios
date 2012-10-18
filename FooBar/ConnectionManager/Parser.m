@@ -191,6 +191,15 @@
                     return nil;
                 }
                 
+                // Parse Likes Info
+                id parsedLikesData = (NSArray*)[parsedDict objectForKey:kFeeds_LikedBy];
+                if(parsedLikesData && ![parsedLikesData isKindOfClass:[NSNull class]] && [parsedLikesData isKindOfClass:[NSArray class]])
+                {
+                    NSMutableArray *likesArray = [[NSMutableArray alloc] initWithArray:(NSArray*)parsedLikesData];
+                    feedObject.likedUsersArray = likesArray;
+                    [likesArray release];
+                }
+                
                 [feedsArray addObject:feedObject];
             }
             else

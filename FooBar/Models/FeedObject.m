@@ -2,7 +2,7 @@
 
 @implementation FeedObject
 
-@synthesize foobarUser, feedId, created_dt, updated_dt, productId, photoCaption, foobarPhoto, commentsArray, likesCount;
+@synthesize foobarUser, feedId, created_dt, updated_dt, productId, photoCaption, foobarPhoto, commentsArray, likedUsersArray, likesCount;
 
 -(void)dealloc
 {
@@ -13,6 +13,7 @@
     [photoCaption release];
     [foobarPhoto release];
     [commentsArray release];
+    [likedUsersArray release];
     
     [super dealloc];
 }

@@ -221,6 +221,7 @@
 
 -(void)likePost:(NSString*)postId
 {
+    [self showHUDwithText:@""];
     // Instantiate an HTTP request.
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",LikesUrl]];
     ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];
@@ -232,6 +233,19 @@
                             postId, @"post_id", nil];
     [request appendPostData:[FooBarUtils jsonFromDictionary:params]];
     [params release];
+    
+    // Send the request.
+    [request startAsynchronous];
+}
+
+-(void)unlikePost:(NSString*)postId
+{
+    [self showHUDwithText:@""];
+    // Instantiate an HTTP request.
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",UnlikeUrl, postId]];
+    ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];
+    [request setRequestMethod:@"DELETE"];
+    request.delegate = self;
     
     // Send the request.
     [request startAsynchronous];
