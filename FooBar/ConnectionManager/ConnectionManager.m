@@ -14,9 +14,6 @@
 
 @synthesize delegate;
 
-#pragma mark -
-#pragma mark  
-
 - (id)init
 {
 	NSLog(@"ConnectionManager : init");
