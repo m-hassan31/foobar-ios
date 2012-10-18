@@ -66,15 +66,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(section == 0)
-        return 2;
-    else if(section == 1)
-        return 2;
+        return 3;
     else
         return 0;
 }
@@ -121,33 +119,17 @@
         if (cell == nil)
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         
-        if(indexPath.section == 0)
+        switch([indexPath row])
         {
-            switch([indexPath row])
-            {
-                case 1:
-                    cell.textLabel.text = @"Edit Profile";
-                    break;
-                    
-                default:
-                    break;
-            }
-        }
-        else
-        {
-            switch([indexPath row])
-            {
-                case 0:
-                    cell.textLabel.text = @"Invite Friends";
-                    break;
-                    
-                case 1:
-                    cell.textLabel.text = @"Sign Out";
-                    break;
-                    
-                default:
-                    break;
-            }
+            case 1:
+                cell.textLabel.text = @"Invite Friends";
+                break;
+            case 2:
+                cell.textLabel.text = @"Sign Out";
+                break;
+                
+            default:
+                break;
         }
         
         cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0];
@@ -163,7 +145,6 @@
         
         CustomCellGroupPosition position = [CustomCellBGView positionForIndexPath:indexPath inTableView:accountsTableView];
         ((CustomCellBGView *)cell.selectedBackgroundView).position = position;
-        
         return cell;
     }
 }
@@ -172,7 +153,13 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if(indexPath.section == 1 && indexPath.row == 1)
+    if(indexPath.row == 1)
+    {
+        InviteFriendsViewController *inviteFriendsVC = [[InviteFriendsViewController alloc] initWithNibName:@"InviteFriendsViewController" bundle:nil];
+        [self.navigationController pushViewController:inviteFriendsVC animated:YES];
+        [inviteFriendsVC release];
+    }
+    else if(indexPath.row == 2)
     {
         UIActionSheet *signOutActionSheet = [[UIActionSheet alloc]
                                              initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Sign Out", nil];
@@ -180,12 +167,6 @@
         signOutActionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
         [signOutActionSheet showInView:self.view];
         [signOutActionSheet release];
-    }
-    else if(indexPath.section == 1 && indexPath.row == 0)
-    {
-        InviteFriendsViewController *inviteFriendsVC = [[InviteFriendsViewController alloc] initWithNibName:@"InviteFriendsViewController" bundle:nil];
-        [self.navigationController pushViewController:inviteFriendsVC animated:YES];
-        [inviteFriendsVC release];
     }
 }
 
@@ -214,12 +195,7 @@
     {
         case 0:
         {
-            label.text = @"Personal";
-        }
-            break;
-        case 1:
-        {
-            label.text = @"More";
+            label.text = @"Profile";
         }
             break;
         default:
@@ -231,7 +207,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if((indexPath.section == 0) && (indexPath.row == 0))
+    if(indexPath.row == 0)
         return 54.0;
     else
         return 44.0;
