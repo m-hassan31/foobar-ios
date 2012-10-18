@@ -162,8 +162,7 @@
     else if(indexPath.row == 2)
     {
         UIActionSheet *signOutActionSheet = [[UIActionSheet alloc]
-                                             initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Sign Out", nil];
-        signOutActionSheet.destructiveButtonIndex = 0;
+                                             initWithTitle:@"Are you sure?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Sign Out" otherButtonTitles:nil];
         signOutActionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
         [signOutActionSheet showInView:self.view];
         [signOutActionSheet release];
@@ -217,7 +216,7 @@
 
 -(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex == 0)
+    if(buttonIndex == actionSheet.destructiveButtonIndex)
     {
         [self showHUDwithText:@"Signing Out"];
         [self performSelector:@selector(signOutAction) withObject:nil afterDelay:1.0];
