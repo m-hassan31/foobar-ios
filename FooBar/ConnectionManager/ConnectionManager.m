@@ -46,7 +46,6 @@
 
 - (void)signin
 {
-    [self showHUDwithText:@"Signing in"];
     // Instantiate an HTTP request.
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",UsersUrl]];
     ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];
@@ -72,9 +71,8 @@
 
 -(void)updateAccessToken
 {
-    [self showHUDwithText:@"Signing in"];
     // Instantiate an HTTP request.
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", UsersUrl]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", AccessTokenUrl]];
     ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];
     
     if(!request)

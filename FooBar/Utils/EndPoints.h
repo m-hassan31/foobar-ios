@@ -6,6 +6,7 @@
 #define Server              @"http://foobarnode.cloudfoundry.com/"
 
 #define UsersUrl            Server @"users/"
+#define AccessTokenUrl      UsersUrl @"me/"
 #define MyProfileUrl        UsersUrl @"me/"
 #define FeedsUrl            Server @"feeds/"
 #define PhotosUrl           Server @"photoposts/"

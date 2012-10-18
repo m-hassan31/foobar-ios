@@ -84,7 +84,6 @@
     manager.delegate = self;
     [manager getFeedsAtPage:1 count:10];
     
-    
     FooBarUser *defaultsFoobarUser = [FooBarUser currentUser];
     if(!defaultsFoobarUser)
     {

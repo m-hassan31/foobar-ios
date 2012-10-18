@@ -6,6 +6,7 @@
 #import "EndPoints.h"
 #import "EndPointsKeys.h"
 #import "SAProgressHUD.h"
+#import "Parser.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SignInViewController()
@@ -98,6 +99,7 @@
     
     [SocialUser saveCurrentUser:currentLoggedinUser];
     [self hideHud];
+    [self showHUDwithText:@"Signing in"];
     [manager signin];
 }
 
@@ -180,13 +182,14 @@
         currentLoggedinUser.username = currentLoggedinUser.firstname;
 
 #warning TODO Get Access token from Twitter once the app is approved by Twitter
-    // [twitterUtil getAccessToken];
+    //[twitterUtil getAccessToken];
     currentLoggedinUser.accessToken = [FooBarUtils getAccessTokenForId:currentLoggedinUser.socialId];
 
     [SocialUser saveCurrentUser:currentLoggedinUser];
     [userInfo release];
     [self hideHud];
   
+    [self showHUDwithText:@"Signing in"];
     [manager signin];
 }
 
@@ -229,6 +232,7 @@
 {
 	NSError *error= [request error];
 	NSLog(@"%@",[error localizedDescription]);
+    [self hideHud];
 }
 
 -(void)httpRequestFinished:(ASIHTTPRequest *)request
@@ -240,31 +244,50 @@
     
     NSLog(@"Status Code - %d\nStatus Message - %@\nResponse:\n%@", statusCode, statusMessage, responseJSON);
     
-    if([urlString hasPrefix:UsersUrl])
+    if([urlString hasPrefix:AccessTokenUrl])
+    {
+        [self hideHud];
+        if(statusCode == 200)
+        {
+            // response for - [manager updateAccessToken];
+            // user updated with access token now
+            
+            // parse and save the user on defaults
+            FooBarUser *currentLoggedInUser = [Parser parseUserResponse:responseJSON];
+            if(currentLoggedInUser)
+            {
+                FooBarUser *foobarUser = currentLoggedInUser;
+                [FooBarUser saveCurrentUser:foobarUser];
+            }
+            
+            AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+            [appDelegate addTabBarController];
+        }
+        else
+        {
+            [FooBarUtils showAlertMessage:@"Can't Sign-in now."];
+        }
+    }
+    else if([urlString hasPrefix:UsersUrl])
     {
         if([request.requestMethod isEqualToString:@"POST"])
         {
             if(statusCode == 200)
             {
+                [self hideHud];
                 // user created
                 AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
                 [appDelegate addTabBarController];
             }
             else if(statusCode == 403)
             {
-                // user already existing
-                // [manager updateAccessToken];
-                AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-                [appDelegate addTabBarController];
+                // user already existing - update the access token
+                [manager updateAccessToken];
             }
-        }
-        else if([request.requestMethod isEqualToString:@"PUT"])
-        {
-            if(statusCode == 200)
+            else
             {
-                // user updated
-                AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-                [appDelegate addTabBarController];
+                [self hideHud];
+                [FooBarUtils showAlertMessage:@"Can't Sign-in now."];
             }
         }
     }
