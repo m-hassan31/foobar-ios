@@ -555,11 +555,15 @@ imageView, feedObject, commentsHeightArray;
                 else
                 {
                     [FooBarUtils showAlertMessage:@"Can't comment now. Try again."];
+                    CGPoint bottomOffset = CGPointMake(0, 0);
+                    [self.scrollView setContentOffset:bottomOffset animated:YES];
                 }
             }
-            else if(statusCode == 403)
+            else
             {   
                 [FooBarUtils showAlertMessage:@"Can't comment now. Try again."];
+                CGPoint bottomOffset = CGPointMake(0, 0);
+                [self.scrollView setContentOffset:bottomOffset animated:YES];
             }
         }
         else
