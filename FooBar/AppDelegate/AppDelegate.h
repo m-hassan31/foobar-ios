@@ -13,5 +13,6 @@
 -(void)removeSignInViewController;
 -(void)addTabBarController;
 -(void)removeTabBarController;
+-(void)cleanDefaultsAndShowSignInPage;
 
 @end
