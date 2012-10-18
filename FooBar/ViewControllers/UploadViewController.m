@@ -274,8 +274,7 @@
     CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;
     [customTabBar selectTab:STREAM_TAB];
     
-    if(hud)
-        [hud hide:YES];
+    [self hideHud];
 }
 
 -(void)httpRequestFinished:(ASIHTTPRequest *)request
@@ -298,9 +297,7 @@
             }
             else if([request.requestMethod isEqualToString:@"PUT"])
             {
-                if(hud)
-                    [hud hide:YES];
-                
+                [self hideHud];
                 FeedObject *feedObject = [Parser parseUploadResponse:responseJSON];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateFeedsOnUpload object:feedObject];
                 CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;
@@ -310,9 +307,7 @@
         }
         else if(statusCode == 403)
         {
-            if(hud)
-                [hud hide:YES];
-
+            [self hideHud];
             [FooBarUtils showAlertMessage:@"Sorry! Upload Failed."];
             [self.navigationController popToRootViewControllerAnimated:NO];
             CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;
