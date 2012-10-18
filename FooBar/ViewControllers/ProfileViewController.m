@@ -6,6 +6,7 @@
 #import "EndPoints.h"
 #import "Parser.h"
 #import "InviteFriendsViewController.h"
+#import "IMAlertView.h"
 
 @interface ProfileViewController()
 
@@ -228,7 +229,9 @@
     [self hideHud];
     [FooBarUser clearCurrentUser];
     [SocialUser clearCurrentUser];
-    [FooBarUtils showAlertMessage:@"You have successfully signed out"];
+    
+    IMAlertView *alert = [[IMAlertView alloc] initWithTitle:@"" message:@"You have successfully signed out"];
+    [alert show];
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate addSignInViewController];
 }
@@ -264,11 +267,13 @@
                 [FooBarUser saveCurrentUser:self.foobarUser];
             }
             else
+            {
                 [FooBarUtils showAlertMessage:@"Profile not available."];
+            }
         }
-        else if(statusCode == 403)
+        else
         {
-            
+            [FooBarUtils showAlertMessage:@"Profile not available."];
         }
     }
 }

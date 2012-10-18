@@ -54,6 +54,7 @@
 		846BF6F21630066A000B982E /* Like@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 846BF6EE1630066A000B982E /* Like@2x.png */; };
 		846BF6F31630066A000B982E /* Liked.png in Resources */ = {isa = PBXBuildFile; fileRef = 846BF6EF1630066A000B982E /* Liked.png */; };
 		846BF6F41630066A000B982E /* Liked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 846BF6F01630066A000B982E /* Liked@2x.png */; };
+		846BF6FB16302D42000B982E /* IMAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846BF6FA16302D42000B982E /* IMAlertView.m */; };
 		84850FC015F2120D00324031 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84850FBF15F2120D00324031 /* AVFoundation.framework */; };
 		84850FC415F2121500324031 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84850FC215F2121500324031 /* CoreMedia.framework */; };
 		84850FC515F2121500324031 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84850FC315F2121500324031 /* CoreVideo.framework */; };
@@ -246,6 +247,8 @@
 		846BF6EE1630066A000B982E /* Like@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Like@2x.png"; sourceTree = "<group>"; };
 		846BF6EF1630066A000B982E /* Liked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Liked.png; sourceTree = "<group>"; };
 		846BF6F01630066A000B982E /* Liked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Liked@2x.png"; sourceTree = "<group>"; };
+		846BF6F916302D42000B982E /* IMAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMAlertView.h; sourceTree = "<group>"; };
+		846BF6FA16302D42000B982E /* IMAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IMAlertView.m; sourceTree = "<group>"; };
 		84850FBF15F2120D00324031 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		84850FC215F2121500324031 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		84850FC315F2121500324031 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -590,6 +593,8 @@
 				849762F315F4AA4100391813 /* FeedView.m */,
 				8C40056016039E2800F11091 /* FooBarBackground.h */,
 				8C40056116039E2800F11091 /* FooBarBackground.m */,
+				846BF6F916302D42000B982E /* IMAlertView.h */,
+				846BF6FA16302D42000B982E /* IMAlertView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1145,6 +1150,7 @@
 				8C1DD47B162ADF7600385816 /* FriendsListTableViewCell.m in Sources */,
 				849475EA162D35D800A84EE5 /* NSData+Encoder.m in Sources */,
 				844256A4162EDDEE0079BC06 /* UserProfileViewController.m in Sources */,
+				846BF6FB16302D42000B982E /* IMAlertView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
