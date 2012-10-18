@@ -20,13 +20,7 @@
 @synthesize signInNavController = _signInNavController;
 @synthesize tabBarController = _tabBarController;
 
-- (void)dealloc
-{
-    [_window release];
-    [_signInNavController release];
-    [_tabBarController release];
-    [super dealloc];
-}
+#pragma mark - UIApplicationDelegate methods
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -110,6 +104,117 @@
     [self.window makeKeyAndVisible];
     return YES;
 }
+
+-(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    FacebookUtil *fbUtil = [FacebookUtil getSharedFacebookUtil];
+    
+    if([self isValidFBAccessTokenReceived:url])
+        return [fbUtil handleOpenURL:url];
+    else
+    {
+        [fbUtil logout:self];
+        return YES;
+    }
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application
+{
+    /*
+     Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+     Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+     */
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    /*
+     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+     If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+     */
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+    /*
+     Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+     */
+    
+    SocialUser *socialUser = [SocialUser currentUser];
+    if(socialUser && [socialUser authenticated])
+    {
+        // check if the configured twitter account still exists in iOS 5 Settings
+        if(socialUser.socialAccountType == TwitterAccount)
+        {
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSString *previousUserName = [defaults objectForKey:kTwitterUsername];
+            
+            if([TWTweetComposeViewController canSendTweet])
+            {
+                ACAccountStore *store = [[ACAccountStore alloc] init];
+                ACAccountType *twitterType = [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+                
+                [store requestAccessToAccountsWithType:twitterType withCompletionHandler:^(BOOL granted, NSError *error){
+                    if(granted)
+                    {
+                        NSArray *arrayOfAccounts =  [store accountsWithAccountType:twitterType];
+                        ACAccount *account = nil;
+                        if (arrayOfAccounts != nil && [arrayOfAccounts count]>0) {
+                            if (previousUserName) {
+                                for(ACAccount *anAccount in arrayOfAccounts)
+                                {
+                                    if ([anAccount.username isEqualToString:previousUserName] )
+                                    {
+                                        account = anAccount;
+                                        break;
+                                    }
+                                }
+                            }
+                            //previous account was deleted if a userName match was not found
+                            //show the picker or just pick the first account.
+                            if (account == nil)
+                            {
+                                [self performSelectorOnMainThread:@selector(cleanDefaultsAndShowSignInPage) withObject:nil waitUntilDone:NO];
+                            }
+                        }
+                    }
+                }];
+            }
+            else
+            {
+                // no twitter accounts available
+                [self cleanDefaultsAndShowSignInPage];
+            }
+        }
+        else if(socialUser.socialAccountType == FacebookAccount)
+        {
+            NSDate *fbExpDate = [FacebookUtil fbExpirationDate];
+            if(NSOrderedDescending != [fbExpDate compare:[NSDate date]])
+            {
+                // facebook access token is expired ..
+                [self cleanDefaultsAndShowSignInPage];
+            }
+        }
+    }
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    /*
+     Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+     */
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+    /*
+     Called when the application is about to terminate.
+     Save data if appropriate.
+     See also applicationDidEnterBackground:.
+     */
+}
+
+#pragma mark - ViewControllers Management
 
 -(void)addSignInViewController
 {
@@ -203,21 +308,19 @@
     _tabBarController = nil;
 }
 
--(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+-(void)cleanDefaultsAndShowSignInPage
 {
-    FacebookUtil *fbUtil = [FacebookUtil getSharedFacebookUtil];
-    
-    if([self isValidFBAccessTokenReceived:url])
-        return [fbUtil handleOpenURL:url];
-    else
-    {
-        [fbUtil logout:self];
-        return YES;
-    }
+    // clear tokens and defaults cache
+    [FooBarUser clearCurrentUser];
+    [SocialUser clearCurrentUser];
+    // show signin view controller again
+    [self addSignInViewController];
 }
 
+#pragma mark - Facebook Access token validation
+
 -(BOOL) isValidFBAccessTokenReceived:(NSURL *)url
-{    
+{
     NSString *query = [url fragment];
     
     // Version 3.2.3 of the Facebook app encodes the parameters in the query but
@@ -266,109 +369,13 @@
     return params;
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application
+#pragma mark - Memory Management
+- (void)dealloc
 {
-    /*
-     Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-     Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-     */
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-    /*
-     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-     If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-     */
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-    /*
-     Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-     */
-    
-    SocialUser *socialUser = [SocialUser currentUser];
-    if(socialUser && [socialUser authenticated])
-    {
-        // check if the configured twitter account still exists in iOS 5 Settings
-        if(socialUser.socialAccountType == TwitterAccount)
-        {
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            NSString *previousUserName = [defaults objectForKey:kTwitterUsername];
-            
-            if([TWTweetComposeViewController canSendTweet])
-            {
-                ACAccountStore *store = [[ACAccountStore alloc] init];
-                ACAccountType *twitterType = [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-                
-                [store requestAccessToAccountsWithType:twitterType withCompletionHandler:^(BOOL granted, NSError *error){
-                    if(granted)
-                    {
-                        NSArray *arrayOfAccounts =  [store accountsWithAccountType:twitterType];
-                        ACAccount *account = nil;
-                        if (arrayOfAccounts != nil && [arrayOfAccounts count]>0) {
-                            if (previousUserName) {
-                                for(ACAccount *anAccount in arrayOfAccounts)
-                                {
-                                    if ([anAccount.username isEqualToString:previousUserName] )
-                                    {
-                                        account = anAccount;
-                                        break;
-                                    }
-                                }
-                            }
-                            //previous account was deleted if a userName match was not found
-                            //show the picker or just pick the first account.
-                            if (account == nil)
-                            {
-                                [self performSelectorOnMainThread:@selector(cleanDefaultsAndShowSignInPage) withObject:nil waitUntilDone:NO];
-                            }
-                        }
-                    }
-                }];
-            }
-            else
-            {
-                // no twitter accounts available
-                [self cleanDefaultsAndShowSignInPage];
-            }
-        }
-        else if(socialUser.socialAccountType == FacebookAccount)
-        {
-            NSDate *fbExpDate = [FacebookUtil fbExpirationDate];
-            if(NSOrderedDescending != [fbExpDate compare:[NSDate date]])
-            {
-                // facebook access token is expired ..
-                [self cleanDefaultsAndShowSignInPage];
-            }
-        }
-    }
-}
-
--(void)cleanDefaultsAndShowSignInPage
-{
-    // clear tokens and defaults cache
-    [FooBarUser clearCurrentUser];
-    [SocialUser clearCurrentUser];
-    // show signin view controller again
-    [self addSignInViewController];
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    /*
-     Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-     */
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application
-{
-    /*
-     Called when the application is about to terminate.
-     Save data if appropriate.
-     See also applicationDidEnterBackground:.
-     */
+    [_window release];
+    [_signInNavController release];
+    [_tabBarController release];
+    [super dealloc];
 }
 
 @end
