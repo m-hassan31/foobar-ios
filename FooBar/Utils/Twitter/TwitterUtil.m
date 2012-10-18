@@ -222,6 +222,7 @@
             
             NSArray *parts = [responseStr
                               componentsSeparatedByString:@"&"];
+            [responseStr release];
             
             NSString *lined = [parts componentsJoinedByString:@"\n"];
             
@@ -233,6 +234,7 @@
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:nil];
                 [alert show];
+                [alert release];
             });
         }
         else 

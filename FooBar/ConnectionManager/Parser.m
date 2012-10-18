@@ -30,6 +30,7 @@
         NSString *responseString = (NSString*)responseData;
         SBJSON *sbJSON = [SBJSON new];
         id parsedData = [sbJSON objectWithString:responseString];
+        [sbJSON release];
         if(parsedData && ![parsedData isKindOfClass:[NSNull class]] && [parsedData isKindOfClass:[NSDictionary class]])
         {
             userDict = (NSDictionary*)parsedData;
@@ -75,6 +76,7 @@
         NSString *responseString = (NSString*)responseData;
         SBJSON *sbJSON = [SBJSON new];
         id parsedData = [sbJSON objectWithString:responseString];
+                [sbJSON release];
         if(parsedData && ![parsedData isKindOfClass:[NSNull class]] && [parsedData isKindOfClass:[NSDictionary class]])
         {
             commentDict = (NSDictionary*)parsedData;
@@ -111,6 +113,7 @@
     NSMutableArray *feedsArray = [[[NSMutableArray alloc] init] autorelease];
     SBJSON *sbJSON = [SBJSON new];
     id parsedData = [sbJSON objectWithString:response];
+            [sbJSON release];
     if(parsedData && ![parsedData isKindOfClass:[NSNull class]] && [parsedData isKindOfClass:[NSArray class]])
     {
         NSArray *parsedArray = (NSArray*)parsedData;
@@ -216,6 +219,7 @@
 {
     SBJSON *sbJSON = [SBJSON new];
     id parsedDict = [sbJSON objectWithString:response];
+            [sbJSON release];
     if(parsedDict && ![parsedDict isKindOfClass:[NSNull class]] && [parsedDict isKindOfClass:[NSDictionary class]])
     {       
         FeedObject *feedObject = [[[FeedObject alloc] init] autorelease];
@@ -243,7 +247,7 @@
         id photoData = [parsedDict objectForKey:kFeeds_Photo];
         if(photoData && ![photoData isKindOfClass:[NSNull class]] && [photoData isKindOfClass:[NSDictionary class]])
         {
-            FooBarPhoto *foobarPhoto = [[FooBarPhoto alloc] init];
+            FooBarPhoto *foobarPhoto = [[[FooBarPhoto alloc] init] autorelease];
             NSDictionary *photoDict = (NSDictionary*)photoData;                    
             foobarPhoto.photoId = (NSString*)[photoDict objectForKey:kId];
             
@@ -268,6 +272,7 @@
     NSMutableArray *productsArray = [[[NSMutableArray alloc] init] autorelease];
     SBJSON *sbJSON = [SBJSON new];
     id parsedData = [sbJSON objectWithString:response];
+            [sbJSON release];
     if(parsedData && ![parsedData isKindOfClass:[NSNull class]] && [parsedData isKindOfClass:[NSArray class]])
     {
         NSArray *parsedArray = (NSArray*)parsedData;

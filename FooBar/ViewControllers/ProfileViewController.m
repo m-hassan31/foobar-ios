@@ -230,7 +230,7 @@
     [FooBarUser clearCurrentUser];
     [SocialUser clearCurrentUser];
     
-    IMAlertView *alert = [[IMAlertView alloc] initWithTitle:@"" message:@"You have successfully signed out"];
+    IMAlertView *alert = [[[IMAlertView alloc] initWithTitle:@"" message:@"You have successfully signed out"] autorelease];
     [alert show];
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate addSignInViewController];

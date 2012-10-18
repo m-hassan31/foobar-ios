@@ -120,7 +120,6 @@
 
 +(NSData *) doCipher:(NSData *)plainText key:(NSData *)symmetricKey iv:(NSData *)initVector context:(CCOperation)encryptOrDecrypt padding:(CCOptions *)pkcs7 
 {   
-	CCCryptorStatus ccStatus = kCCSuccess;
     // Symmetric crypto reference.
     CCCryptorRef thisEncipher = NULL;
     // Cipher Text container.
@@ -163,7 +162,7 @@
     } 
     
     // Create and Initialize the crypto reference.
-    ccStatus = CCCryptorCreate( encryptOrDecrypt, 
+    CCCryptorCreate( encryptOrDecrypt, 
 							   kCCAlgorithmAES128, 
 							   *pkcs7, 
 							   (const void *)[symmetricKey bytes], 
@@ -189,7 +188,7 @@
     remainingBytes = bufferPtrSize;
     
     // Actually perform the encryption or decryption.
-    ccStatus = CCCryptorUpdate( thisEncipher,
+    CCCryptorUpdate( thisEncipher,
 							   (const void *) [plainText bytes],
 							   plainTextBufferSize,
 							   ptr,
@@ -203,7 +202,7 @@
     totalBytesWritten += movedBytes;
     
     // Finalize everything to the output buffer.
-    ccStatus = CCCryptorFinal(  thisEncipher,
+    CCCryptorFinal(  thisEncipher,
 							  ptr,
 							  remainingBytes,
 							  &movedBytes

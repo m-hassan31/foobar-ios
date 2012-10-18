@@ -445,7 +445,7 @@ imageView, feedObject, commentsHeightArray;
 - (void)displayMailComposerSheet
 {	
     //Create a string with HTML formatting for the email body
-    NSMutableString *emailBody = [[[NSMutableString alloc] initWithString:@"<html><body>"] retain];
+    NSMutableString *emailBody = [[NSMutableString alloc] initWithString:@"<html><body>"];
     //Add some text to it however you want
     //[emailBody appendString:@"<p>Check out this FooBar photo...</p>"];
     //Pick an image to insert
@@ -468,7 +468,8 @@ imageView, feedObject, commentsHeightArray;
     controller.navigationBar.tintColor=[UIColor blackColor];
     [controller setSubject:@"Check out this FooBar photo..."];
     //NSString* shareBody =[NSString stringWithFormat:@"Check out this FooBar photo %@", feedObject.foobarPhoto.url];
-    [controller setMessageBody:emailBody isHTML:YES]; 
+    [controller setMessageBody:emailBody isHTML:YES];
+    [emailBody release];
     if (controller) [self presentModalViewController:controller animated:YES];
     [controller release];
 }

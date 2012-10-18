@@ -305,8 +305,8 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
     [self removeGestureRecognizer:self.dismissTap];
+    [super dealloc];
 }
 
 @end

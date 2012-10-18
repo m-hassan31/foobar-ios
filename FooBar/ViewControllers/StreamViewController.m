@@ -60,7 +60,9 @@
     
     feedsPage = 1;
     
-    self.feedsArray = [[NSMutableArray alloc] init];
+    NSMutableArray *fArray = [[NSMutableArray alloc] init];
+    self.feedsArray = fArray;;
+    [fArray release];
     
     // pinterest like feeds view
     quiltView = [[TMQuiltView alloc] initWithFrame:CGRectMake(0, 0, 320, 326)];
