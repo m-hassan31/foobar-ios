@@ -58,6 +58,8 @@
 {
 	NSError *error= [request error];
 	NSLog(@"%@",[error localizedDescription]);
+    [FooBarUtils showAlertMessage:@"Profile not available."];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)httpRequestFinished:(ASIHTTPRequest *)request

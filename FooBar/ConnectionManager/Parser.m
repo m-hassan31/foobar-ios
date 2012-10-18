@@ -271,7 +271,7 @@
                 FooBarProduct *foobarProduct = [[[FooBarProduct alloc] init] autorelease];
                 
                 // Parse Product info
-                foobarProduct.productId = (NSString*)[parsedDict objectForKey:kProductsId];
+                foobarProduct.productId = [[parsedDict objectForKey:kProductsId] stringValue];
                 foobarProduct.name = (NSString*)[parsedDict objectForKey:kProductsName];
                 foobarProduct.description = (NSString*)[parsedDict objectForKey:kProductsDescription];
                 

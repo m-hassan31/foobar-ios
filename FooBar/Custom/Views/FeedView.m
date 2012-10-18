@@ -91,8 +91,7 @@ const CGFloat kFeedViewMargin = 0;
     if (imageUrl && ![imageUrl isEqualToString:@""])
         [profilePicView setImageUrl:imageUrl];
     
-    if(feedObject.foobarUser.username && ![feedObject.foobarUser.username isEqualToString:@""])
-        [userNameButton setTitle:feedObject.foobarUser.username forState:UIControlStateNormal];
+    [userNameButton setTitle:feedObject.foobarUser.firstname forState:UIControlStateNormal];
 }
 
 #pragma mark - AsyncImageDelegate
