@@ -114,6 +114,7 @@
 
 -(IBAction)cancelButtonPressed:(id)sender
 {
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];    
     CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;
     [customTabBar selectTab:STREAM_TAB];
 }
