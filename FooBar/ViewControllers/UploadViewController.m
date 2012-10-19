@@ -226,6 +226,25 @@
         return 45.0;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 50.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section 
+{    
+    UILabel *label = [[[UILabel alloc] init] autorelease];
+    label.frame = CGRectMake(30, 6, 300, 30);
+    label.font = [UIFont boldSystemFontOfSize:16.0];
+    label.backgroundColor = [UIColor clearColor];
+    label.textAlignment = UITextAlignmentCenter;
+    label.shadowColor = [UIColor lightGrayColor];
+    label.shadowOffset = CGSizeMake(0, 1.0);
+    label.textColor = [UIColor colorWithRed:182.0/255.0 green:49.0/255.0 blue:37.0/255.0 alpha:1.0];
+    label.text = @"Upload";
+    return label;
+}
+
 #pragma mark -
 #pragma mark UIPickerView data source functions
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
