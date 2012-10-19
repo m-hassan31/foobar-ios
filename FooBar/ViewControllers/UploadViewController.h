@@ -10,6 +10,7 @@
 }
 
 @property (retain, nonatomic) IBOutlet UITableView *uploadTableView;
+@property (retain, nonatomic) IBOutlet UIToolbar *productsToolbar;
 @property (retain, nonatomic) IBOutlet UIPickerView *foobarProductPicker;
 @property (retain, nonatomic) NSMutableArray *foobarProductsArray;
 @property (retain, nonatomic) UIImage *image;

@@ -22,6 +22,7 @@
 @end
 
 @implementation UploadViewController
+@synthesize productsToolbar;
 @synthesize uploadTableView, foobarProductPicker, foobarProductsArray, image, captionText;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -62,6 +63,41 @@
     foobarProductsArray = [[NSMutableArray alloc] init];
     selectedFooBarProductIndex = -1;
     
+    UILabel *selectTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(97, 0, 127, 44)];
+    [selectTitleLabel setBackgroundColor:[UIColor clearColor]];
+    [selectTitleLabel setTextColor:[UIColor whiteColor]];
+    [selectTitleLabel setFont:[UIFont boldSystemFontOfSize:17.0f]];
+    [selectTitleLabel setText:@"Select Product"];
+    [productsToolbar addSubview:selectTitleLabel];
+    [selectTitleLabel release];
+
+    // create the array to hold the buttons, which then gets added to the toolbar
+    NSMutableArray* buttons = [[NSMutableArray alloc] initWithCapacity:3];
+    
+    // create a standard "cancel" button
+    UIBarButtonItem* cancelButton = [[UIBarButtonItem alloc]
+                           initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed)];
+    cancelButton.style = UIBarButtonItemStyleBordered;
+    [buttons addObject:cancelButton];
+    [cancelButton release];
+    
+    // create a spacer
+    UIBarButtonItem* flexiSpace = [[UIBarButtonItem alloc]
+          initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [buttons addObject:flexiSpace];
+    [flexiSpace release];
+    
+    // create a standard "select" button
+    UIBarButtonItem* selectButton = [[UIBarButtonItem alloc] initWithTitle:@"Select" style:UIBarButtonItemStyleDone target:self action:@selector(selectButtonPressed)];
+    selectButton.style = UIBarButtonItemStyleBordered;
+    [buttons addObject:selectButton];
+    [selectButton release];
+    
+    // stick the buttons in the toolbar
+    [productsToolbar setItems:buttons animated:NO];
+    
+    [buttons release];
+        
     manager = [[ConnectionManager alloc] init];
     manager.delegate = self;
     
@@ -172,6 +208,7 @@
         [captionTextViewPointer resignFirstResponder];
     [UIView animateWithDuration:0.25
                      animations:^{
+                         productsToolbar.frame = CGRectMake(0, 178, 320, 44);
                          foobarProductPicker.frame = CGRectMake(0, 222, 320, 216);
                      }];
 }
@@ -213,24 +250,30 @@
 	return product.name;
 }
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+#pragma mark -
+#pragma mark Products Toolbar actions
+
+- (void)selectButtonPressed
 {
-	if(foobarProductsArray && foobarProductsArray.count > 0)
-    {
-        selectedFooBarProductIndex = row;
-        NSIndexPath *path = [NSIndexPath indexPathForRow:1 inSection:0];
-        NSArray *indexArray = [NSArray arrayWithObjects:path,nil];
-        [uploadTableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationFade];
-        
-        [UIView animateWithDuration:0.25
-                         animations:^{
-                             foobarProductPicker.frame = CGRectMake(0, 436, 320, 216);
-                         }];
-    }
-    else
-    {
-        [FooBarUtils showAlertMessage:@"Products not available"];
-    }
+    selectedFooBarProductIndex = [foobarProductPicker selectedRowInComponent:0];
+    NSIndexPath *path = [NSIndexPath indexPathForRow:1 inSection:0];
+    NSArray *indexArray = [NSArray arrayWithObjects:path,nil];
+    [uploadTableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationFade];
+    
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         productsToolbar.frame = CGRectMake(0, 436, 320, 44);
+                         foobarProductPicker.frame = CGRectMake(0, 480, 320, 216);
+                     }];
+}
+
+- (void)cancelButtonPressed
+{
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         productsToolbar.frame = CGRectMake(0, 436, 320, 44);
+                         foobarProductPicker.frame = CGRectMake(0, 480, 320, 216);
+                     }];
 }
 
 #pragma mark -
@@ -386,6 +429,7 @@
     [super viewDidUnload];
     [self setUploadTableView:nil];
     [self setFoobarProductPicker:nil];
+    [self setProductsToolbar:nil];
     
     manager.delegate = nil;
     [manager release];
@@ -401,6 +445,7 @@
     [foobarProductsArray release];
     [captionText release];
     [image release];
+    [productsToolbar release];
     [super dealloc];
 }
 @end
