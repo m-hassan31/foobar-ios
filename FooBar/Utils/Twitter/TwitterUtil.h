@@ -82,6 +82,7 @@ typedef enum TWITTER_REQUEST_TYPE
 
 @optional
 
+- (void) twitterAccessTokenReceived:(NSString*)authToken;
 - (void) onTwitterInvitationResponse:(BOOL)status identifier:(NSString*)userId;
 - (void) twitterProfileInfo:(NSDictionary*)data status:(BOOL)status;
 - (void) twitterProfilePicReceived:(UIImage *)image status:(BOOL)status;

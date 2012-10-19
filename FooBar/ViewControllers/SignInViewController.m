@@ -146,6 +146,25 @@
 #pragma mark -
 #pragma mark TwitterUtil Delegates
 
+- (void)twitterAccessTokenReceived:(NSString *)authToken
+{
+    if(authToken && ![authToken isEqualToString:@""])
+    {
+        currentLoggedinUser.accessToken = authToken;
+        
+        [SocialUser saveCurrentUser:currentLoggedinUser];
+        [self hideHud];
+        
+        [self showHUDwithText:@"Signing in"];
+        [manager signin];
+    }
+    else
+    {
+        [self hideHud];
+        [FooBarUtils showAlertMessage:@"Can't access your Twitter account."];
+    }
+}
+
 - (void)twitterProfileInfo:(NSDictionary *)userInfo status:(BOOL)status
 {
     [userInfo retain];
@@ -181,16 +200,8 @@
     if(currentLoggedinUser.username == nil)
         currentLoggedinUser.username = currentLoggedinUser.firstname;
 
-#warning TODO Get Access token from Twitter once the app is approved by Twitter
-    //[twitterUtil getAccessToken];
-    currentLoggedinUser.accessToken = [FooBarUtils getAccessTokenForId:currentLoggedinUser.socialId];
-
-    [SocialUser saveCurrentUser:currentLoggedinUser];
+    [twitterUtil getAccessToken];
     [userInfo release];
-    [self hideHud];
-  
-    [self showHUDwithText:@"Signing in"];
-    [manager signin];
 }
 
 #pragma mark -

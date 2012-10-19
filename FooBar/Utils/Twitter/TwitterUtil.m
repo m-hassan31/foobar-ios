@@ -224,22 +224,39 @@
                               componentsSeparatedByString:@"&"];
             [responseStr release];
             
-            NSString *lined = [parts componentsJoinedByString:@"\n"];
-            
             dispatch_async(dispatch_get_main_queue(), ^{
-                UIAlertView *alert = [[UIAlertView alloc]
-                                      initWithTitle:@"Success!"
-                                      message:lined
-                                      delegate:nil
-                                      cancelButtonTitle:@"OK"
-                                      otherButtonTitles:nil];
-                [alert show];
-                [alert release];
+                
+                if (self._delegate != nil && [_delegate respondsToSelector:@selector(twitterAccessTokenReceived:)])
+                {
+                    if(parts && parts.count > 0)
+                    {
+                        NSString *oAuthToken = [parts objectAtIndex:0];
+                        if([oAuthToken hasPrefix:@"oauth_token="])
+                        {
+                            oAuthToken = [oAuthToken stringByReplacingOccurrencesOfString:@"oauth_token=" withString:@""];
+                            [_delegate twitterAccessTokenReceived:oAuthToken];
+                        }
+                        else
+                        {
+                            [_delegate twitterAccessTokenReceived:nil];
+                        }
+                    }
+                    else
+                    {
+                        [_delegate twitterAccessTokenReceived:nil];
+                    }
+                }
             });
         }
         else 
         {
-            NSLog(@"Error!\n%@", [error localizedDescription]);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSLog(@"Error!\n%@", [error localizedDescription]);
+                if (self._delegate != nil && [_delegate respondsToSelector:@selector(twitterAccessTokenReceived:)])
+                {
+                    [_delegate twitterAccessTokenReceived:nil];
+                }
+            });
         }
     }];
 }
