@@ -74,8 +74,6 @@
 
 -(IBAction)uploadButtonPressed:(id)sender
 {
-#warning TODO - Confirm from Foobar team - if Foobar products are not available what should be the action?
-    
     if(selectedFooBarProductIndex != -1 && selectedFooBarProductIndex < foobarProductsArray.count)
     {
         [self showHUDwithText:@"Uploading.."];
@@ -269,12 +267,13 @@
 	NSError *error= [request error];
 	NSLog(@"%@",[error localizedDescription]);
     
+    [self hideHud];
+    
     [FooBarUtils showAlertMessage:@"Sorry! Upload Failed."];
-    [self.navigationController popToRootViewControllerAnimated:NO];
     CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;
     [customTabBar selectTab:STREAM_TAB];
-    
-    [self hideHud];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+    [self.navigationController popToRootViewControllerAnimated:NO];
 }
 
 -(void)httpRequestFinished:(ASIHTTPRequest *)request
@@ -295,20 +294,24 @@
             else if([request.requestMethod isEqualToString:@"PUT"])
             {
                 [self hideHud];
-                FeedObject *feedObject = [Parser parseUploadResponse:responseJSON];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateFeedsOnUpload object:feedObject];
+                
                 CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;
                 [customTabBar selectTab:STREAM_TAB];
+                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+
+                FeedObject *feedObject = [Parser parseUploadResponse:responseJSON];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateFeedsOnUpload object:feedObject];
                 [self.navigationController popToRootViewControllerAnimated:NO];
             }
         }
-        else if(statusCode == 403)
+        else
         {
             [self hideHud];
-            [FooBarUtils showAlertMessage:@"Sorry! Upload Failed."];
-            [self.navigationController popToRootViewControllerAnimated:NO];
+            [FooBarUtils showAlertMessage:@"Sorry! Upload failed."];
             CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;
             [customTabBar selectTab:STREAM_TAB];
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+            [self.navigationController popToRootViewControllerAnimated:NO];
         }
     }
     else if([urlString hasPrefix:ProductsUrl])
@@ -316,11 +319,20 @@
         if(statusCode == 200)
         {
             NSArray *productsArray = [Parser parseProductsresponse:responseJSON];
-            if(productsArray)
+            if(productsArray && productsArray.count > 0)
             {
                 [foobarProductsArray removeAllObjects];
                 [foobarProductsArray addObjectsFromArray:productsArray];
                 [foobarProductPicker reloadAllComponents];
+            }
+            else
+            {
+                [FooBarUtils showAlertMessage:@"Sorry! Can't upload now."];
+                
+                CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;
+                [customTabBar selectTab:STREAM_TAB];
+                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+                [self.navigationController popToRootViewControllerAnimated:NO];
             }
         }
     }

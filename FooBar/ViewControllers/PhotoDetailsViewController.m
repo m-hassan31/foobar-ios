@@ -57,6 +57,8 @@ imageView, feedObject, commentsHeightArray;
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [self.navigationController setNavigationBarHidden:NO];
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self

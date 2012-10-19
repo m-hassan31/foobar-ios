@@ -45,9 +45,9 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [self.navigationController setNavigationBarHidden:NO];
+    [super viewWillAppear:animated];
     
     [quiltView reloadData];
 }
@@ -102,6 +102,7 @@
     id anObject = notification.object;
     if(anObject && ![anObject isKindOfClass:[NSNull class]] && [anObject isKindOfClass:[FeedObject class]])
     {
+        [self.navigationController popToRootViewControllerAnimated:NO];
         FeedObject *uploadedFeedObject = (FeedObject*)anObject;
         [self.feedsArray insertObject:uploadedFeedObject atIndex:0];
         [quiltView reloadData];
