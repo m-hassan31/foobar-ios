@@ -6,13 +6,8 @@
 #define TW_HTTP_METHOD_DELETE @"DELETE"
 #define TW_HTTP_HEADER_AUTHORIZATION @"Authorization"
 
-#warning TODO this is sample app's info change it to FooBar Twitter App
-#define kTWConsumerKey @"6qhWWt8XWQOrwg5AwI6UA"
-#define kTWConsumerSecret @"rht37DCZSpPThkSCC65QohT8qZ8Sn10RohpRsjefs"
-
-
-//#define kTWConsumerKey @"Ha7UYF50eYNporZlKZ0fQ"
-//#define kTWConsumerSecret @"JXHrNdSHlqfSCkyXzm4OJ9S1HVC0PKtzpImWU2lgCk"
+#define kTWConsumerKey @"Ha7UYF50eYNporZlKZ0fQ"
+#define kTWConsumerSecret @"JXHrNdSHlqfSCkyXzm4OJ9S1HVC0PKtzpImWU2lgCk"
 
 @interface TWSignedRequest()
 
