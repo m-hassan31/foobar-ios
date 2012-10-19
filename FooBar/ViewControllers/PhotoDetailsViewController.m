@@ -175,12 +175,8 @@ imageView, feedObject, commentsHeightArray;
     scrollSize.height += 168;
     scrollView.contentSize = scrollSize;
     
-    [UIView animateWithDuration:0.25 
-                     animations:^{
-                         CGPoint offset = scrollView.contentOffset;
-                         offset.y += 168;
-                         scrollView.contentOffset = offset;
-                     }];
+    CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+    [self.scrollView setContentOffset:bottomOffset animated:YES];
 }
 
 -(void)dismissComment
@@ -189,12 +185,8 @@ imageView, feedObject, commentsHeightArray;
     scrollSize.height -= 168;
     scrollView.contentSize = scrollSize;
     
-    [UIView animateWithDuration:0.25 
-                     animations:^{
-                         CGPoint offset = scrollView.contentOffset;
-                         offset.y -= 168;
-                         scrollView.contentOffset = offset;
-                     }];
+    CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+    [self.scrollView setContentOffset:bottomOffset animated:YES];
 }
 
 -(void)postComment
@@ -366,33 +358,6 @@ imageView, feedObject, commentsHeightArray;
 {	
     [textField resignFirstResponder];
     [self postComment];
-    return YES;
-}
-
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    if(textField.text.length > 0)
-    {
-        textField.font = [UIFont systemFontOfSize:14.0f];
-    }
-    else
-    {
-        textField.font = [UIFont italicSystemFontOfSize:14.0f];
-    }
-    return YES;
-}
-
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    if(textField.text.length > 0)
-    {
-        textField.font = [UIFont systemFontOfSize:14.0f];
-    }
-    else
-    {
-        textField.font = [UIFont italicSystemFontOfSize:14.0f];
-    }
-    
     return YES;
 }
 
