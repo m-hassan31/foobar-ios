@@ -43,7 +43,7 @@
     [[self captureManager] addStillImageOutput];    
 	[[self captureManager] addVideoPreviewLayer];
     
-	CGRect layerRect = CGRectMake(0, 0, 320, 430);
+	CGRect layerRect = CGRectMake(0, 0, 320, 431);
     [[[self captureManager] previewLayer] setBounds:layerRect];
     [[[self captureManager] previewLayer] setPosition:CGPointMake(CGRectGetMidX(layerRect),CGRectGetMidY(layerRect))];
 	[[[self view] layer] addSublayer:[[self captureManager] previewLayer]];
@@ -54,8 +54,6 @@
     [overlayImageView release];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageCaptured) name:kImageCapturedSuccessfully object:nil];
-    
-	//[[captureManager captureSession] startRunning];
 }
 
 -(void)viewWillAppear:(BOOL)animated
