@@ -103,6 +103,11 @@
     if(anObject && ![anObject isKindOfClass:[NSNull class]] && [anObject isKindOfClass:[FeedObject class]])
     {
         [self.navigationController popToRootViewControllerAnimated:NO];
+        [UIView animateWithDuration:0.25 
+                         animations:^{
+                             [quiltView setContentOffset:CGPointZero];    
+                         }];
+        
         FeedObject *uploadedFeedObject = (FeedObject*)anObject;
         [self.feedsArray insertObject:uploadedFeedObject atIndex:0];
         [quiltView reloadData];
