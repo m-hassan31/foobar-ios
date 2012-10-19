@@ -161,7 +161,7 @@
     else
     {
         [self hideHud];
-        [FooBarUtils showAlertMessage:@"Can't access your Twitter account."];
+        [FooBarUtils showAlertMessage:@"Could not connect to Twitter. Try again."];
     }
 }
 
