@@ -350,8 +350,23 @@
         {
             if([request.requestMethod isEqualToString:@"POST"])
             {
-                FeedObject *feedObject = [Parser parseUploadResponse:responseJSON];
-                [manager updatePost:feedObject.feedId withCaption:self.captionText];
+                if(self.captionText && ![self.captionText isEqualToString:@""])
+                {
+                    FeedObject *feedObject = [Parser parseUploadResponse:responseJSON];
+                    [manager updatePost:feedObject.feedId withCaption:self.captionText];
+                }
+                else
+                {
+                    [self hideHud];
+                    
+                    CustomTabBarController *customTabBar = (CustomTabBarController*)self.tabBarController;
+                    [customTabBar selectTab:STREAM_TAB];
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+                    
+                    FeedObject *feedObject = [Parser parseUploadResponse:responseJSON];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateFeedsOnUpload object:feedObject];
+                    [self.navigationController popToRootViewControllerAnimated:NO];
+                }
             }
             else if([request.requestMethod isEqualToString:@"PUT"])
             {
