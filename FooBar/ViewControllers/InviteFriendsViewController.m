@@ -2,7 +2,7 @@
 #import "FooBarUtils.h"
 #import "EndPointsKeys.h"
 #import "CustomCellBGView.h"
-#import "SocialUser.h"
+#import "FooBarUser.h"
 #import "FooBarConstants.h"
 #import "PlaceHolderTextView.h"
 #import "FriendsListViewController.h"
@@ -142,12 +142,12 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    SocialUser *socialUser = [SocialUser currentUser];
+    FooBarUser *foobarUser = [FooBarUser currentUser];
     
     switch (indexPath.row) {
         case 0:
         {
-            if(socialUser.socialAccountType == FacebookAccount)
+            if(foobarUser.socialAccountType == FacebookAccount)
             {
                 // user is signed up via Facebook - unlinking/configuring facebook from here is not possible
                 
@@ -179,7 +179,7 @@
             break;
         case 1:
         {
-            if(socialUser.socialAccountType == TwitterAccount)
+            if(foobarUser.socialAccountType == TwitterAccount)
             {
                 // user is signed up via Twitter - unlinking/configuring twitter from here is not possible
                 
@@ -190,7 +190,7 @@
             }
             else
             {
-                if([twitterUtil isTwitterConfigured] && socialUser.socialAccountType != TwitterAccount)
+                if([twitterUtil isTwitterConfigured] && foobarUser.socialAccountType != TwitterAccount)
                 {
                     UIActionSheet *fbActionSheet = [[UIActionSheet alloc] initWithTitle:@""
                                                                                delegate:self

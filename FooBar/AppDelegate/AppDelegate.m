@@ -6,6 +6,7 @@
 #import "StreamViewController.h"
 #import "CaptureViewController.h"
 #import "SocialUser.h"
+#import "FooBarUser.h"
 #import "FooBarConstants.h"
 #import "FacebookUtil.h"
 
@@ -27,11 +28,11 @@
     self.window = [[[FooBarBackground alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     
-    SocialUser *socialUser = [SocialUser currentUser];
-    if(socialUser && [socialUser authenticated])
+    FooBarUser *foobarUser = [FooBarUser currentUser];
+    if(foobarUser && [foobarUser authenticated])
     {
         // check if the configured twitter account still exists in iOS 5 Settings
-        if(socialUser.socialAccountType == TwitterAccount)
+        if(foobarUser.socialAccountType == TwitterAccount)
         {
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             NSString *previousUserName = [defaults objectForKey:kTwitterUsername];
@@ -78,7 +79,7 @@
                 [self cleanDefaultsAndShowSignInPage];
             }
         }
-        else if(socialUser.socialAccountType == FacebookAccount)
+        else if(foobarUser.socialAccountType == FacebookAccount)
         {
             NSDate *fbExpDate = [FacebookUtil fbExpirationDate];
             if(NSOrderedDescending == [fbExpDate compare:[NSDate date]])
@@ -140,11 +141,11 @@
      Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
      */
     
-    SocialUser *socialUser = [SocialUser currentUser];
-    if(socialUser && [socialUser authenticated])
+    FooBarUser *foobarUser = [FooBarUser currentUser];
+    if(foobarUser && [foobarUser authenticated])
     {
         // check if the configured twitter account still exists in iOS 5 Settings
-        if(socialUser.socialAccountType == TwitterAccount)
+        if(foobarUser.socialAccountType == TwitterAccount)
         {
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             NSString *previousUserName = [defaults objectForKey:kTwitterUsername];
@@ -186,7 +187,7 @@
                 [self cleanDefaultsAndShowSignInPage];
             }
         }
-        else if(socialUser.socialAccountType == FacebookAccount)
+        else if(foobarUser.socialAccountType == FacebookAccount)
         {
             NSDate *fbExpDate = [FacebookUtil fbExpirationDate];
             if(NSOrderedDescending != [fbExpDate compare:[NSDate date]])

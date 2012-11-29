@@ -4,7 +4,7 @@
 
 @implementation FooBarUser
 
-@synthesize userId, username, firstname, photoUrl, accountType, created_dt, updated_dt;
+@synthesize userId, username, firstname, photoUrl, socialAccountType, created_dt, updated_dt, socialId, accessToken;
 
 +(void)saveCurrentUser:(FooBarUser*)user
 {
@@ -38,7 +38,9 @@
         self.username = [decoder decodeObjectForKey:kUsername];
         self.firstname = [decoder decodeObjectForKey:kFirstname];
         self.photoUrl = [decoder decodeObjectForKey:kPhotoUrl];
-        self.accountType = [[decoder decodeObjectForKey:kAccountType] integerValue];
+        self.socialAccountType = [[decoder decodeObjectForKey:kAccountType] integerValue];
+        self.socialId = [decoder decodeObjectForKey:kSocialId];
+        self.accessToken = [decoder decodeObjectForKey:kAccessToken];
     }
     return self;
 }
@@ -51,7 +53,14 @@
     if(self.firstname)
     [encoder encodeObject:self.firstname forKey:kFirstname];
     [encoder encodeObject:self.photoUrl forKey:kPhotoUrl];
-    [encoder encodeObject:[NSNumber numberWithUnsignedInt:self.accountType] forKey:kAccountType];
+    [encoder encodeObject:[NSNumber numberWithUnsignedInt:self.socialAccountType] forKey:kAccountType];
+    [encoder encodeObject:self.socialId forKey:kSocialId];
+    [encoder encodeObject:self.accessToken forKey:kAccessToken];
+}
+
+-(BOOL)authenticated
+{
+    return (![self.socialId isEqualToString:@""] && ![self.accessToken isEqualToString:@""]);
 }
 
 -(void)dealloc
@@ -60,6 +69,8 @@
     [username release];
     [firstname release];
     [photoUrl release];
+    [socialId release];
+    [accessToken release];
     [super dealloc];
 }
 

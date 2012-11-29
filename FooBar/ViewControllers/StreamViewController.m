@@ -124,9 +124,11 @@
 
 - (TMQuiltViewCell *)quiltView:(TMQuiltView *)_quiltView cellAtIndexPath:(NSIndexPath *)indexPath
 {
-    FeedView *aFeed = (FeedView *)[_quiltView dequeueReusableCellWithReuseIdentifier:@"FeedElement"];
+    static NSString *feedIdentifier = @"FeedView";
+    
+    FeedView *aFeed = (FeedView *)[_quiltView dequeueReusableCellWithReuseIdentifier:feedIdentifier];
     if (!aFeed) {
-        aFeed = [[[FeedView alloc] initWithReuseIdentifier:@"FeedElement"] autorelease];
+        aFeed = [[[FeedView alloc] initWithReuseIdentifier:feedIdentifier] autorelease];
     }
     aFeed.delegate =self;
     FeedObject *feedObject = [feedsArray objectAtIndex:indexPath.row];

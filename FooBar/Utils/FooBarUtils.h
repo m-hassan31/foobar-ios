@@ -1,5 +1,4 @@
 #import <Foundation/Foundation.h>
-#import "SocialUser.h"
 
 enum Account_Type
 {

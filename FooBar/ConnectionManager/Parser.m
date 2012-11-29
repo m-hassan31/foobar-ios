@@ -54,9 +54,11 @@
     NSString *imageUrl = (NSString*)[userDict objectForKey:kPhotoUrl];
     foobarUser.photoUrl = imageUrl?imageUrl:@"";
     
-    foobarUser.accountType = [(NSString*)[userDict objectForKey:kAccountType] isEqualToString:@"facebook"]?FacebookAccount:TwitterAccount;
+    foobarUser.socialAccountType = [(NSString*)[userDict objectForKey:kAccountType] isEqualToString:@"facebook"]?FacebookAccount:TwitterAccount;
     foobarUser.created_dt = (NSString*)[userDict objectForKey:kCreatedDate];
     foobarUser.updated_dt = (NSString*)[userDict objectForKey:kUpdatedDate];
+    foobarUser.socialId = (NSString*)[userDict objectForKey:kSocialId];
+    foobarUser.accessToken = (NSString*)[userDict objectForKey:kAccessToken]; 
     return foobarUser;
 }
 

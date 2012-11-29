@@ -19,7 +19,6 @@
 -(ASIHTTPRequest*)getRequestWithAuthHeader:(NSURL*)url;
 
 -(void)signin;
--(void)updateAccessToken;
 -(void)getProfile;
 -(void)getProfile:(BOOL)showHud;
 -(void)getUserProfile:(NSString*)profileId;

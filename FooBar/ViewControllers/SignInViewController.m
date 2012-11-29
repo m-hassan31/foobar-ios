@@ -252,45 +252,28 @@
 	NSString *urlString= [[request url] absoluteString];
     int statusCode = [request responseStatusCode];
     
-    if([urlString hasPrefix:AccessTokenUrl])
-    {
-        [self hideHud];
-        if(statusCode == 200)
-        {
-            // response for - [manager updateAccessToken];
-            // user updated with access token now
-            
-            // parse and save the user on defaults
-            FooBarUser *currentLoggedInUser = [Parser parseUserResponse:responseJSON];
-            if(currentLoggedInUser)
-            {
-                FooBarUser *foobarUser = currentLoggedInUser;
-                [FooBarUser saveCurrentUser:foobarUser];
-            }
-            
-            AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-            [appDelegate addTabBarController];
-        }
-        else
-        {
-            [FooBarUtils showAlertMessage:@"Can't Sign-in now."];
-        }
-    }
-    else if([urlString hasPrefix:UsersUrl])
+    if([urlString hasPrefix:UsersUrl])
     {
         if([request.requestMethod isEqualToString:@"POST"])
         {
             if(statusCode == 200)
             {
                 [self hideHud];
+                
+                // response for - [manager signin];
+                // user updated with access token now
+                
+                // parse and save the user on defaults
+                FooBarUser *currentLoggedInUser = [Parser parseUserResponse:responseJSON];
+                if(currentLoggedInUser)
+                {
+                    FooBarUser *foobarUser = currentLoggedInUser;
+                    [FooBarUser saveCurrentUser:foobarUser];
+                }
+                
                 // user created
                 AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
                 [appDelegate addTabBarController];
-            }
-            else if(statusCode == 403)
-            {
-                // user already existing - update the access token
-                [manager updateAccessToken];
             }
             else
             {

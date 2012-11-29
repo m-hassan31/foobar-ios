@@ -39,7 +39,7 @@ enum CurrentFacebookAction
 -(void) getMyFacebookProfile:(id) utilDelegate;
 -(void) getMyFacebookProfilePic:(id) utilDelegate;
 
--(void) sharePhotoOnFacebook:(NSString*)failURL 
+-(void) sharePhotoOnFacebook:(NSString*)foobarFeedURL 
              previewImageURL:(NSString*)imageURL
                    withTitle:(NSString*)shareTitle 
              withDescription:(NSString*)shareDescription 

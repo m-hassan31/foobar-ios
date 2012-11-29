@@ -2,6 +2,7 @@
 #import "ASIHTTPRequest.h"
 #import "EndPoints.h"
 #import "SocialUser.h"
+#import "FooBarUser.h"
 
 @interface ConnectionManager()
 {
@@ -31,13 +32,13 @@
 
 -(ASIHTTPRequest*)getRequestWithAuthHeader:(NSURL*)url
 {
-    SocialUser *socialUser = [SocialUser currentUser];
-    if(!socialUser)
+    FooBarUser *foobarUser = [FooBarUser currentUser];
+    if(!foobarUser)
         return nil;
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    [request addRequestHeader:@"X-foobar-username" value:socialUser.socialId];
-    [request addRequestHeader:@"X-foobar-access-token" value:socialUser.accessToken];
+    [request addRequestHeader:@"X-foobar-username" value:foobarUser.username];
+    [request addRequestHeader:@"X-foobar-access-token" value:foobarUser.accessToken];
     return request;
 }
 
@@ -45,18 +46,26 @@
 {
     // Instantiate an HTTP request.
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",UsersUrl]];
-    ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];
     
+    SocialUser *socialUser = [SocialUser currentUser];
+    if(!socialUser)
+        return;
+    
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    [request addRequestHeader:@"X-foobar-username" value:socialUser.socialId];
+    [request addRequestHeader:@"X-foobar-access-token" value:socialUser.accessToken];    
     if(!request)
         return;
 
     [request setRequestMethod:@"POST"];
 	[request addRequestHeader:@"Content-Type" value:@"application/json"];
     
-    SocialUser *socialUser = [SocialUser currentUser];
     NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:
+                            socialUser.username, @"username",
+                            socialUser.accessToken, @"access_token",
                             (socialUser.socialAccountType==FacebookAccount)?@"facebook":@"twitter", @"account_type",
                             socialUser.firstname, @"first_name",
+                            socialUser.socialId, @"account_id",
                             socialUser.photoUrl, @"photo_url", nil];
     [request appendPostData:[FooBarUtils jsonFromDictionary:params]];
     [params release];
@@ -64,33 +73,6 @@
     request.delegate = self;
     // Send the request.
     [request startAsynchronous];
-}
-
--(void)updateAccessToken
-{
-    // Instantiate an HTTP request.
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", AccessTokenUrl]];
-    ASIHTTPRequest *request = [self getRequestWithAuthHeader:url];
-    
-    if(!request)
-        return;
-    
-    SocialUser *socialUser = [SocialUser currentUser];
-    
-    [request setRequestMethod:@"PUT"];
-    [request addRequestHeader:@"Content-Type" value:@"application/json"];
-    [request addRequestHeader:@"X-foobar-access-token-new" value:socialUser.accessToken];
-    
-    NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:
-                            (socialUser.socialAccountType==FacebookAccount)?@"facebook":@"twitter", @"account_type",
-                            socialUser.firstname, @"first_name",
-                            socialUser.photoUrl, @"photo_url", nil];
-    [request appendPostData:[FooBarUtils jsonFromDictionary:params]];
-    [params release];
-    
-    request.delegate = self;
-    // Send the request.
-    [request startAsynchronous]; 
 }
 
 -(void)getProfile
@@ -145,15 +127,15 @@
 
 -(void)uploadPhoto:(UIImage*)image withProductId:(NSString*)productId
 {
-    SocialUser *socialUser = [SocialUser currentUser];
+    FooBarUser *foobarUser = [FooBarUser currentUser];
     
     // Instantiate an HTTP request.
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?enctype=multipart/form-data",PhotosUrl]];
     
     ASIFormDataRequest *request= [ASIFormDataRequest requestWithURL:url];
     [request setRequestMethod:@"POST"];
-    [request addRequestHeader:@"X-foobar-username" value:socialUser.socialId];
-    [request addRequestHeader:@"X-foobar-access-token" value:socialUser.accessToken];
+    [request addRequestHeader:@"X-foobar-username" value:foobarUser.username];
+    [request addRequestHeader:@"X-foobar-access-token" value:foobarUser.accessToken];
     [request addRequestHeader:@"X-foobar-product-id" value:productId];
     
     [request setData:UIImageJPEGRepresentation(image, 1.0) forKey:@"pic"];

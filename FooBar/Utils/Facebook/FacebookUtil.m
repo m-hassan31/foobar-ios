@@ -194,7 +194,7 @@ const static NSString* kFacebookAppId = @"102542526573212";
 	[sharedFacebookUtil.facebook requestWithGraphPath:@"me/picture?type=large" andDelegate:self];
 }
 
-- (void)sharePhotoOnFacebook:(NSString*)failURL 
+- (void)sharePhotoOnFacebook:(NSString*)foobarFeedURL 
              previewImageURL:(NSString*)imageURL 
                    withTitle:(NSString*)shareTitle 
              withDescription:(NSString*)shareDescription 
@@ -206,7 +206,7 @@ const static NSString* kFacebookAppId = @"102542526573212";
     NSString* shareText = [NSString stringWithFormat:@"%@", shareDescription];
 	NSMutableDictionary * params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 									shareText, @"comment",
-									failURL,@"url",
+									foobarFeedURL,@"url",
 									imageURL,@"image",
 									nil];
     

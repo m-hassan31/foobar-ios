@@ -2,7 +2,7 @@
 #import "FooBarUtils.h"
 #import "EndPointsKeys.h"
 #import "CustomCellBGView.h"
-#import "SocialUser.h"
+#import "FooBarUser.h"
 #import "FooBarConstants.h"
 #import "PlaceHolderTextView.h"
 #import <QuartzCore/QuartzCore.h>
@@ -148,7 +148,7 @@
         NSString *fbMsg = ([shareText isEqualToString:@""]) ? @"Check out this photo" : shareText;
         
         [facebookUtil sharePhotoOnFacebook:feedObject.foobarPhoto.url
-                           previewImageURL:@""
+                           previewImageURL:feedObject.foobarPhoto.url
                                  withTitle:@"FooBar" 
                            withDescription:fbMsg
                               fromDelegate:self];
@@ -257,8 +257,8 @@
                     
                     cell.accessoryType = UITableViewCellAccessoryNone;
                     
-                    SocialUser *socialUser = [SocialUser currentUser];
-                    if(socialUser.socialAccountType == FacebookAccount)
+                    FooBarUser *foobarUser = [FooBarUser currentUser];
+                    if(foobarUser.socialAccountType == FacebookAccount)
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     else
                         cell.selectionStyle = UITableViewCellSelectionStyleGray;
@@ -302,9 +302,9 @@
                     [toggleSwitch release];
                     
                     cell.accessoryType = UITableViewCellAccessoryNone;
-                    SocialUser *socialUser = [SocialUser currentUser];
+                    FooBarUser *foobarUser = [FooBarUser currentUser];
                     
-                    if(socialUser.socialAccountType == TwitterAccount)
+                    if(foobarUser.socialAccountType == TwitterAccount)
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     else
                         cell.selectionStyle = UITableViewCellSelectionStyleGray;                
@@ -346,12 +346,12 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    SocialUser *socialUser = [SocialUser currentUser];
+    FooBarUser *foobarUser = [FooBarUser currentUser];
 
     switch (indexPath.row) {
         case 1:
         {
-            if(socialUser.socialAccountType == FacebookAccount)
+            if(foobarUser.socialAccountType == FacebookAccount)
             {
                 // user is signed up via Facebook - unlinking/configuring facebook from here is not possible
             }
@@ -378,13 +378,13 @@
             break;
         case 2:
         {
-            if(socialUser.socialAccountType == TwitterAccount)
+            if(foobarUser.socialAccountType == TwitterAccount)
             {
                 // user is signed up via Twitter - unlinking/configuring twitter from here is not possible
             }
             else
             {
-                if([twitterUtil isTwitterConfigured] && socialUser.socialAccountType != TwitterAccount)
+                if([twitterUtil isTwitterConfigured] && foobarUser.socialAccountType != TwitterAccount)
                 {
                     UIActionSheet *fbActionSheet = [[UIActionSheet alloc] initWithTitle:@"Unlink your Twitter account?"
                                                                                delegate:self

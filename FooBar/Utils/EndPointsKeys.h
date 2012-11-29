@@ -20,6 +20,7 @@
 #define kFirstname                          @"first_name"
 #define kPhotoUrl                           @"photo_url"
 #define kAccountType                        @"account_type"
+#define kSocialId                           @"account_id"
 
 // FeedsUrl Response Keys
 #define kFeeds_ProductId                    @"product_id"
