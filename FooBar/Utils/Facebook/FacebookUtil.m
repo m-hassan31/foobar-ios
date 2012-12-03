@@ -239,7 +239,7 @@ const static NSString* kFacebookAppId = @"102542526573212";
 											andParams:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 													   @"You should check out FooBar photo collections.", @"message",
 													   @"FooBar Invitation",@"name",
-													   @"www.google.com", @"link",
+													   @"http://foobmv.cloudfoundry.com/", @"link",
 													   @"", @"picture",
 													   nil]
 										andHttpMethod:@"POST"
